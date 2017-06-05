@@ -1,0 +1,4 @@
+select count(*) from pagelinks pl, page p, page_props pp1, page_props pp2 where pl.pl_from_namespace  = 0 and pl.pl_namespace = 0 and p.page_title = pl.pl_title and pp1.pp_page = pl_from and pp2.pp_page = p.page_id and pp1.pp_propname = 'wikibase_item' and pp2.pp_propname = 'wikibase_item' and p.page_namespace = 0;
+
+
+select pp1.pp_value, pp2.pp_value from pagelinks pl, page p, page_props pp1, page_props pp2 where pl.pl_from_namespace  = 0 and pl.pl_namespace = 0 and p.page_title = pl.pl_title and pp1.pp_page = pl_from and pp2.pp_page = p.page_id and pp1.pp_propname = 'wikibase_item' and pp2.pp_propname = 'wikibase_item' and p.page_namespace = 0 INTO OUTFILE '/tmp/simplewiki-sql-pagelinks.csv';
