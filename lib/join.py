@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-
 import sys
-
 
 def leftJoin(file1, file2, reversePrint):
 	with open(file1, encoding="utf-8") as f:
@@ -24,7 +22,6 @@ def leftJoin(file1, file2, reversePrint):
 			except StopIteration:
 				# done
 				pass
-
 a = sys.argv[1]
 b = sys.argv[2]
 leftJoin(a,b,False)
