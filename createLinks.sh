@@ -36,15 +36,15 @@ sort --field-separator=$'\t' --key=2 -o "$1""pagelinks2.lines" "$1""pagelinks2.l
 sort --field-separator=$'\t' --key=2 -o "$1""redirect.lines" "$1""redirect.lines"
 python3 lib/join.py "$1""redirect.lines" "$1""page.lines" | sed s/'\(.*\)\t\(.*\)'/'\2\t\1'/ > "$1""redirect2.lines"
 sort --field-separator=$'\t' --key=2 -o "$1""redirect2.lines" "$1""redirect2.lines"
-python3 lib/join.py "$1""pagelinks2.lines" "$1""redirect2.lines" >> "$1""pagelinks22.lines"
+python3 lib/join.py "$1""pagelinks2.lines" "$1""redirect2.lines" > "$1""pagelinks22.lines"
 cat "$1""pagelinks22.lines" >> "$1""pagelinks2.lines"
-sort --field-separator=$'\t' --key=2 -o "$1""pagelinks2.lines" "$1""pagelinks2.lines"
-# end redirects
+# end redirect
 
+sort --field-separator=$'\t' --key=2 -o "$1""pagelinks2.lines" "$1""pagelinks2.lines"
 sort --field-separator=$'\t' --key=2 -o "$1""pageprops.lines" "$1""pageprops.lines"
 python3 lib/join.py "$1""pagelinks2.lines" "$1""pageprops.lines" | sed s/'\(.*\)\t\(.*\)'/'\2\t\1'/ > "$1""pagelinks3.lines"
 sort --field-separator=$'\t' --key=2 -o "$1""pagelinks3.lines" "$1""pagelinks3.lines"
 python3 lib/join.py "$1""pagelinks3.lines" "$1""pageprops.lines" | sed s/'\(.*\)\t\(.*\)'/'\2\t\1'/ > "$1""pagelinks4.lines"
 sort "$1""pagelinks4.lines" | uniq > "$1"".links"
 bzip2 "$1"".links"
-#rm "$1"*.lines
+rm "$1"*.lines
