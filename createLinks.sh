@@ -19,9 +19,9 @@ python3 lib/preprocess.py $redirect | grep "(.*,0,'.*','.*','.*')" | sed s/"\(.*
 
 # the page table does not always contain 14 fields (has 14 in MediaWiki 1.30.0-wmf.1, additional column "page_no_title_convert" in MediaWiki 1.30.0-wmf.2)
 if grep -q 'page_no_title_convert' $page; then
-python3 lib/preprocess.py $page | grep -P "\([0-9]+,0,'.*'(,.*){12}\)" | sed s/"\(.*\)(\(.*\),0,'\(.*\)'\(,.*\)\{12\})\(.*\)"/"\2\t\3"/ | grep -v "^$"> "$1""page.lines"
+python3 lib/preprocess.py $page | grep "(.*,0,'.*',.*,.*,.*,.*,.*,.*,.*,.*,.*,.*,.*,.*)" | sed s/"\(.*\)(\(.*\),0,'\(.*\)'\(,.*\)\{12\})\(.*\)"/"\2\t\3"/ | grep -v "^$"> "$1""page.lines"
 else
-python3 lib/preprocess.py $page | grep -P "\([0-9]+,0,'.*'(,.*){11}\)" | sed s/"\(.*\)(\(.*\),0,'\(.*\)'\(,.*\)\{11\})\(.*\)"/"\2\t\3"/ | grep -v "^$"> "$1""page.lines"
+python3 lib/preprocess.py $page | grep "(.*,0,'.*',.*,.*,.*,.*,.*,.*,.*,.*,.*,.*,.*)" | sed s/"\(.*\)(\(.*\),0,'\(.*\)'\(,.*\)\{11\})\(.*\)"/"\2\t\3"/ | grep -v "^$"> "$1""page.lines"
 fi
 rm "$1"*.sql
 
