@@ -1,1 +1,2 @@
-curl -H "Accept: text/csv" "https://query.wikidata.org/sparql?query=PREFIX%20schema%3A%20%3Chttp%3A%2F%2Fschema.org%2F%3E%0A%0ASELECT%20%3Fsitelink%0AWHERE%20%7B%0A%20%20%3Fsitelink%20schema%3Aabout%20wd%3AQ5296%20.%0A%20%20FILTER%20REGEX(STR(%3Fsitelink)%2C%20%22.wikipedia.org%2Fwiki%2F%22)%20.%0A%7D" | tail -n+2 | sed s/'https:\/\/\(.*\).wikipedia.org\/wiki\/\(.*\)'/'\1'/ > wiki.lang
+curl http://wikistats.wmflabs.org/display.php?t=wp | grep "</td><td class=\"text\">" | sed s/"        <td class=\"text\"><a href=\(.*\)>\(.*\)<\/a><\/td><td class=\"text\"><a href=\(.*\)>\(.*\)<\/a><\/td>"/"\4"/ | sort > wiki.langs
+
