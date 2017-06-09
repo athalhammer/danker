@@ -8,8 +8,8 @@ page="$1""wiki-latest-page.sql"
 redirects="$1""wiki-latest-redirect.sql"
 
 ###################### DOWNLOAD AND UNZIP
-#wget -q "$url""$pagelinks"".gz" "$url""$pageprops"".gz" "$url""$page"".gz" "$url""$redirects"".gz"
-#gunzip -f "$1"*.gz
+wget -q "$url""$pagelinks"".gz" "$url""$pageprops"".gz" "$url""$page"".gz" "$url""$redirects"".gz"
+gunzip -f "$1"*.gz
 
 ###################### PRE-PROCESSING
 export LC_ALL=C.UTF-8
