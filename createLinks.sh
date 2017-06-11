@@ -34,17 +34,17 @@ sort --field-separator=$'\t' --key=2 -o "$1""pagelinks2.lines" "$1""pagelinks2.l
 
 # take care of redirects (note: 'double redirects' are fixed by bots --> https://en.wikipedia.org/wiki/Wikipedia:Double_redirects)
 sort --field-separator=$'\t' --key=2 -o "$1""redirects.lines" "$1""redirects.lines"
-python3 lib/join.py "$1""redirects.lines" "$1""page.lines" | sed "s/\(.*\)\t\(.*\)/\2\t\1/" > "$1""redirect2.lines"
-sort --field-separator=$'\t' --key=2 -o "$1""redirect2.lines" "$1""redirect2.lines"
-python3 lib/join.py "$1""pagelinks2.lines" "$1""redirect2.lines" > "$1""pagelinks22.lines"
+python3 lib/join.py "$1""redirects.lines" "$1""page.lines" | sed "s/\(.*\)\t\(.*\)/\2\t\1/" > "$1""redirects2.lines"
+sort --field-separator=$'\t' --key=2 -o "$1""redirects2.lines" "$1""redirects2.lines"
+python3 lib/join.py "$1""pagelinks2.lines" "$1""redirects2.lines" > "$1""pagelinks22.lines"
 cat "$1""pagelinks22.lines" >> "$1""pagelinks2.lines"
 # end redirects
 
 sort --field-separator=$'\t' --key=2 -o "$1""pagelinks2.lines" "$1""pagelinks2.lines"
 sort --field-separator=$'\t' --key=2 -o "$1""pageprops.lines" "$1""pageprops.lines"
-python3 lib/join.py "$1""pagelinks2.lines" "$1""pageprops.lines" | sed "s/\(.*\)\t\(.*\)/\2\t\1/" > "$1""pagelinks3.lines"
-sort --field-separator=$'\t' --key=2 -o "$1""pagelinks3.lines" "$1""pagelinks3.lines"
-python3 lib/join.py "$1""pagelinks3.lines" "$1""pageprops.lines" | sed "s/Q\(.*\)\tQ\(.*\)/\2\t\1/" > "$1""pagelinks4.lines"
-sort -n "$1""pagelinks4.lines" | uniq > "$1"".links"
+python3 lib/join.py "$1""pagelinks2.lines" "$1""pageprops.lines" | sed "s/\(.*\)\t\(.*\)/\2\t\1/" > "$1""pagelinks.lines"
+sort --field-separator=$'\t' --key=2 -o "$1""pagelinks.lines" "$1""pagelinks.lines"
+python3 lib/join.py "$1""pagelinks.lines" "$1""pageprops.lines" | sed "s/Q\(.*\)\tQ\(.*\)/\2\t\1/" > "$1""pagelinks2.lines"
+sort -n "$1""pagelinks2.lines" | uniq > "$1"".links"
 bzip2 "$1"".links"
 rm "$1"*.lines
