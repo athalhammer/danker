@@ -1,6 +1,6 @@
 #!/bin/bash
 
-###################### STATIC VARIABLES
+###################### VARIABLES
 url="https://dumps.wikimedia.org/""$1""wiki/latest/"
 pagelinks="$1""wiki-latest-pagelinks.sql"
 pageprops="$1""wiki-latest-page_props.sql"
