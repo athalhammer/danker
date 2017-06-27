@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# TODO to be replaced by SED/AWK
 import sys
 
 def leftJoin(file1, file2, reversePrint):
@@ -22,7 +23,8 @@ def leftJoin(file1, file2, reversePrint):
 			except StopIteration:
 				# done
 				pass
-a = sys.argv[1]
-b = sys.argv[2]
-leftJoin(a,b,False)
-leftJoin(b,a,True)
+if __name__ == '__main__':
+	a = sys.argv[1]
+	b = sys.argv[2]
+	leftJoin(a, b, False)
+	leftJoin(b, a, True)

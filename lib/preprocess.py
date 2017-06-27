@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# TODO to be replaced by SED/AWK
 import sys
 
 try:

@@ -46,7 +46,7 @@ sort --field-separator=$'\t' --key=2 -o "$1""pagelinks2.lines" "$1""pagelinks2.l
 sort --field-separator=$'\t' --key=2 -o "$1""pageprops.lines" "$1""pageprops.lines"
 python3 lib/join.py "$1""pagelinks2.lines" "$1""pageprops.lines" | sed "s/\(.*\)\t\(.*\)/\2\t\1/" > "$1""pagelinks.lines"
 sort --field-separator=$'\t' --key=2 -o "$1""pagelinks.lines" "$1""pagelinks.lines"
-python3 lib/join.py "$1""pagelinks.lines" "$1""pageprops.lines" | sed "s/Q\(.*\)\tQ\(.*\)/\2\t\1/" > "$1""pagelinks2.lines"
-sort -n "$1""pagelinks2.lines" | uniq > "$1"-"$dump_date"".links"
+python3 lib/join.py "$1""pagelinks.lines" "$1""pageprops.lines" | sed "s/\(Q\|q\)\(.*\)\t\(Q\|q\)\(.*\)/\4\t\2/" > "$1""pagelinks2.lines"
+sort "$1""pagelinks2.lines" | uniq > "$1"-"$dump_date"".links"
 #bzip2 "$1"".links"
 rm "$1"*.lines
