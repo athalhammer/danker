@@ -1,10 +1,9 @@
 #!/usr/bin/python3
 import sys
 
-#ranks = array('f')
-numberOutgoing = {}
+dictionary = {}
 
-def initOutgoing(leftSorted):
+def init(leftSorted, startValue):
 	previousQID = 0
 	currentCount = 1
 	with open(leftSorted, encoding="utf-8") as f:
@@ -16,16 +15,42 @@ def initOutgoing(leftSorted):
 			else:
 				if (previousQID != 0):
 					# store previousQID and reset counter
-					numberOutgoing[previousQID] = currentCount
+					dictionary[previousQID] = currentCount, startValue
 					currentCount = 1
 			previousQID = currentQID
-	for i in numberOutgoing.keys():
-		print(str(i) + "\t" + str(numberOutgoing[i]))
+		# write last bunch
+		dictionary[previousQID] = currentCount, startValue
+
+def danker(rightSorted, iterations, damping, startValue):
+	for i in range(0, iterations):
+		previous = 0
+		with open(rightSorted, encoding="utf-8") as f:
+			for line in f:
+				current = int(line.split("\t")[1])
+				if (previous != 0 & previous != current):
+					previousDank = dictionary.get(previous)
+					prevDankValue = (1 - 0.85) + previousDank[1]
+					dictionary[previous] = previousDank[0], prevDankValue
+				currentDank = dictionary.get(current, (0, startValue))
+				inlink = int(line.split("\t")[0])
+				inDank = dictionary.get(inlink)
+				# debug output
+				# print(str(inlink) + "\t" + str(current) + "\t" + str(inProps))
+				dankInOutgoing = inDank[0]
+				dankIn = inDank[1]
+				dank = currentDank[1] + (damping * dankIn / dankInOutgoing)
+				dictionary[current] = currentDank[0], dank
+				previous = current
 
 if __name__ == '__main__':
+	# TODO implement with argparse
 	leftSorted = sys.argv[1]
 	rightSorted = sys.argv[2]
-	iterations = int(sys.argv[3])
-	damping = float(sys.argv[4])
-	initOutgoing(leftSorted)
-	#danker(leftSorted, rightSorted, iterations, damping)
+	startValue = float(sys.argv[3])
+	iterations = int(sys.argv[4])
+	damping = float(sys.argv[5])
+	init(leftSorted, startValue)
+	danker(rightSorted, iterations, damping, startValue)
+	for i in dictionary.keys():
+		print(str(i) + "\t" + str(dictionary[i]))
+
