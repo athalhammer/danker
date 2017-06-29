@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import sys
+import time
 
 dictionary = {}
 
@@ -42,7 +43,9 @@ if __name__ == '__main__':
 	damping = float(sys.argv[3])
 	iterations = int(sys.argv[4])
 	startValue = float(sys.argv[5])
+	start = time.time()
 	init(leftSorted, startValue)
 	danker(rightSorted, iterations, damping, startValue)
 	for i in dictionary.keys():
 		print("Q" + str(i) + "\t" + str(dictionary[i][1]))
+	print(str(time.time() - start), file=sys.stderr)
