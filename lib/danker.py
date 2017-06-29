@@ -37,12 +37,11 @@ def danker(rightSorted, iterations, damping, startValue):
 				previous = current
 
 if __name__ == '__main__':
-	# TODO implement with argparse
 	leftSorted = sys.argv[1]
 	rightSorted = sys.argv[2]
-	startValue = float(sys.argv[3])
+	damping = float(sys.argv[3])
 	iterations = int(sys.argv[4])
-	damping = float(sys.argv[5])
+	startValue = float(sys.argv[5])
 	init(leftSorted, startValue)
 	danker(rightSorted, iterations, damping, startValue)
 	for i in dictionary.keys():
