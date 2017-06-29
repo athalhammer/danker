@@ -4,22 +4,22 @@ import sys
 dictionary = {}
 
 def init(leftSorted, startValue):
-	previousQID = 0
+	previous = 0
 	currentCount = 1
 	with open(leftSorted, encoding="utf-8") as f:
 		for line in f:
-			currentQID = int(line.split("\t")[0])
-			if (currentQID == previousQID):
+			current = int(line.split("\t")[0])
+			if (current == previous):
 				# increase counter
 				currentCount = currentCount + 1
 			else:
-				if (previousQID != 0):
+				if (previous != 0):
 					# store previousQID and reset counter
-					dictionary[previousQID] = currentCount, startValue
+					dictionary[previous] = currentCount, startValue
 					currentCount = 1
-			previousQID = currentQID
+			previous = current
 		# write last bunch
-		dictionary[previousQID] = currentCount, startValue
+		dictionary[previous] = currentCount, startValue
 
 def danker(rightSorted, iterations, damping, startValue):
 	for i in range(0, iterations):
@@ -32,9 +32,7 @@ def danker(rightSorted, iterations, damping, startValue):
 					currentDank = currentDank[0], (1 - damping)
 				inlink = int(line.split("\t")[0])
 				inDank = dictionary.get(inlink)
-				dankInOutgoing = inDank[0]
-				dankIn = inDank[1]
-				dank = currentDank[1] + (damping * dankIn / dankInOutgoing)
+				dank = currentDank[1] + (damping * inDank[1] / inDank[0])
 				dictionary[current] = currentDank[0], dank
 				previous = current
 
