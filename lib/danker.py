@@ -29,7 +29,7 @@ def danker(rightSorted, iterations, damping, startValue):
 				current = int(line.split("\t")[1])
 				currentDank = dictionary.get(current, (0, startValue))
 				if (previous != current):
-					dictionary[current] = currentDank[0], 1 - damping
+					currentDank = currentDank[0], (1 - damping)
 				inlink = int(line.split("\t")[0])
 				inDank = dictionary.get(inlink)
 				dankInOutgoing = inDank[0]
@@ -48,4 +48,4 @@ if __name__ == '__main__':
 	init(leftSorted, startValue)
 	danker(rightSorted, iterations, damping, startValue)
 	for i in dictionary.keys():
-		print(str(i) + "\t" + str(dictionary[i][1]))
+		print("Q" + str(i) + "\t" + str(dictionary[i][1]))
