@@ -7,6 +7,7 @@ pageprops="$1""wiki-latest-page_props.sql"
 page="$1""wiki-latest-page.sql"
 redirects="$1""wiki-latest-redirect.sql"
 md5sums="$1""wiki-latest-md5sums.txt"
+folder="$2"
 
 ###################### DOWNLOAD AND UNZIP
 wget -q "$url""$pagelinks"".gz" "$url""$pageprops"".gz" "$url""$page"".gz" "$url""$redirects"".gz" "$url""$md5sums"
@@ -47,6 +48,6 @@ sort --field-separator=$'\t' --key=2 -o "$1""pageprops.lines" "$1""pageprops.lin
 python3 lib/join.py "$1""pagelinks2.lines" "$1""pageprops.lines" | sed "s/\(.*\)\t\(.*\)/\2\t\1/" > "$1""pagelinks.lines"
 sort --field-separator=$'\t' --key=2 -o "$1""pagelinks.lines" "$1""pagelinks.lines"
 python3 lib/join.py "$1""pagelinks.lines" "$1""pageprops.lines" | sed "s/\(Q\|q\)\(.*\)\t\(Q\|q\)\(.*\)/\4\t\2/" > "$1""pagelinks2.lines"
-sort "$1""pagelinks2.lines" | uniq > "$1"-"$dump_date"".links"
+sort "$1""pagelinks2.lines" | uniq > "$2"/"$1"-"$dump_date"".links"
 #bzip2 "$1"".links"
 rm "$1"*.lines
