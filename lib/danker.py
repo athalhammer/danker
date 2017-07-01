@@ -62,5 +62,5 @@ if __name__ == '__main__':
 	init(leftSorted, startValue)
 	danker(rightSorted, iterations, damping, startValue)
 	for i in dictionary.keys():
-		print("Q" + str(i) + "\t" + str(dictionary[i][1]))
+		print(str(i) + "\t" + str(dictionary[i][1]))
 	print(str(time.time() - start), file=sys.stderr)
