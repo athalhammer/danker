@@ -19,3 +19,7 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
    ```bash
    for i in `./lib/getLanguages.sh`; do ./danker.sh $i; done
    ```
+
+
+## License
+This software is licensed under GPLv3. (see http://www.gnu.org/licenses/).
