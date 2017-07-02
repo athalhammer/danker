@@ -17,7 +17,7 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
 * Compute PageRank on the dumps of all Wikipedia language editions:
 
    ```bash
-   for i in `./lib/getLanguages.sh`; do ./danker.sh $i; done
+   for i in `./lib/getLanguages.sh`; do ./danker.sh "$i"; done
    ```
 
 
