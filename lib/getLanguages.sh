@@ -14,4 +14,4 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-curl -s http://wikistats.wmflabs.org/display.php?t=wp | sed -n "s/        <td class=\"text\"><a href=\(.*\)>\(.*\)<\/a><\/td><td class=\"text\"><a href=\(.*\)>\(.*\)<\/a><\/td>/\4/p" | sort > wiki.langs
+curl -s http://wikistats.wmflabs.org/display.php?t=wp | sed -n "s/        <td class=\"text\"><a href=\(.*\)>\(.*\)<\/a><\/td><td class=\"text\"><a href=\(.*\)>\(.*\)<\/a><\/td>/\4/p" | sort
