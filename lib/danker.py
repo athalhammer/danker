@@ -39,6 +39,7 @@ def init(leftSorted, startValue):
 
 def danker(rightSorted, iterations, damping, startValue):
 	for i in range(0, iterations):
+		print(str(i + 1) + ".", end="", flush=True, file=sys.stderr)
 		previous = 0
 		with open(rightSorted, encoding="utf-8") as f:
 			for line in f:
@@ -51,6 +52,7 @@ def danker(rightSorted, iterations, damping, startValue):
 				dank = currentDank[1] + (damping * inDank[1] / inDank[0])
 				dictionary[current] = currentDank[0], dank
 				previous = current
+	print("", file=sys.stderr)
 
 if __name__ == '__main__':
 	leftSorted = sys.argv[1]
@@ -63,4 +65,4 @@ if __name__ == '__main__':
 	danker(rightSorted, iterations, damping, startValue)
 	for i in dictionary.keys():
 		print(str(i) + "\t" + str(dictionary[i][1]))
-	print(str(time.time() - start), file=sys.stderr)
+	print("Computation of PageRank on '" + leftSorted + "' took " + str(int(100* (time.time() - start)) / 100) + " seconds.", file=sys.stderr)
