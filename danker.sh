@@ -14,12 +14,17 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# configuration
+iterations=40
+damping_factor=0.85
+start_value=0.1
+
 filename=`./lib/createLinks.sh "$1"`
 if [ "$2" == "BIGMEM" ]; then
-python3 ./lib/dankerBigMem.py  "$filename" 0.85 40 0.1 | sed "s/\(.*\)/Q\1/" > "$filename".rank
+python3 ./lib/dankerBigMem.py  "$filename" $daming_factor $iterations $start_value | sed "s/\(.*\)/Q\1/" > "$filename".rank
 else
 sort --field-separator=$'\t' --key=2 -o "$filename"".right" "$filename"
-python3 ./lib/danker.py  "$filename" "$filename"".right"  0.85 40 0.1 | sed "s/\(.*\)/Q\1/" > "$filename".rank
+python3 ./lib/danker.py  "$filename" "$filename"".right"  $damping_factor $iterations $start_value | sed "s/\(.*\)/Q\1/" > "$filename".rank
 rm "$filename"".right"
 fi
 sort -nro "$filename"".rank" --field-separator=$'\t' --key=2 "$filename"".rank"
