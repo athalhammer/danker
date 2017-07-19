@@ -19,7 +19,13 @@ iterations=40
 damping_factor=0.85
 start_value=0.1
 
+if [ "$1" == "ALL" ]; then
+for i in `./lib/getLanguages.sh`; do ./lib/createLinks.sh "$i" >> all-link-files.txt; done
+for i in `cat all-link-files.txt`; do cat "$i" >> all.links; done
+filename='all.links'
+else
 filename=`./lib/createLinks.sh "$1"`
+fi
 if [ "$2" == "BIGMEM" ]; then
 python3 ./lib/dankerBigMem.py  "$filename" $damping_factor $iterations $start_value | sed "s/\(.*\)/Q\1/" > "$filename".rank
 else
