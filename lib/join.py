@@ -14,7 +14,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# TODO to be replaced by SED/AWK
+# TODO to be replaced by SED/AWK/JOIN
 import sys
 
 def leftJoin(file1, file2, reversePrint):
