@@ -46,27 +46,22 @@ rm "$1"*.txt
 export LC_ALL=C
 sort --field-separator=$'\t' --key=2 -o "$1""page.lines" "$1""page.lines"
 sort --field-separator=$'\t' --key=2 -o "$1""pagelinks.lines" "$1""pagelinks.lines"
-#join -j 2 "$1""pagelinks.lines" "$1""page.lines" -o 1.1,2.1 -t $'\t' > "$1""pagelinks2.lines"
-python3 ./lib/join.py "$1""pagelinks.lines" "$1""page.lines" > "$1""pagelinks2.lines"
+join -j 2 "$1""pagelinks.lines" "$1""page.lines" -o 1.1,2.1 -t $'\t' > "$1""pagelinks2.lines"
 sort --field-separator=$'\t' --key=2 -o "$1""pagelinks2.lines" "$1""pagelinks2.lines"
 
 # take care of redirects (note: 'double redirects' are fixed by bots --> https://en.wikipedia.org/wiki/Wikipedia:Double_redirects)
 sort --field-separator=$'\t' --key=2 -o "$1""redirects.lines" "$1""redirects.lines"
-#join -j 2 "$1""redirects.lines" "$1""page.lines" -o 2.1,1.1 -t $'\t' > "$1""redirects2.lines"
-python3 ./lib/join.py "$1""redirects.lines" "$1""page.lines" | sed "s/\(.*\)\t\(.*\)/\2\t\1/" > "$1""redirects2.lines"
+join -j 2 "$1""redirects.lines" "$1""page.lines" -o 2.1,1.1 -t $'\t' > "$1""redirects2.lines"
 sort --field-separator=$'\t' --key=2 -o "$1""redirects2.lines" "$1""redirects2.lines"
-#join -j 2 "$1""pagelinks2.lines" "$1""redirects2.lines" -o 1.1,2.1 > "$1""pagelinks22.lines"
-python3 ./lib/join.py "$1""pagelinks2.lines" "$1""redirects2.lines" > "$1""pagelinks22.lines"
+join -j 2 "$1""pagelinks2.lines" "$1""redirects2.lines" -o 1.1,2.1 -t $'\t' > "$1""pagelinks22.lines"
 cat "$1""pagelinks22.lines" >> "$1""pagelinks2.lines"
 # end redirects
 
 sort --field-separator=$'\t' --key=2 -o "$1""pagelinks2.lines" "$1""pagelinks2.lines"
 sort --field-separator=$'\t' --key=2 -o "$1""pageprops.lines" "$1""pageprops.lines"
-#join -j 2 "$1""pagelinks2.lines" "$1""pageprops.lines" -o 2.1,1.1 -t $'\t' > "$1""pagelinks.lines"
-python3 ./lib/join.py "$1""pagelinks2.lines" "$1""pageprops.lines" | sed "s/\(.*\)\t\(.*\)/\2\t\1/" > "$1""pagelinks.lines"
+join -j 2 "$1""pagelinks2.lines" "$1""pageprops.lines" -o 2.1,1.1 -t $'\t' > "$1""pagelinks.lines"
 sort --field-separator=$'\t' --key=2 -o "$1""pagelinks.lines" "$1""pagelinks.lines"
-#join -j 2 "$1""pagelinks.lines" "$1""pageprops.lines" -o 2.1,1.1 -t $'\t' | sed "s/\(Q\|q\)\(.*\)\t\(Q\|q\)\(.*\)/\2\t\4/" > "$1""pagelinks2.lines"
-python3 ./lib/join.py "$1""pagelinks.lines" "$1""pageprops.lines" | sed "s/\(Q\|q\)\(.*\)\t\(Q\|q\)\(.*\)/\4\t\2/" > "$1""pagelinks2.lines"
+join -j 2 "$1""pagelinks.lines" "$1""pageprops.lines" -o 2.1,1.1 -t $'\t' | sed "s/\(Q\|q\)\(.*\)\t\(Q\|q\)\(.*\)/\2\t\4/" > "$1""pagelinks2.lines"
 sort "$1""pagelinks2.lines" | uniq > "$1"-"$dump_date"".links"
 rm "$1"*.lines
 echo "$1"-"$dump_date"".links"
