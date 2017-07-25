@@ -29,7 +29,7 @@ fi
 if [ "$2" == "BIGMEM" ]; then
 python3 ./lib/dankerBigMem.py  "$filename" $damping_factor $iterations $start_value | sed "s/\(.*\)/Q\1/" > "$filename".rank
 else
-sort --field-separator=$'\t' --key=2 -o "$filename"".right" "$filename"
+sort --field-separator=$'\t' --key=2 --temporary-directory=. -o "$filename"".right" "$filename"
 python3 ./lib/danker.py  "$filename" "$filename"".right"  $damping_factor $iterations $start_value | sed "s/\(.*\)/Q\1/" > "$filename".rank
 rm "$filename"".right"
 fi
