@@ -22,6 +22,7 @@ start_value=0.1
 if [ "$1" == "ALL" ]; then
 for i in `./lib/getLanguages.sh`; do ./lib/createLinks.sh "$i" >> all-link-files.txt; done
 for i in `cat all-link-files.txt`; do cat "$i" >> all.links; done
+sort --temporary-directory=. -o "$filename" "$filename"
 filename='all.links'
 else
 filename=`./lib/createLinks.sh "$1"`
@@ -29,7 +30,6 @@ fi
 if [ "$2" == "BIGMEM" ]; then
 python3 ./lib/dankerBigMem.py  "$filename" $damping_factor $iterations $start_value | sed "s/\(.*\)/Q\1/" > "$filename".rank
 else
-export LC_ALL=C
 sort --field-separator=$'\t' --key=2 --temporary-directory=. -o "$filename"".right" "$filename"
 python3 ./lib/danker.py  "$filename" "$filename"".right"  $damping_factor $iterations $start_value | sed "s/\(.*\)/Q\1/" > "$filename".rank
 rm "$filename"".right"
