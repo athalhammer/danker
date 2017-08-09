@@ -20,10 +20,10 @@ damping_factor=0.85
 start_value=0.1
 
 if [ "$1" == "ALL" ]; then
-for i in `./lib/getLanguages.sh`; do ./lib/createLinks.sh "$i" >> all-link-files.txt; done
-for i in `cat all-link-files.txt`; do cat "$i" >> all.links; done
-sort --temporary-directory=. -o "$filename" "$filename"
 filename='all.links'
+for i in `./lib/getLanguages.sh`; do ./lib/createLinks.sh "$i" >> all-link-files.txt; done
+for i in `cat all-link-files.txt`; do cat "$i" >> "$filename"; done
+sort --temporary-directory=. -o "$filename" "$filename"
 else
 filename=`./lib/createLinks.sh "$1"`
 fi
