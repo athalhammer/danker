@@ -28,10 +28,10 @@ else
 filename=`./lib/createLinks.sh "$1"`
 fi
 if [ "$2" == "BIGMEM" ]; then
-python3 ./lib/dankerBigMem.py  "$filename" $damping_factor $iterations $start_value | sed "s/\(.*\)/Q\1/" > "$filename".rank
+./lib/dankerBigMem.py  "$filename" $damping_factor $iterations $start_value | sed "s/\(.*\)/Q\1/" > "$filename".rank
 else
 sort --field-separator=$'\t' --key=2 --temporary-directory=. -o "$filename"".right" "$filename"
-python3 ./lib/danker.py  "$filename" "$filename"".right"  $damping_factor $iterations $start_value | sed "s/\(.*\)/Q\1/" > "$filename".rank
+./lib/danker.py  "$filename" "$filename"".right"  $damping_factor $iterations $start_value | sed "s/\(.*\)/Q\1/" > "$filename".rank
 rm "$filename"".right"
 fi
 sort -nro "$filename"".rank" --field-separator=$'\t' --key=2 "$filename"".rank"
