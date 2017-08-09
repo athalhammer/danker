@@ -1,10 +1,10 @@
 danker
 ======
 
-__danker__ is a compilation of Bash and Python3 scripts that enables the computation of PageRank on Wikipedia on normal off-the-shelf hardware (e.g., a quad-core CPU, 8 GB of memory and 250 GB hard disk storage). The BIGMEM option enables to speed up the computation process (given enough main memory is available - depending on the Wikipedia language edition and hardware). The total size of danker is < 150 lines of code.
+__danker__ is a compilation of Bash and Python3 scripts that enables the computation of PageRank on Wikipedia on normal off-the-shelf hardware (e.g., a quad-core CPU, 8 GB of main memory, and 250 GB hard disk storage). The BIGMEM option enables to speed up computation given that enough main memory is available (this depends on the Wikipedia language edition and your hardware configuration). The total size of danker is __< 150 lines of code__.
 
-* __INPUT__ Wikipedia language edition, e.g. "en" OR "ALL" (for computing PR on the union of all language editions - bag semantics); optional parameter "BIGMEM".
-* __PROCESSING__ danker does the download of the needed Wikipedia dump files (https://dumps.wikimedia.org/LANGwiki/latest/), resolves links, redirects, Wikidata Q-ids, produces a link-file and computes PageRank.
+* __INPUT__ Wikipedia language edition, e.g. "en" OR "ALL" (for computing PR on the union of all language editions - "bag of links" semantics); optional parameter "BIGMEM".
+* __PROCESSING__ danker downloads the needed Wikipedia dump files (https://dumps.wikimedia.org/LANGwiki/latest/), resolves links, redirects, Wikidata Q-ids, produces a link-file and computes PageRank.
 * __OUTPUT__ 
   * LANG-DUMPDATE.links - a link file, the input for PageRank (every line reads from left to right: Q-id left --links to--> Q-id right)
   * LANG-DUMPDATE.links.rank - a series of Wikidata Q-ids with their respective PageRank (sorted descending)
@@ -22,7 +22,7 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
 
    ```bash
    ./danker.sh ALL
-   ./danker.sh ALL BIGMEM
+   ./danker.sh ALL BIGMEM    # caution, you will need some main memory for that
    ```
    
 * Compute PageRank for each Wikipedia language edition:
