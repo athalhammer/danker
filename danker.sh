@@ -23,7 +23,7 @@ if [ "$1" == "ALL" ]; then
 filename='all.links'
 for i in `./lib/getLanguages.sh`; do ./lib/createLinks.sh "$i" >> all-link-files.txt; done
 for i in `cat all-link-files.txt`; do cat "$i" >> "$filename"; done
-sort --temporary-directory=. -o "$filename" "$filename"
+sort --field-separator=$'\t' --key=1 --temporary-directory=. -o "$filename" "$filename"
 else
 filename=`./lib/createLinks.sh "$1"`
 fi
