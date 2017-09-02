@@ -33,7 +33,7 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
    ```
    
 ## Previous work
-Before __danker__, I performed a number of experiments with DBpedia "Wikipedia Pagelinks" datasets (http://wiki.dbpedia.org/services-resources/documentation/datasets#PageLinks) most of which are documented at http://people.aifb.kit.edu/ath/.
+Before __danker__, I performed a number of experiments with [DBpedia "page links" datasets](http://wiki.dbpedia.org/services-resources/documentation/datasets#pagelinks) most of which are documented at http://people.aifb.kit.edu/ath/.
 
 ## License
 This software is licensed under GPLv3. (see http://www.gnu.org/licenses/).
