@@ -35,7 +35,8 @@ def init(leftSorted, startValue):
 					currentCount = 1
 			previous = current
 		# write last bunch
-		dictionary[previous] = currentCount, startValue
+		if (previous != 0):
+			dictionary[previous] = currentCount, startValue
 
 def danker(rightSorted, iterations, damping, startValue):
 	for i in range(0, iterations):

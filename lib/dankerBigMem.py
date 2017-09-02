@@ -44,8 +44,9 @@ def init(leftSorted, startValue):
 					currentCount = 1
 			previous = current
 		# write last bunch
-		prev = dictionary.get(previous, (0, startValue, []))
-		dictionary[previous] = currentCount, prev[1], prev[2]
+		if (previous != 0):	
+			prev = dictionary.get(previous, (0, startValue, []))
+			dictionary[previous] = currentCount, prev[1], prev[2]
 
 def danker(iterations, damping, startValue):
 	for i in range(0, iterations):

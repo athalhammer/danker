@@ -16,20 +16,22 @@
 
 
 ###################### VARIABLES
-url="https://dumps.wikimedia.org/""$1""wiki/latest/"
-pagelinks="$1""wiki-latest-pagelinks.sql"
-pageprops="$1""wiki-latest-page_props.sql"
-page="$1""wiki-latest-page.sql"
-redirects="$1""wiki-latest-redirect.sql"
-md5sums="$1""wiki-latest-md5sums.txt"
+download="http://download.wikimedia.org/""$1""wiki/"
+rss="https://dumps.wikimedia.org/""$1""wiki/latest/"
 
 ###################### DOWNLOAD AND UNZIP
-wget -q "$url""$pagelinks"".gz" "$url""$pageprops"".gz" "$url""$page"".gz" "$url""$redirects"".gz" "$url""$md5sums"
+wget -q "$rss""$1""wiki-latest-pagelinks.sql.gz-rss.xml" "$rss""$1""wiki-latest-page_props.sql.gz-rss.xml" "$rss""$1""wiki-latest-page.sql.gz-rss.xml" "$rss""$1""wiki-latest-redirect.sql.gz-rss.xml"
+dump_date=`cat *.xml | sed -n "s#^                <link>$download\(.*\)</link>#\1#p" | sort -u | head -n 1`
+rm *.xml
+pagelinks="$1""wiki-""$dump_date""-pagelinks.sql"
+pageprops="$1""wiki-""$dump_date""-page_props.sql"
+page="$1""wiki-""$dump_date""-page.sql"
+redirects="$1""wiki-""$dump_date""-redirect.sql"
+wget -q "$download""$dump_date""/""$pagelinks"".gz" "$download""$dump_date""/""$pageprops"".gz" "$download""$dump_date""/""$page"".gz" "$download""$dump_date""/""$redirects"".gz" 
 gunzip -f "$1"*.gz
 
 ###################### PRE-PROCESSING
 export LC_ALL=C.UTF-8
-dump_date=`head -n 1 "$1"wiki-latest-md5sums.txt | sed "s/\(.*\) \(.*\)-\(.*\)-\(.*\)/\3/"`
 sed -n "s/),(/)\n(/gp" $pagelinks | sed -n "s/\(.*\)(\(.*\),0,'\(.*\)',0)\(.*\)/\2\t\3/p" > "$1""pagelinks.lines"
 sed -n "s/),(/)\n(/gp" $pageprops | sed -n "s/\(.*\)(\(.*\),'wikibase_item','\(.*\)',\(.*\))\(.*\)/\3\t\2/p" > "$1""pageprops.lines"
 sed -n "s/),(/)\n(/gp" $redirects | sed -n "s/\(.*\)(\(.*\),0,'\(.*\)','\(.*\)','\(.*\)')\(.*\)/\2\t\3/p" > "$1""redirects.lines"
@@ -41,7 +43,6 @@ else
 sed -n "s/),(/)\n(/gp" $page | sed -n "s/\(.*\)(\(.*\),0,'\(.*\)'\(,.*\)\{11\})\(.*\)/\2\t\3/p" > "$1""page.lines"
 fi
 rm "$1"*.sql
-rm "$1"*.txt
 ###################### JOINS
 export LC_ALL=C
 sort --field-separator=$'\t' --key=2 -o "$1""page.lines" "$1""page.lines"
