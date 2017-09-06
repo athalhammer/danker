@@ -55,9 +55,13 @@ sort --field-separator=$'\t' --key=2 -o "$1""redirects.lines" "$1""redirects.lin
 join -j 2 "$1""redirects.lines" "$1""page.lines" -o 2.1,1.1 -t $'\t' > "$1""redirects2.lines"
 sort --field-separator=$'\t' --key=2 -o "$1""redirects2.lines" "$1""redirects2.lines"
 join -j 2 "$1""pagelinks2.lines" "$1""redirects2.lines" -o 1.1,2.1 -t $'\t' > "$1""pagelinks22.lines"
+
+# we can write this back to our page links set (potentially duplicating links)
+# because in the following step redirect pages have no Q-id (redirect pages are filtered out).
 cat "$1""pagelinks22.lines" >> "$1""pagelinks2.lines"
 # end redirects
 
+###################### GET Q-IDs
 sort --field-separator=$'\t' --key=2 -o "$1""pagelinks2.lines" "$1""pagelinks2.lines"
 sort --field-separator=$'\t' --key=2 -o "$1""pageprops.lines" "$1""pageprops.lines"
 join -j 2 "$1""pagelinks2.lines" "$1""pageprops.lines" -o 2.1,1.1 -t $'\t' > "$1""pagelinks.lines"
