@@ -38,9 +38,9 @@ sed -n "s/),(/)\n(/gp" $redirects | sed -n "s/\(.*\)(\(.*\),0,'\(.*\)','\(.*\)',
 
 # the page table does not always contain 14 fields (has 14 in MediaWiki 1.30.0-wmf.1, additional column "page_no_title_convert" in MediaWiki 1.30.0-wmf.2)
 if grep -q 'page_no_title_convert' $page; then
-sed -n "s/),(/)\n(/gp" $page | sed -n "s/\(.*\)(\(.*\),0,'\(.*\)'\(,.*\)\{12\})\(.*\)/\2\t\3/p" > "$1""page.lines"
+  sed -n "s/),(/)\n(/gp" $page | sed -n "s/\(.*\)(\(.*\),0,'\(.*\)'\(,.*\)\{12\})\(.*\)/\2\t\3/p" > "$1""page.lines"
 else
-sed -n "s/),(/)\n(/gp" $page | sed -n "s/\(.*\)(\(.*\),0,'\(.*\)'\(,.*\)\{11\})\(.*\)/\2\t\3/p" > "$1""page.lines"
+  sed -n "s/),(/)\n(/gp" $page | sed -n "s/\(.*\)(\(.*\),0,'\(.*\)'\(,.*\)\{11\})\(.*\)/\2\t\3/p" > "$1""page.lines"
 fi
 rm "$1"*.sql
 ###################### JOINS
