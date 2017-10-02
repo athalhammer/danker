@@ -4,7 +4,8 @@
 
    _The output of danker has no license. It can be used without attribution. However, if you use the PageRank scores in an academic work, it would be nice if you would provide reference to this page and cite the following paper:_
 
-   ```@InCollection{Thalhammer2016,
+   ```
+   @InCollection{Thalhammer2016,
    Title                    = {{PageRank on Wikipedia: Towards General Importance Scores for Entities}},
    Author                   = {Andreas Thalhammer and Achim Rettinger},
    Booktitle                = {The Semantic Web: ESWC 2016 Satellite Events, Heraklion, Crete, Greece, May 29 -- June 2, 2016, Revised Selected Papers},
