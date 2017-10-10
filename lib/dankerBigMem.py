@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+#    danker - PageRank on Wikipedia/Wikidata
 #    Copyright (C) 2017  Andreas Thalhammer
 #
 #    This program is free software: you can redistribute it and/or modify
