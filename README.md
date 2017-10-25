@@ -65,3 +65,7 @@ This software is licensed under GPLv3. (see http://www.gnu.org/licenses/).
 
    _We consider TSV as sufficient. Any other format and/or mapping can easily be produced with a simple Python script._
 
+
+3. __Why is this not programmed with Apache Hadoop?__
+
+   _We believe that ranking computations should be transparent. In the best case, everyone who wants to verify the computed rankings should be enabled to do so. Therefore, we only support computation on off-the-shelf hardware. However, the provided code can be extended and also be ported to other platforms (under consideration of the license terms)._
