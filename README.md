@@ -42,7 +42,7 @@ This software is licensed under GPLv3. (see http://www.gnu.org/licenses/).
 
 1. __The source code of danker is licensed under GPL v3. What about the output?__
 
-   _The output of danker has no license. It can be used without attribution. However, if you use the PageRank scores in an academic work, it would be nice if you would provide reference to this page and cite the following paper:_
+   _The output of danker has no license. It can be used without attribution. However, if you use the PageRank scores it would be nice if you would provide reference to this page or, if you use the scores in an academic work, cite the following paper:_
 
    ```
    @InCollection{Thalhammer2016,
