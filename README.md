@@ -71,4 +71,5 @@ This software is licensed under GPLv3. (see http://www.gnu.org/licenses/).
    _We believe that ranking computations should be transparent. In the best case, everyone who wants to verify the computed rankings should be enabled to do so. Therefore, we also support computation on off-the-shelf hardware. However, the provided code can be extended and also be ported to other platforms (under consideration of the license terms)._
 
 4. __Why does it take so long (up to two weeks) to compute PageRank with the ALL option?__
-   _This goes in line with the second point: we want to provide software that everyone with a standard laptop and some time can use. Of course it is possible to speed the computation up at the cost of required memory/computation power but we strongly believe that "this is for everyone".
+
+   _This goes in line with the second point: we want to provide software that everyone with a standard laptop and some time can use. Of course it is possible to speed the computation up at the cost of required memory/computation power but we strongly believe that "this is for everyone"._
