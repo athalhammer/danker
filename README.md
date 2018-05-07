@@ -63,7 +63,7 @@ This software is licensed under GPLv3. (see http://www.gnu.org/licenses/).
   
 2. __The output format is a tab-separated values (TSV) file with Wikidata Qids and the respective rank. Can I have format xyz?__
 
-   _We consider TSV as sufficient. Any other format and/or mapping can easily be produced with a simple Python script._
+   _We consider TSV as sufficient. Any other format and/or mapping can easily be produced with a simple script._
 
 
 3. __Why is this not programmed with Apache Hadoop?__
