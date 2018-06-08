@@ -46,26 +46,30 @@ This software is licensed under GPLv3. (see http://www.gnu.org/licenses/).
 
    ```
    @InCollection{Thalhammer2016,
-   Title                    = {{PageRank on Wikipedia: Towards General Importance Scores for Entities}},
-   Author                   = {Andreas Thalhammer and Achim Rettinger},
-   Booktitle                = {The Semantic Web: ESWC 2016 Satellite Events, Heraklion, Crete, Greece, May 29 -- June 2, 2016, Revised Selected Papers},
-   Publisher                = {Springer International Publishing},
-   Year                     = {2016},
-   Address                  = {Cham},
-   Month                    = oct,
-   Pages                    = {227--240},
-   Doi                      = {10.1007/978-3-319-47602-5_41},
-   ISBN                     = {978-3-319-47602-5},
-   Url                      = {http://dx.doi.org/10.1007/978-3-319-47602-5_41}
+       Title                    = {{PageRank on Wikipedia: Towards General Importance Scores for Entities}},
+       Author                   = {Andreas Thalhammer and Achim Rettinger},
+       Booktitle                = {The Semantic Web: ESWC 2016 Satellite Events, Heraklion, Crete, Greece, May 29 -- June 2, 2016, Revised Selected Papers},
+       Publisher                = {Springer International Publishing},
+       Year                     = {2016},
+       Address                  = {Cham},
+       Month                    = oct,
+       Pages                    = {227--240},
+       Doi                      = {10.1007/978-3-319-47602-5_41},
+       ISBN                     = {978-3-319-47602-5},
+       Url                      = {http://dx.doi.org/10.1007/978-3-319-47602-5_41}
    }
    ```
   
   
 2. __The output format is a tab-separated values (TSV) file with Wikidata Qids and the respective rank. Can I have format xyz?__
 
-   _We consider TSV as sufficient. Any other format and/or mapping can easily be produced with a simple Python script._
+   _We consider TSV as sufficient. Any other format and/or mapping can easily be produced with a simple script._
 
 
 3. __Why is this not programmed with Apache Hadoop?__
 
    _We believe that ranking computations should be transparent. In the best case, everyone who wants to verify the computed rankings should be enabled to do so. Therefore, we also support computation on off-the-shelf hardware. However, the provided code can be extended and also be ported to other platforms (under consideration of the license terms)._
+
+4. __Why does it take so long (up to two weeks) to compute PageRank with the ALL option?__
+
+   _This goes in line with the second point: we want to provide software that everyone with a standard laptop and some time can use. Of course it is possible to speed the computation up at the cost of required memory/computation power but we strongly believe that "this is for everyone"._
