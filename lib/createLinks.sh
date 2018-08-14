@@ -36,13 +36,8 @@ export LC_ALL=C.UTF-8
 sed -n "s/),(/)\n(/gp" $pagelinks | sed -n "s/\(.*\)(\(.*\),\(0\|14\),'\(.*\)',\(0\|14\))\(.*\)/\2\t\3\4/p" > "$1""pagelinks.lines"
 sed -n "s/),(/)\n(/gp" $pageprops | sed -n "s/\(.*\)(\(.*\),'wikibase_item','\(.*\)',\(.*\))\(.*\)/\3\t\2/p" > "$1""pageprops.lines"
 sed -n "s/),(/)\n(/gp" $redirects | sed -n "s/\(.*\)(\(.*\),\(0\|14\),'\(.*\)','\(.*\)','\(.*\)')\(.*\)/\2\t\3\4/p" > "$1""redirects.lines"
+sed -n "s/),(/)\n(/gp" $page | sed -n "s/','/##W31rdS3P4R4T0R##/p" | sed -n "s/\(.*\)(\(.*\),\(0\|14\),'\(.*\)##W31rdS3P4R4T0R##.*$/\2\t\3\4/p" > "$1""page.lines"
 
-# the page table does not always contain 14 fields (has 14 in MediaWiki 1.30.0-wmf.1, additional column "page_no_title_convert" in MediaWiki 1.30.0-wmf.2)
-if grep -q 'page_no_title_convert' $page; then
-  sed -n "s/),(/)\n(/gp" $page | sed -n "s/\(.*\)(\(.*\),\(0\|14\),'\(.*\)'\(,.*\)\{12\})\(.*\)/\2\t\3\4/p" > "$1""page.lines"
-else
-  sed -n "s/),(/)\n(/gp" $page | sed -n "s/\(.*\)(\(.*\),\(0\|14\),'\(.*\)'\(,.*\)\{11\})\(.*\)/\2\t\3\4/p" > "$1""page.lines"
-fi
 rm "$1"*.sql
 ###################### JOINS
 export LC_ALL=C
