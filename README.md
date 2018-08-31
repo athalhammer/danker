@@ -75,4 +75,5 @@ This software is licensed under GPLv3. (see http://www.gnu.org/licenses/).
    _This goes in line with the second point: we want to provide software that everyone with a standard laptop and some time can use. Of course it is possible to speed the computation up at the cost of required memory/computation power but we strongly believe that "this is for everyone"._
    
 5. __Can I use danker to compute PageRank on other graphs than Wikipedia?__
+
   _Sure, you can use the files ./lib/danker.py and ./lib/dankerBigMem.py for computing PageRank on your graph. Note that the former needs the same file in two different formats (left and right sorted, tab-separated respectively) and the latter only once (left sorted, tab-separated). You can use the sort Unix command for sorting._
