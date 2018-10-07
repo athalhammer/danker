@@ -54,11 +54,11 @@ def danker(rightSorted, iterations, damping, startValue):
 				dank = currentDank[1] + (damping * inDank[1] / inDank[0])
 				dictionary[current] = currentDank[0], dank
 				previous = current
-                if i == 0:
-                        for n in dictionary.keys():
-                                node = dictionary[n]
-                                if node[1] == startValue:
-                                        dictionary[n] = node[0], 1 - damping
+		if i == 0:
+			for n in dictionary.keys():
+				node = dictionary[n]
+				if node[1] == startValue:
+					dictionary[n] = node[0], 1 - damping
 	print("", file=sys.stderr)
 
 if __name__ == '__main__':
