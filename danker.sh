@@ -16,6 +16,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # configuration
+export LC_ALL=C
+
 iterations=40
 damping_factor=0.85
 start_value=0.1
