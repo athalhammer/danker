@@ -18,7 +18,8 @@
 import sys
 import time
 
-dictionary = {}
+dictionary_i_1 = {}
+dictionary_i = {}
 
 def init(leftSorted, startValue):
 	previous = 0
@@ -29,9 +30,9 @@ def init(leftSorted, startValue):
 			receiver = int(line.split("\t")[1])
 
 			# always take care of inlinks
-			data = dictionary.get(receiver, (0, startValue, []))
+			data = dictionary_i_1.get(receiver, (0, startValue, []))
 			data[2].append(current)
-			dictionary[receiver] = data[0], data[1], data[2]
+			dictionary_i_1[receiver] = data[0], data[1], data[2]
 
 			# now take care of counts
 			if (current == previous):
@@ -40,25 +41,29 @@ def init(leftSorted, startValue):
 			else:
 				if (previous != 0):
 					# store previousQID and reset counter
-					prev = dictionary.get(previous, (0, startValue, []))
-					dictionary[previous] = currentCount, prev[1], prev[2]
+					prev = dictionary_i_1.get(previous, (0, startValue, []))
+					dictionary_i_1[previous] = currentCount, prev[1], prev[2]
 					currentCount = 1
 			previous = current
 		# write last bunch
 		if (previous != 0):	
-			prev = dictionary.get(previous, (0, startValue, []))
-			dictionary[previous] = currentCount, prev[1], prev[2]
+			prev = dictionary_i_1.get(previous, (0, startValue, []))
+			dictionary_i_1[previous] = currentCount, prev[1], prev[2]
 
 def danker(iterations, damping, startValue):
+	global dictionary_i_1
+	global dictionary_i
 	for i in range(0, iterations):
 		print(str(i + 1) + ".", end="", flush=True, file=sys.stderr)	
-		for i in dictionary.keys():
-			current = dictionary.get(i)
-			dank = 1 - damping	
+		for i in dictionary_i_1.keys():
+			current = dictionary_i_1.get(i)
+			dank = 1 - damping
 			for j in current[2]:
-				inDank = dictionary.get(j)
+				inDank = dictionary_i_1.get(j)
 				dank = dank + (damping * inDank[1] / inDank[0])
-			dictionary[i] = current[0], dank, current[2]
+			dictionary_i[i] = current[0], dank, current[2]
+		dictionary_i_1 = dictionary_i
+		dictionary_i = {}
 	print("", file=sys.stderr)
 
 if __name__ == '__main__':
@@ -69,6 +74,6 @@ if __name__ == '__main__':
 	start = time.time()
 	init(leftSorted, startValue)
 	danker(iterations, damping, startValue)
-	for i in dictionary.keys():
-		print(str(i) + "\t" + str(dictionary[i][1]))
+	for i in dictionary_i_1.keys():
+		print(str(i) + "\t" + str(dictionary_i_1[i][1]))
 	print("Computation of PageRank on '" + leftSorted + "' took " + str(int(100 * (time.time() - start)) / 100) + " seconds.", file=sys.stderr)
