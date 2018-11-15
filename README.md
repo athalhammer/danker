@@ -68,7 +68,7 @@ Computation of PageRank on 'test/test.links' took 0.0 seconds.
 Computation of PageRank on 'test/test.links' took 0.0 seconds.
 ```
 
-If you normalize the output values (divide each by 11) this compares well to the https://commons.wikimedia.org/wiki/File:PageRank-Beispiel.png (same graph structure where 1 corresponds to A, 2 to B, etc.).
+If you normalize the output values (divide each by 11) this compares well to https://commons.wikimedia.org/wiki/File:PageRank-Beispiel.png (same graph structure where 1 corresponds to A, 2 to B, etc.).
 
 ## Previous work
 Before __danker__, I performed a number of experiments with [DBpedia "page links" datasets](http://wiki.dbpedia.org/services-resources/documentation/datasets#pagelinks) most of which are documented at http://people.aifb.kit.edu/ath/.
