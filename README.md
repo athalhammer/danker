@@ -31,6 +31,12 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
    for i in `./lib/getLanguages.sh`; do ./danker.sh "$i"; done
    for i in `./lib/getLanguages.sh`; do ./danker.sh "$i" "BIGMEM"; done
    ```
+
+## Download
+* 2018-11-25
+  * http://danker.s3.amazonaws.com/2018-11-25.all.links.stats.txt
+  * http://danker.s3.amazonaws.com/2018-11-25.all.links.rank.bz2
+
 ## Test
 In the directory `test` is a small graph with which you can try out the PageRank core of __danker__.
 
@@ -48,7 +54,7 @@ In the directory `test` is a small graph with which you can try out the PageRank
 9	0.15000000000000002
 10	0.15000000000000002
 11	0.15000000000000002
-Computation of PageRank on 'test/test.links' took 0.0 seconds.
+Computation of PageRank on './test/test.links' took 0.0 seconds.
 ```
 
 ```bash
@@ -65,7 +71,7 @@ Computation of PageRank on 'test/test.links' took 0.0 seconds.
 9	0.15000000000000002
 10	0.15000000000000002
 11	0.15000000000000002
-Computation of PageRank on 'test/test.links' took 0.0 seconds.
+Computation of PageRank on './test/test.links' took 0.0 seconds.
 ```
 
 If you normalize the output values (divide each by 11) this compares well to https://commons.wikimedia.org/wiki/File:PageRank-Beispiel.png (same graph where 1 corresponds to A, 2 to B, etc.).
