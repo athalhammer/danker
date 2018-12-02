@@ -32,7 +32,7 @@ wget -q "$download""$dump_date""/""$pagelinks"".gz" "$download""$dump_date""/""$
 gunzip -f "$1"*.gz
 
 ###################### PRE-PROCESSING
-export LC_ALL=C.UTF-8
+export LC_ALL=en_US.UTF-8
 sed -n "s/),(/)\n(/gp" $pagelinks | sed -n "s/\(.*\)(\(.*\),\(0\|14\),'\(.*\)',\(0\|14\))\(.*\)/\2\t\3\4/p" > "$1""pagelinks.lines"
 sed -n "s/),(/)\n(/gp" $pageprops | sed -n "s/\(.*\)(\(.*\),'wikibase_item','\(.*\)',\(.*\))\(.*\)/\3\t\2/p" > "$1""pageprops.lines"
 sed -n "s/),(/)\n(/gp" $redirects | sed -n "s/\(.*\)(\(.*\),\(0\|14\),'\(.*\)','\(.*\)','\(.*\)')\(.*\)/\2\t\3\4/p" > "$1""redirects.lines"
