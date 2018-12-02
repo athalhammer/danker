@@ -31,11 +31,18 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
    for i in `./lib/getLanguages.sh`; do ./danker.sh "$i"; done
    for i in `./lib/getLanguages.sh`; do ./danker.sh "$i" "BIGMEM"; done
    ```
+
+## Download
+Output of ``./danker.sh ALL`` on bi-weekly Wikipedia dumps.
+* 2018-11-25
+  * http://danker.s3.amazonaws.com/2018-11-25.all.links.stats.txt
+  * http://danker.s3.amazonaws.com/2018-11-25.all.links.rank.bz2
+
 ## Test
 In the directory `test` is a small graph with which you can try out the PageRank core of __danker__.
 
 ```bash
-./lib/danker.py test/test.links test/test.links.right 0.85 40 1
+./lib/danker.py ./test/test.links ./test/test.links.right 0.85 40 1
 1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19.20.21.22.23.24.25.26.27.28.29.30.31.32.33.34.35.36.37.38.39.40.
 1	0.30410528185693986
 2	3.5642607869667637
@@ -48,11 +55,11 @@ In the directory `test` is a small graph with which you can try out the PageRank
 9	0.15000000000000002
 10	0.15000000000000002
 11	0.15000000000000002
-Computation of PageRank on 'test/test.links' took 0.0 seconds.
+Computation of PageRank on './test/test.links' took 0.0 seconds.
 ```
 
 ```bash
-./lib/dankerBigMem.py test/test.links 0.85 40 1
+./lib/dankerBigMem.py ./test/test.links 0.85 40 1
 1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19.20.21.22.23.24.25.26.27.28.29.30.31.32.33.34.35.36.37.38.39.40.
 1	0.30410528185693986
 2	3.564260786966763
@@ -65,10 +72,10 @@ Computation of PageRank on 'test/test.links' took 0.0 seconds.
 9	0.15000000000000002
 10	0.15000000000000002
 11	0.15000000000000002
-Computation of PageRank on 'test/test.links' took 0.0 seconds.
+Computation of PageRank on './test/test.links' took 0.0 seconds.
 ```
 
-If you normalize the output values (divide each by 11) this compares well to https://commons.wikimedia.org/wiki/File:PageRank-Beispiel.png (same graph structure where 1 corresponds to A, 2 to B, etc.).
+If you normalize the output values (divide each by 11) this compares well to https://commons.wikimedia.org/wiki/File:PageRank-Beispiel.png (same graph where 1 corresponds to A, 2 to B, etc.).
 
 ## Previous work
 Before __danker__, I performed a number of experiments with [DBpedia "page links" datasets](http://wiki.dbpedia.org/services-resources/documentation/datasets#pagelinks) most of which are documented at http://people.aifb.kit.edu/ath/.
@@ -110,7 +117,7 @@ This software is licensed under GPLv3. (see http://www.gnu.org/licenses/).
 
 4. __Why does it take so long (up to two weeks) to compute PageRank with the ALL option?__
 
-   _This goes in line with the second point: we want to provide software that everyone with a standard laptop and some time can use. Of course it is possible to speed the computation up at the cost of required memory/computation power but we strongly believe that "this is for everyone"._
+   _This goes in line with the previous point: we want to provide software that everyone with a standard laptop and some time can use. Of course it is possible to speed the computation up at the cost of required memory/computation power but we strongly believe that "this is for everyone"._
    
 5. __Can I use danker to compute PageRank on other graphs than Wikipedia?__
 
