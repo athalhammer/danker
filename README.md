@@ -38,6 +38,9 @@ Output of ``./danker.sh ALL`` on bi-weekly Wikipedia dumps.
   * http://danker.s3.amazonaws.com/2018-11-25.all.links.stats.txt
   * http://danker.s3.amazonaws.com/2018-11-25.all.links.rank.bz2
 
+## Previous work
+Before __danker__, I performed a number of experiments with [DBpedia "page links" datasets](http://wiki.dbpedia.org/services-resources/documentation/datasets#pagelinks) most of which are documented at http://people.aifb.kit.edu/ath/.
+
 ## Test
 In the directory `test` is a small graph with which you can try out the PageRank core of __danker__.
 
@@ -76,9 +79,6 @@ Computation of PageRank on './test/test.links' took 0.0 seconds.
 ```
 
 If you normalize the output values (divide each by 11) this compares well to https://commons.wikimedia.org/wiki/File:PageRank-Beispiel.png (same graph where 1 corresponds to A, 2 to B, etc.).
-
-## Previous work
-Before __danker__, I performed a number of experiments with [DBpedia "page links" datasets](http://wiki.dbpedia.org/services-resources/documentation/datasets#pagelinks) most of which are documented at http://people.aifb.kit.edu/ath/.
 
 ## License
 This software is licensed under GPLv3. (see http://www.gnu.org/licenses/).
