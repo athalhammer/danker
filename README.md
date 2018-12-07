@@ -1,7 +1,7 @@
 danker
 ======
 
-__danker__ is a compilation of Bash and Python3 scripts that enables the computation of PageRank on Wikipedia on normal off-the-shelf hardware (e.g., a quad-core CPU, 8 GB of main memory, and 250 GB hard disk storage). The BIGMEM option enables to speed up computation given that enough main memory is available (this depends on the Wikipedia language edition and your hardware configuration). The total size of danker is __< 200 lines of code__.
+__danker__ is a compilation of Bash and Python3 scripts that enables the computation of (non-normalized) PageRank on Wikipedia on normal off-the-shelf hardware (e.g., a quad-core CPU, 8 GB of main memory, and 250 GB hard disk storage). The BIGMEM option enables to speed up computation given that enough main memory is available (this depends on the Wikipedia language edition and your hardware configuration). The total size of danker is __< 200 lines of code__.
 
 * __INPUT__ Wikipedia language edition, e.g. "en" OR "ALL" (for computing PR on the union of all language editions - "bag of links" semantics); optional parameter "BIGMEM".
 * __PROCESSING__ danker downloads the needed Wikipedia dump files (https://dumps.wikimedia.org/LANGwiki/latest/), resolves links, redirects, Wikidata Q-ids, produces a link-file and computes PageRank.
@@ -122,3 +122,7 @@ This software is licensed under GPLv3. (see http://www.gnu.org/licenses/).
 5. __Can I use danker to compute PageRank on other graphs than Wikipedia?__
 
    _Sure, you can use the files ./lib/danker.py and ./lib/dankerBigMem.py for computing PageRank on your graph. Note that the former needs the same file in two different formats (left and right sorted, tab-separated respectively) and the latter only once (left sorted, tab-separated). You can use the sort Unix command for sorting._
+   
+6. __Why do the scores not form a nice probability distribution?__
+
+   _This has multiple reasons. First, we do not compute the normalized version of PageRank. Instead of (1 - damping)/2 we only use (1 - damping). This doesn't change the ranking. Second, according to the theory, given the non-normalized version, all scores should add up to N (the total number of nodes). This would only be true if there would be no dangling nodes (pages with no outlinks) - these serve as energy sinks. More information on the topic can be found in Monica Bianchini, Marco Gori, and Franco Scarselli. 2005. Inside PageRank. ACM Trans. Internet Technol. 5, 1 (February 2005), 92-128. DOI: https://doi.org/10.1145/1052934.1052938_
