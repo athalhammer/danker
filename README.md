@@ -78,7 +78,7 @@ Computation of PageRank on './test/test.links' took 0.0 seconds.
 Computation of PageRank on './test/test.links' took 0.0 seconds.
 ```
 
-If you normalize the output values (divide each by 11) this compares well to https://commons.wikimedia.org/wiki/File:PageRank-Beispiel.png (same graph where 1 corresponds to A, 2 to B, etc.).
+If you normalize the output values (divide each by 11) the values compare well to https://commons.wikimedia.org/wiki/File:PageRank-Beispiel.png or, if you compute percentages (division by the sum) they are equal to https://en.wikipedia.org/wiki/PageRank#/media/File:PageRanks-Example.jpg (same graph where 1 corresponds to A, 2 to B, etc.).
 
 ## License
 This software is licensed under GPLv3. (see http://www.gnu.org/licenses/).
