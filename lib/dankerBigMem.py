@@ -1,4 +1,5 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
+
 #    danker - PageRank on Wikipedia/Wikidata
 #    Copyright (C) 2017  Andreas Thalhammer
 #

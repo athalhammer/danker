@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 #    danker - PageRank on Wikipedia/Wikidata
 #    Copyright (C) 2017  Andreas Thalhammer
 #
