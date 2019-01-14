@@ -36,18 +36,18 @@ def init(leftSorted, startValue):
 			dictionary_i_1[receiver] = data[0], data[1], data[2]
 
 			# now take care of counts
-			if (current == previous):
+			if current == previous:
 				# increase counter
 				currentCount = currentCount + 1
 			else:
-				if (previous != 0):
+				if previous != 0:
 					# store previousQID and reset counter
 					prev = dictionary_i_1.get(previous, (0, startValue, []))
 					dictionary_i_1[previous] = currentCount, prev[1], prev[2]
 					currentCount = 1
 			previous = current
 		# write last bunch
-		if (previous != 0):	
+		if previous != 0:
 			prev = dictionary_i_1.get(previous, (0, startValue, []))
 			dictionary_i_1[previous] = currentCount, prev[1], prev[2]
 
