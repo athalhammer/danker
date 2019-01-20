@@ -58,33 +58,33 @@ In the directory `test` is a small graph with which you can try out the PageRank
 1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19.20.21.22.23.24.25.26.27.28.29.30.31.32.33.34.35.36.37.38.39.40.
 1	0.30410528185693986
 2	3.5642607869667637
-3	3.182814059077767
+3	3.1828140590777672
 4	0.3626006631927996
-5	0.7503552818569398
+5	0.75035528185693978
 6	0.3626006631927996
 7	0.15000000000000002
 8	0.15000000000000002
 9	0.15000000000000002
 10	0.15000000000000002
 11	0.15000000000000002
-Computation of PageRank on './test/test.links' took 0.0 seconds.
+Computation of PageRank on './test/test.links' took 0.01 seconds.
 ```
 
 ```bash
 ./lib/dankerBigMem.py ./test/test.links 0.85 40 1
 1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19.20.21.22.23.24.25.26.27.28.29.30.31.32.33.34.35.36.37.38.39.40.
 1	0.30410528185693986
-2	3.564260786966763
-3	3.182814059077767
+2	3.5642607869667629
+3	3.1828140590777672
 4	0.3626006631927996
-5	0.7503552818569397
+5	0.75035528185693967
 6	0.3626006631927996
 7	0.15000000000000002
 8	0.15000000000000002
 9	0.15000000000000002
 10	0.15000000000000002
 11	0.15000000000000002
-Computation of PageRank on './test/test.links' took 0.0 seconds.
+Computation of PageRank on './test/test.links' took 0.00 seconds.
 ```
 
 If you normalize the output values (divide each by 11) the values compare well to https://commons.wikimedia.org/wiki/File:PageRank-Beispiel.png or, if you compute percentages (division by the sum), they are similar to https://commons.wikimedia.org/wiki/File:PageRanks-Example.svg (same graph where 1 corresponds to A, 2 to B, etc.).
