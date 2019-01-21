@@ -71,7 +71,7 @@ Computation of PageRank on './test/test.links' took 0.01 seconds.
 ```
 
 ```bash
-./lib/dankerBigMem.py ./test/test.links 0.85 40 1
+./lib/danker_bigmem.py ./test/test.links 0.85 40 1
 1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19.20.21.22.23.24.25.26.27.28.29.30.31.32.33.34.35.36.37.38.39.40.
 1	0.30410528185693986
 2	3.5642607869667629
@@ -130,7 +130,7 @@ This software is licensed under GPLv3. (see http://www.gnu.org/licenses/).
    
 5. __Can I use danker to compute PageRank on other graphs than Wikipedia?__
 
-   _Sure, you can use the files ./lib/danker.py and ./lib/dankerBigMem.py for computing PageRank on your graph. Note that the former needs the same file in two different formats (left and right sorted, tab-separated respectively) and the latter only once (left sorted, tab-separated). You can use the sort Unix command for sorting._
+   _Sure, you can use the files ./lib/danker.py and ./lib/danker_bigmem.py for computing PageRank on your graph. Note that the former needs the same file in two different formats (left and right sorted, tab-separated respectively) and the latter only once (left sorted, tab-separated). You can use the sort Unix command for sorting._
    
 6. __Why do the scores not form a nice probability distribution?__
 
