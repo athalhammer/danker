@@ -16,15 +16,21 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"""
+danker
+"""
 import sys
 import time
 
 def init(left_sorted, start_value):
+    """
+    Read left sorted link file and initialize.
+    """
     dictionary_i_1 = {}
     previous = 0
     current_count = 1
-    with open(left_sorted, encoding="utf-8") as f:
-        for line in f:
+    with open(left_sorted, encoding="utf-8") as ls_file:
+        for line in ls_file:
             current = int(line.split("\t")[0])
             if current == previous:
                 # increase counter
@@ -41,12 +47,15 @@ def init(left_sorted, start_value):
     return dictionary_i_1
 
 def danker(dictionary_i_1, right_sorted, iterations, damping, start_value):
+    """
+    Compute PageRank.
+    """
     dictionary_i = {}
     for i in range(0, iterations):
         print(str(i + 1) + ".", end="", flush=True, file=sys.stderr)
         previous = 0
-        with open(right_sorted, encoding="utf-8") as f:
-            for line in f:
+        with open(right_sorted, encoding="utf-8") as rs_file:
+            for line in rs_file:
                 current = int(line.split("\t")[1])
                 if previous != current:
                     dank = 1 - damping
@@ -56,7 +65,7 @@ def danker(dictionary_i_1, right_sorted, iterations, damping, start_value):
                 dank = dank + (damping * in_dank[1] / in_dank[0])
                 dictionary_i[current] = current_dank[0], dank
                 previous = current
-                
+
         # after each iteration, fix nodes that don't have inlinks
         for i in dictionary_i_1.keys() - dictionary_i.keys():
             dictionary_i[i] = dictionary_i_1[i][0], 1 - damping
@@ -66,12 +75,15 @@ def danker(dictionary_i_1, right_sorted, iterations, damping, start_value):
     print("", file=sys.stderr)
     return dictionary_i_1
 
-if __name__ == '__main__':
-    left_sorted = sys.argv[1]
-    right_sorted = sys.argv[2]
-    damping = float(sys.argv[3])
-    iterations = int(sys.argv[4])
-    start_value = float(sys.argv[5])
+def main(*args):
+    """
+    Execute main program.
+    """
+    left_sorted = args[0]
+    right_sorted = args[1]
+    damping = float(args[2])
+    iterations = int(args[3])
+    start_value = float(args[4])
     start = time.time()
     dictionary_i_1 = init(left_sorted, start_value)
     dictionary_i = danker(dictionary_i_1, right_sorted, iterations, damping,
@@ -80,3 +92,7 @@ if __name__ == '__main__':
         print("{0:d}\t{1:.17g}".format(i, dictionary_i[i][1]))
     print("Computation of PageRank on '{0}' took {1:.2f} seconds.".format(
         left_sorted, time.time() - start), file=sys.stderr)
+
+
+if __name__ == '__main__':
+    main(*sys.argv[1:])
