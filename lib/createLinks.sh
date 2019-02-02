@@ -23,7 +23,7 @@ rss="https://dumps.wikimedia.org/""$1""wiki/latest/"
 
 ###################### DOWNLOAD AND UNZIP
 wget -q "$rss""$1""wiki-latest-pagelinks.sql.gz-rss.xml" "$rss""$1""wiki-latest-page_props.sql.gz-rss.xml" "$rss""$1""wiki-latest-page.sql.gz-rss.xml" "$rss""$1""wiki-latest-redirect.sql.gz-rss.xml"
-dump_date=`cat *.xml | sed -n "s#^                <link>$download\(.*\)</link>#\1#p" | sort -S 50% -u | head -n 1`
+dump_date=$(cat *.xml | sed -n "s#^                <link>$download\(.*\)</link>#\1#p" | sort -S 50% -u | head -n 1)
 rm *.xml
 pagelinks="$1""wiki-""$dump_date""-pagelinks.sql"
 pageprops="$1""wiki-""$dump_date""-page_props.sql"
