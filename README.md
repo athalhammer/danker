@@ -67,40 +67,37 @@ Before __danker__, I performed a number of experiments with [DBpedia "page links
 In the directory `test` is a small graph with which you can try out the PageRank core of __danker__.
 
 ```bash
-./lib/danker.py ./test/test.links ./test/test.links.right 0.85 40 1
+$ ./lib/danker.py ./test/test.links --right_sorted ./test/test.links.right 0.85 40 1
 1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19.20.21.22.23.24.25.26.27.28.29.30.31.32.33.34.35.36.37.38.39.40.
-1	0.30410528185693986
-2	3.5642607869667637
-3	3.1828140590777672
-4	0.3626006631927996
-5	0.75035528185693978
-6	0.3626006631927996
-7	0.15000000000000002
-8	0.15000000000000002
-9	0.15000000000000002
-10	0.15000000000000002
-11	0.15000000000000002
+A	0.30410528185693986
+B	3.5642607869667629
+C	3.1828140590777672
+D	0.3626006631927996
+E	0.75035528185693967
+F	0.3626006631927996
+G	0.15000000000000002
+H	0.15000000000000002
+I	0.15000000000000002
+L	0.15000000000000002
+K	0.15000000000000002
 Computation of PageRank on './test/test.links' took 0.01 seconds.
-```
-
-```bash
-./lib/danker_bigmem.py ./test/test.links 0.85 40 1
+$ ./lib/danker.py ./test/test.links 0.85 40 1
 1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19.20.21.22.23.24.25.26.27.28.29.30.31.32.33.34.35.36.37.38.39.40.
-1	0.30410528185693986
-2	3.5642607869667629
-3	3.1828140590777672
-4	0.3626006631927996
-5	0.75035528185693967
-6	0.3626006631927996
-7	0.15000000000000002
-8	0.15000000000000002
-9	0.15000000000000002
-10	0.15000000000000002
-11	0.15000000000000002
+C	3.1828140590777672
+B	3.5642607869667629
+A	0.30410528185693986
+D	0.3626006631927996
+F	0.3626006631927996
+E	0.75035528185693967
+G	0.15000000000000002
+H	0.15000000000000002
+I	0.15000000000000002
+K	0.15000000000000002
+L	0.15000000000000002
 Computation of PageRank on './test/test.links' took 0.00 seconds.
 ```
 
-If you normalize the output values (divide each by 11) the values compare well to https://commons.wikimedia.org/wiki/File:PageRank-Beispiel.png or, if you compute percentages (division by the sum), they are similar to https://commons.wikimedia.org/wiki/File:PageRanks-Example.svg (same graph where 1 corresponds to A, 2 to B, etc.).
+If you normalize the output values (divide each by 11) the values compare well to https://commons.wikimedia.org/wiki/File:PageRank-Beispiel.png or, if you compute percentages (division by the sum), they are similar to https://commons.wikimedia.org/wiki/File:PageRanks-Example.svg (same graph).
 
 ## License
 This software is licensed under GPLv3. (see http://www.gnu.org/licenses/).
@@ -143,7 +140,7 @@ This software is licensed under GPLv3. (see http://www.gnu.org/licenses/).
    
 5. __Can I use danker to compute PageRank on other graphs than Wikipedia?__
 
-   _Sure, you can use the files ./lib/danker.py and ./lib/danker_bigmem.py for computing PageRank on your graph. Note that the former needs the same file in two different formats (left and right sorted, tab-separated respectively) and the latter only once (left sorted, tab-separated). You can use the sort Unix command for sorting._
+   _Sure, you can use the file ./lib/danker.py for computing PageRank on your graph. If you pass a "right sorted" file as optional parameter (`--right_sorted`, automatically the slower method with low memory footprint will be used. The memory-intensive method will be used otherwise. You can sort tab-separated files with the Unix command `sort --key=2 -o output-file input-file`. 
    
 6. __Why do the scores not form a nice probability distribution?__
 

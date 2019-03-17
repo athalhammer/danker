@@ -21,34 +21,55 @@ danker
 """
 import sys
 import time
+import argparse
 
-def init(left_sorted, start_value):
+def _conv_int(string):
     """
-    Read left sorted link file and initialize.
+    Helper function to optimize memory usage.
+    """
+    if string.isdigit():
+        return int(string)
+    return string
+
+def init(left_sorted, start_value, smallmem):
+    """
+    Read left_sorted link file and initialization steps.
     """
     dictionary_i_1 = {}
-    previous = 0
+    previous = -1
     current_count = 1
     with open(left_sorted, encoding="utf-8") as ls_file:
         for line in ls_file:
-            current = int(line.split("\t")[0])
+            current = _conv_int(line.split("\t")[0].strip())
+            receiver = _conv_int(line.split("\t")[1].strip())
+
+            # take care of inlinks
+            if not smallmem:
+                data = dictionary_i_1.get(receiver, (0, start_value, []))
+                data[2].append(current)
+                dictionary_i_1[receiver] = data[0], data[1], data[2]
+
+            # take care of counts
             if current == previous:
                 # increase counter
                 current_count = current_count + 1
             else:
-                if previous != 0:
+                if previous != -1:
                     # store previousQID and reset counter
-                    dictionary_i_1[previous] = current_count, start_value
+                    prev = dictionary_i_1.get(previous, (0, start_value, []))
+                    dictionary_i_1[previous] = current_count, prev[1], prev[2]
                     current_count = 1
             previous = current
-        # write last bunch
-        if previous != 0:
-            dictionary_i_1[previous] = current_count, start_value
+
+        # take care of last item
+        if previous != -1:
+            prev = dictionary_i_1.get(previous, (0, start_value, []))
+            dictionary_i_1[previous] = current_count, prev[1], prev[2]
     return dictionary_i_1
 
-def danker(dictionary_i_1, right_sorted, iterations, damping, start_value):
+def danker_smallmem(dictionary_i_1, right_sorted, iterations, damping, start_value):
     """
-    Compute PageRank.
+    Compute PageRank with right sorted file.
     """
     dictionary_i = {}
     for i in range(0, iterations):
@@ -56,11 +77,11 @@ def danker(dictionary_i_1, right_sorted, iterations, damping, start_value):
         previous = 0
         with open(right_sorted, encoding="utf-8") as rs_file:
             for line in rs_file:
-                current = int(line.split("\t")[1])
+                current = _conv_int(line.split("\t")[1].strip())
                 if previous != current:
                     dank = 1 - damping
                 current_dank = dictionary_i_1.get(current, (0, start_value))
-                in_link = int(line.split("\t")[0])
+                in_link = _conv_int(line.split("\t")[0].strip())
                 in_dank = dictionary_i_1.get(in_link)
                 dank = dank + (damping * in_dank[1] / in_dank[0])
                 dictionary_i[current] = current_dank[0], dank
@@ -75,24 +96,50 @@ def danker(dictionary_i_1, right_sorted, iterations, damping, start_value):
     print("", file=sys.stderr)
     return dictionary_i_1
 
-def main(*args):
+def danker_bigmem(dictionary_i_1, iterations, damping):
+    """
+    Compute PageRank with big memory option.
+    """
+    dictionary_i = {}
+    for i in range(0, iterations):
+        print(str(i + 1) + ".", end="", flush=True, file=sys.stderr)
+        for i in dictionary_i_1:
+            current = dictionary_i_1.get(i)
+            dank = 1 - damping
+            for j in current[2]:
+                in_dank = dictionary_i_1.get(j)
+                dank = dank + (damping * in_dank[1] / in_dank[0])
+            dictionary_i[i] = current[0], dank, current[2]
+        dictionary_i_1 = dictionary_i
+        dictionary_i = {}
+    print("", file=sys.stderr)
+    return dictionary_i_1
+
+def main():
     """
     Execute main program.
     """
-    left_sorted = args[0]
-    right_sorted = args[1]
-    damping = float(args[2])
-    iterations = int(args[3])
-    start_value = float(args[4])
+    parser = argparse.ArgumentParser(description='danker PageRank.')
+    parser.add_argument('left_sorted')
+    parser.add_argument('--right_sorted')
+    parser.add_argument('damping', type=float)
+    parser.add_argument('iterations', type=int)
+    parser.add_argument('start_value', type=float)
+    a = parser.parse_args()
     start = time.time()
-    dictionary_i_1 = init(left_sorted, start_value)
-    dictionary_i = danker(dictionary_i_1, right_sorted, iterations, damping,
-                          start_value)
+    
+    dictionary_i_1 = init(a.left_sorted, a.start_value, a.right_sorted)
+    
+    if a.right_sorted:
+        dictionary_i = danker_smallmem(dictionary_i_1, a.right_sorted, a.iterations, a.damping, a.start_value)
+    else:
+        dictionary_i = danker_bigmem(dictionary_i_1, a.iterations, a.damping)
+    
     for i in dictionary_i:
-        print("{0:d}\t{1:.17g}".format(i, dictionary_i[i][1]))
+        print("{0}\t{1:.17g}".format(i, dictionary_i[i][1]))
     print("Computation of PageRank on '{0}' took {1:.2f} seconds.".format(
-        left_sorted, time.time() - start), file=sys.stderr)
+        a.left_sorted, time.time() - start), file=sys.stderr)
 
 
 if __name__ == '__main__':
-    main(*sys.argv[1:])
+    main()
