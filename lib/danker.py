@@ -81,8 +81,7 @@ def danker_smallmem(dictionary_i_1, right_sorted, iterations, damping, start_val
                 if previous != current:
                     dank = 1 - damping
                 current_dank = dictionary_i_1.get(current, (0, start_value))
-                in_link = _conv_int(line.split("\t")[0].strip())
-                in_dank = dictionary_i_1.get(in_link)
+                in_dank = dictionary_i_1.get(_conv_int(line.split("\t")[0].strip()))
                 dank = dank + (damping * in_dank[1] / in_dank[0])
                 dictionary_i[current] = current_dank[0], dank
                 previous = current
