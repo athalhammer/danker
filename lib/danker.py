@@ -88,8 +88,8 @@ def danker_smallmem(dictionary_i_1, right_sorted, iterations, damping, start_val
                 previous = current
 
         # after each iteration, fix nodes that don't have inlinks
-        for i in dictionary_i_1.keys() - dictionary_i.keys():
-            dictionary_i[i] = dictionary_i_1[i][0], 1 - damping
+        for j in dictionary_i_1.keys() - dictionary_i.keys():
+            dictionary_i[j] = dictionary_i_1[j][0], 1 - damping
         dictionary_i_1 = dictionary_i
         dictionary_i = {}
 
@@ -103,13 +103,13 @@ def danker_bigmem(dictionary_i_1, iterations, damping):
     dictionary_i = {}
     for i in range(0, iterations):
         print(str(i + 1) + ".", end="", flush=True, file=sys.stderr)
-        for i in dictionary_i_1:
-            current = dictionary_i_1.get(i)
+        for j in dictionary_i_1:
+            current = dictionary_i_1.get(j)
             dank = 1 - damping
-            for j in current[2]:
-                in_dank = dictionary_i_1.get(j)
+            for k in current[2]:
+                in_dank = dictionary_i_1.get(k)
                 dank = dank + (damping * in_dank[1] / in_dank[0])
-            dictionary_i[i] = current[0], dank, current[2]
+            dictionary_i[j] = current[0], dank, current[2]
         dictionary_i_1 = dictionary_i
         dictionary_i = {}
     print("", file=sys.stderr)
@@ -125,20 +125,19 @@ def main():
     parser.add_argument('damping', type=float)
     parser.add_argument('iterations', type=int)
     parser.add_argument('start_value', type=float)
-    a = parser.parse_args()
+    args = parser.parse_args()
     start = time.time()
-    
-    dictionary_i_1 = init(a.left_sorted, a.start_value, a.right_sorted)
-    
-    if a.right_sorted:
-        dictionary_i = danker_smallmem(dictionary_i_1, a.right_sorted, a.iterations, a.damping, a.start_value)
+    dictionary_i_1 = init(args.left_sorted, args.start_value, args.right_sorted)
+    if args.right_sorted:
+        dictionary_i = danker_smallmem(dictionary_i_1, args.right_sorted,
+                                       args.iterations, args.damping, args.start_value)
     else:
-        dictionary_i = danker_bigmem(dictionary_i_1, a.iterations, a.damping)
-    
+        dictionary_i = danker_bigmem(dictionary_i_1, args.iterations, args.damping)
+
     for i in dictionary_i:
         print("{0}\t{1:.17g}".format(i, dictionary_i[i][1]))
     print("Computation of PageRank on '{0}' took {1:.2f} seconds.".format(
-        a.left_sorted, time.time() - start), file=sys.stderr)
+        args.left_sorted, time.time() - start), file=sys.stderr)
 
 
 if __name__ == '__main__':
