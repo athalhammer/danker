@@ -22,6 +22,7 @@ danker
 import sys
 import time
 import argparse
+#import memory_profiler
 
 def _conv_int(string):
     """
@@ -30,6 +31,14 @@ def _conv_int(string):
     if string.isdigit():
         return int(string)
     return string
+
+def _get_std_tuple(smallmem, start_value):
+    """
+    Helper function to return standard tuple (with or without linked list)
+    """
+    if smallmem:
+        return (0, start_value)
+    return (0, start_value, [])
 
 def init(left_sorted, start_value, smallmem):
     """
@@ -45,9 +54,10 @@ def init(left_sorted, start_value, smallmem):
 
             # take care of inlinks
             if not smallmem:
-                data = dictionary_i_1.get(receiver, (0, start_value, []))
+                data = dictionary_i_1.get(receiver, _get_std_tuple(smallmem, start_value))
                 data[2].append(current)
-                dictionary_i_1[receiver] = data[0], data[1], data[2]
+                # make sure to store it in the dict (could be there already)
+                dictionary_i_1[receiver] = data
 
             # take care of counts
             if current == previous:
@@ -56,15 +66,15 @@ def init(left_sorted, start_value, smallmem):
             else:
                 if previous != -1:
                     # store previousQID and reset counter
-                    prev = dictionary_i_1.get(previous, (0, start_value, []))
-                    dictionary_i_1[previous] = current_count, prev[1], prev[2]
+                    prev = dictionary_i_1.get(previous, _get_std_tuple(smallmem, start_value))
+                    dictionary_i_1[previous] = (current_count,) + prev[1:]
                     current_count = 1
             previous = current
 
         # take care of last item
         if previous != -1:
-            prev = dictionary_i_1.get(previous, (0, start_value, []))
-            dictionary_i_1[previous] = current_count, prev[1], prev[2]
+            prev = dictionary_i_1.get(previous, _get_std_tuple(smallmem, start_value))
+            dictionary_i_1[previous] = (current_count,) + prev[1:]
     return dictionary_i_1
 
 def danker_smallmem(dictionary_i_1, right_sorted, iterations, damping, start_value):
@@ -114,6 +124,7 @@ def danker_bigmem(dictionary_i_1, iterations, damping):
     print("", file=sys.stderr)
     return dictionary_i_1
 
+#@profile
 def main():
     """
     Execute main program.
