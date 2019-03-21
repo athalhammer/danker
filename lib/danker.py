@@ -143,8 +143,8 @@ def main():
                                        args.iterations, args.damping, args.start_value)
     else:
         dictionary_i = danker_bigmem(dictionary_i_1, args.iterations, args.damping)
-    print("Computation of PageRank on '{0}' took {1:.2f} seconds.".format(
-        args.left_sorted, time.time() - start), file=sys.stderr)
+    print("Computation of PageRank on '{0}' with {1} took {2:.2f} seconds.".format(
+        args.left_sorted, 'danker', time.time() - start), file=sys.stderr)
     for i in dictionary_i:
         print("{0}\t{1:.17g}".format(i, dictionary_i[i][1]))
 
