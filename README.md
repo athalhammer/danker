@@ -64,7 +64,7 @@ Output of ``./danker.sh ALL`` on bi-weekly Wikipedia dumps.
 Before __danker__, I performed a number of experiments with [DBpedia "page links" datasets](http://wiki.dbpedia.org/services-resources/documentation/datasets#pagelinks) most of which are documented at http://people.aifb.kit.edu/ath/.
 
 ## Test
-The unit tests assure correctness and compare the results of danker to the implementation of [NetworkX](https://networkx.github.io/). The tests need the `numpy` and `networkx` libraries installed.
+The unit tests assure correctness and compare the results of danker to the PageRank implementation of [NetworkX](https://networkx.github.io/). The tests need the `numpy` and `networkx` libraries installed.
 
 Execute the unit tests as follows:
 
@@ -76,7 +76,7 @@ python3 -m unittest test/danker_test.py
 In the directory `test` is a small graph with which you can try out the PageRank core of __danker__.
 
 ```bash
-$ ./lib/danker.py ./test/test.links --right_sorted ./test/test.links.right 0.85 40 1
+$ ./lib/danker.py ./test/graphs/test.links --right_sorted ./test/test.links.right 0.85 40 1
 1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19.20.21.22.23.24.25.26.27.28.29.30.31.32.33.34.35.36.37.38.39.40.
 A	0.30410528185693986
 B	3.5642607869667629
@@ -90,7 +90,7 @@ I	0.15000000000000002
 L	0.15000000000000002
 K	0.15000000000000002
 Computation of PageRank on './test/test.links' took 0.01 seconds.
-$ ./lib/danker.py ./test/test.links 0.85 40 1
+$ ./lib/danker.py ./test/graphs/test.links 0.85 40 1
 1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19.20.21.22.23.24.25.26.27.28.29.30.31.32.33.34.35.36.37.38.39.40.
 C	3.1828140590777672
 B	3.5642607869667629

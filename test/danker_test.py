@@ -21,8 +21,8 @@ class DankerTest(unittest.TestCase):
         self.assertAlmostEqual(np.corrcoef(res[0], res[1])[0][1], 1, places=6)
 
     def test_general(self):
-        link_file = "test/test.links"
-        link_file_right = "test/test.links.right"
+        link_file = "./test/graphs/test.links"
+        link_file_right = "./test/graphs/test.links.right"
         nx_graph = nx.read_edgelist(link_file, create_using=nx.DiGraph, nodetype=str,
                                     delimiter='\t')
         nx_pr = nx.pagerank(nx_graph, tol=1e-8)
@@ -33,8 +33,8 @@ class DankerTest(unittest.TestCase):
         self._compare(nx_pr, danker_pr_small)
 
     def test_bar(self):
-        link_file = "test/bar-20190301.links"
-        link_file_right = "test/bar-20190301.links.right"
+        link_file = "./test/graphs/bar-20190301.links"
+        link_file_right = "./test/graphs/bar-20190301.links.right"
         nx_graph = nx.read_edgelist(link_file, create_using=nx.DiGraph, nodetype=int,
                                     delimiter='\t')
         nx_pr = nx.pagerank(nx_graph, tol=1e-8)
