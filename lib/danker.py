@@ -24,6 +24,8 @@ import time
 import argparse
 #import memory_profiler
 
+INPUT_ASSERTION_ERROR = 'Input file "{0}" is not correctly sorted. {1} before {2}'
+
 def _conv_int(string):
     """
     Helper function to optimize memory usage.
@@ -65,6 +67,10 @@ def init(left_sorted, start_value, smallmem):
                 current_count = current_count + 1
             else:
                 if previous != -1:
+                    # make sure input is correctly sorted
+                    assert(current > previous), INPUT_ASSERTION_ERROR.format(left_sorted,
+                        current, previous)
+
                     # store previousQID and reset counter
                     prev = dictionary_i_1.get(previous, _get_std_tuple(smallmem, start_value))
                     dictionary_i_1[previous] = (current_count,) + prev[1:]
@@ -89,6 +95,8 @@ def danker_smallmem(dictionary_i_1, right_sorted, iterations, damping, start_val
             for line in rs_file:
                 current = _conv_int(line.split("\t")[1].strip())
                 if previous != current:
+                    assert(previous == 0 or current > previous), INPUT_ASSERTION_ERROR.format(
+                        right_sorted, current, previous)
                     dank = 1 - damping
                 current_dank = dictionary_i_1.get(current, (0, start_value))
                 in_dank = dictionary_i_1.get(_conv_int(line.split("\t")[0].strip()))
