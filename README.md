@@ -64,6 +64,15 @@ Output of ``./danker.sh ALL`` on bi-weekly Wikipedia dumps.
 Before __danker__, I performed a number of experiments with [DBpedia "page links" datasets](http://wiki.dbpedia.org/services-resources/documentation/datasets#pagelinks) most of which are documented at http://people.aifb.kit.edu/ath/.
 
 ## Test
+The unit tests assure correctness and compare the results of danker to the implementation of [NetworkX](https://networkx.github.io/). The tests need the `numpy` and `networkx` libraries installed.
+
+Execute the unit tests as follows:
+
+```
+python3 -m unittest test/danker_test.py
+```
+
+
 In the directory `test` is a small graph with which you can try out the PageRank core of __danker__.
 
 ```bash
