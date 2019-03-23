@@ -20,6 +20,17 @@ class DankerTest(unittest.TestCase):
         print(np.corrcoef(res[0], res[1]))
         self.assertAlmostEqual(np.corrcoef(res[0], res[1])[0][1], 1, places=6)
 
+    def test_assert_left_sort(self):
+        link_file_right = "./test/graphs/test.links.right"
+        with self.assertRaises(AssertionError):
+            lib.danker.init(link_file_right, 0.1, False)
+
+    def test_assert_right_sort(self):
+        link_file = "./test/graphs/test.links"
+        danker_graph = lib.danker.init(link_file, 0.1, True)
+        with self.assertRaises(AssertionError):
+            danker_pr_small = lib.danker.danker_smallmem(danker_graph, link_file, 50, 0.85, 0.1)
+
     def test_general(self):
         link_file = "./test/graphs/test.links"
         link_file_right = "./test/graphs/test.links.right"
