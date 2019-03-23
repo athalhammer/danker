@@ -24,7 +24,7 @@ import time
 import argparse
 #import memory_profiler
 
-INPUT_ASSERTION_ERROR = 'Input file "{0}" is not correctly sorted. {1} before {2}'
+INPUT_ASSERTION_ERROR = 'Input file "{0}" is not correctly sorted. "{1}" after "{2}"'
 
 def _conv_int(string):
     """
@@ -69,7 +69,7 @@ def init(left_sorted, start_value, smallmem):
                 if previous != -1:
                     # make sure input is correctly sorted
                     assert(current > previous), INPUT_ASSERTION_ERROR.format(left_sorted,
-                        current, previous)
+                                                                             current, previous)
 
                     # store previousQID and reset counter
                     prev = dictionary_i_1.get(previous, _get_std_tuple(smallmem, start_value))
