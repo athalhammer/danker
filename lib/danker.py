@@ -68,8 +68,8 @@ def init(left_sorted, start_value, smallmem):
             else:
                 if previous != -1:
                     # make sure input is correctly sorted
-                    assert(current > previous), INPUT_ASSERTION_ERROR.format(left_sorted,
-                                                                             current, previous)
+                    assert current > previous, INPUT_ASSERTION_ERROR.format(left_sorted,
+                                                                            current, previous)
 
                     # store previousQID and reset counter
                     prev = dictionary_i_1.get(previous, _get_std_tuple(smallmem, start_value))
@@ -95,7 +95,7 @@ def danker_smallmem(dictionary_i_1, right_sorted, iterations, damping, start_val
             for line in rs_file:
                 current = _conv_int(line.split("\t")[1].strip())
                 if previous != current:
-                    assert(previous == 0 or current > previous), INPUT_ASSERTION_ERROR.format(
+                    assert previous == 0 or current > previous, INPUT_ASSERTION_ERROR.format(
                         right_sorted, current, previous)
                     dank = 1 - damping
                 current_dank = dictionary_i_1.get(current, (0, start_value))
