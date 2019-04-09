@@ -35,6 +35,12 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
 ## Download
 Output of ``./danker.sh ALL`` on bi-weekly Wikipedia dumps.
 
+* 2019-04-05
+  * http://danker.s3.amazonaws.com/2019-04-05.all.links.stats.txt
+  * http://danker.s3.amazonaws.com/2019-04-05.all.links.rank.bz2
+* 2019-02-26
+  * http://danker.s3.amazonaws.com/2019-03-27.all.links.stats.txt
+  * http://danker.s3.amazonaws.com/2019-03-27.all.links.rank.bz2
 * 2019-03-05
   * http://danker.s3.amazonaws.com/2019-03-05.all.links.stats.txt
   * http://danker.s3.amazonaws.com/2019-03-05.all.links.rank.bz2
