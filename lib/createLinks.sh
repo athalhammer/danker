@@ -64,6 +64,6 @@ sort -S 50% --field-separator=$'\t' --key=2 -o "$1""pageprops.lines" "$1""pagepr
 join -j 2 "$1""pagelinks2.lines" "$1""pageprops.lines" -o 2.1,1.1 -t $'\t' > "$1""pagelinks.lines"
 sort -S 50% --field-separator=$'\t' --key=2 -o "$1""pagelinks.lines" "$1""pagelinks.lines"
 join -j 2 "$1""pagelinks.lines" "$1""pageprops.lines" -o 2.1,1.1 -t $'\t' | sed "s/\(Q\|q\)\(.*\)\t\(Q\|q\)\(.*\)/\2\t\4/" > "$1""pagelinks2.lines"
-sort -S 50% -u "$1""pagelinks2.lines" > "$1"-"$dump_date"".links"
+sort -S 50% --field-separator=$'\t' -k1 -k2 -nuo "$1"-"$dump_date"".links" "$1""pagelinks2.lines"
 rm "$1"*.lines
 echo "$1"-"$dump_date"".links"
