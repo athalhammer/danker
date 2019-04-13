@@ -67,7 +67,7 @@ Output of ``./danker.sh ALL`` on bi-weekly Wikipedia dumps.
   * http://danker.s3.amazonaws.com/2018-11-25.all.links.rank.bz2
 
 ## Previous work
-Before __danker__, I performed a number of experiments with [DBpedia "page links" datasets](http://wiki.dbpedia.org/services-resources/documentation/datasets#pagelinks) most of which are documented at http://people.aifb.kit.edu/ath/.
+Before __danker__, I performed a number of experiments with [DBpedia "page links" datasets](http://wiki.dbpedia.org/services-resources/documentation/datasets#pagelinks) most of which are documented at https://web.archive.org/web/20180222182923/http://people.aifb.kit.edu/ath/.
 
 ## Test
 The unit tests assure correctness and compare the results of danker to the PageRank implementation of [NetworkX](https://networkx.github.io/). The tests need the `numpy` and `networkx` libraries installed.
