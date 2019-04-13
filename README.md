@@ -36,38 +36,38 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
 Output of ``./danker.sh ALL`` on bi-weekly Wikipedia dumps.
 
 * 2019-04-05
-  * http://danker.s3.amazonaws.com/2019-04-05.all.links.stats.txt
-  * http://danker.s3.amazonaws.com/2019-04-05.all.links.rank.bz2
-* 2019-02-26
-  * http://danker.s3.amazonaws.com/2019-03-27.all.links.stats.txt
-  * http://danker.s3.amazonaws.com/2019-03-27.all.links.rank.bz2
+  * https://danker.s3.amazonaws.com/2019-04-05.all.links.stats.txt
+  * https://danker.s3.amazonaws.com/2019-04-05.all.links.rank.bz2
+* 2019-03-27
+  * https://danker.s3.amazonaws.com/2019-03-27.all.links.stats.txt
+  * https://danker.s3.amazonaws.com/2019-03-27.all.links.rank.bz2
 * 2019-03-05
-  * http://danker.s3.amazonaws.com/2019-03-05.all.links.stats.txt
-  * http://danker.s3.amazonaws.com/2019-03-05.all.links.rank.bz2
+  * https://danker.s3.amazonaws.com/2019-03-05.all.links.stats.txt
+  * https://danker.s3.amazonaws.com/2019-03-05.all.links.rank.bz2
 * 2019-02-26
-  * http://danker.s3.amazonaws.com/2019-02-26.all.links.stats.txt
-  * http://danker.s3.amazonaws.com/2019-02-26.all.links.rank.bz2
+  * https://danker.s3.amazonaws.com/2019-02-26.all.links.stats.txt
+  * https://danker.s3.amazonaws.com/2019-02-26.all.links.rank.bz2
 * 2019-02-05
-  * http://danker.s3.amazonaws.com/2019-02-05.all.links.stats.txt
-  * http://danker.s3.amazonaws.com/2019-02-05.all.links.rank.bz2
+  * https://danker.s3.amazonaws.com/2019-02-05.all.links.stats.txt
+  * https://danker.s3.amazonaws.com/2019-02-05.all.links.rank.bz2
 * 2019-01-25
-  * http://danker.s3.amazonaws.com/2019-01-25.all.links.stats.txt
-  * http://danker.s3.amazonaws.com/2019-01-25.all.links.rank.bz2
+  * https://danker.s3.amazonaws.com/2019-01-25.all.links.stats.txt
+  * https://danker.s3.amazonaws.com/2019-01-25.all.links.rank.bz2
 * 2019-01-05
-  * http://danker.s3.amazonaws.com/2019-01-05.all.links.stats.txt
-  * http://danker.s3.amazonaws.com/2019-01-05.all.links.rank.bz2
+  * https://danker.s3.amazonaws.com/2019-01-05.all.links.stats.txt
+  * https://danker.s3.amazonaws.com/2019-01-05.all.links.rank.bz2
 * 2018-12-26
-  * http://danker.s3.amazonaws.com/2018-12-26.all.links.stats.txt
-  * http://danker.s3.amazonaws.com/2018-12-26.all.links.rank.bz2
+  * https://danker.s3.amazonaws.com/2018-12-26.all.links.stats.txt
+  * https://danker.s3.amazonaws.com/2018-12-26.all.links.rank.bz2
 * 2018-12-05
-  * http://danker.s3.amazonaws.com/2018-12-05.all.links.stats.txt
-  * http://danker.s3.amazonaws.com/2018-12-05.all.links.rank.bz2
+  * https://danker.s3.amazonaws.com/2018-12-05.all.links.stats.txt
+  * https://danker.s3.amazonaws.com/2018-12-05.all.links.rank.bz2
 * 2018-11-25
-  * http://danker.s3.amazonaws.com/2018-11-25.all.links.stats.txt
-  * http://danker.s3.amazonaws.com/2018-11-25.all.links.rank.bz2
+  * https://danker.s3.amazonaws.com/2018-11-25.all.links.stats.txt
+  * https://danker.s3.amazonaws.com/2018-11-25.all.links.rank.bz2
 
 ## Previous work
-Before __danker__, I performed a number of experiments with [DBpedia "page links" datasets](http://wiki.dbpedia.org/services-resources/documentation/datasets#pagelinks) most of which are documented at https://web.archive.org/web/20180222182923/http://people.aifb.kit.edu/ath/.
+Before __danker__, I performed a number of experiments with [DBpedia "page links" datasets](https://wiki.dbpedia.org/services-resources/documentation/datasets#pagelinks) most of which are documented at https://web.archive.org/web/20180222182923/https://people.aifb.kit.edu/ath/.
 
 ## Test
 The unit tests assure correctness and compare the results of danker to the PageRank implementation of [NetworkX](https://networkx.github.io/). The tests need the `numpy` and `networkx` libraries installed.
@@ -115,7 +115,7 @@ H	0.15000000000000002
 If you normalize the output values (divide each by 11) the values compare well to https://commons.wikimedia.org/wiki/File:PageRank-Beispiel.png or, if you compute percentages (division by the sum), they are similar to https://commons.wikimedia.org/wiki/File:PageRanks-Example.svg (same graph).
 
 ## License
-This software is licensed under GPLv3. (see http://www.gnu.org/licenses/).
+This software is licensed under GPLv3. (see https://www.gnu.org/licenses/).
 
 ## FAQ
 
@@ -135,7 +135,7 @@ This software is licensed under GPLv3. (see http://www.gnu.org/licenses/).
        Pages                    = {227--240},
        Doi                      = {10.1007/978-3-319-47602-5_41},
        ISBN                     = {978-3-319-47602-5},
-       Url                      = {http://dx.doi.org/10.1007/978-3-319-47602-5_41}
+       Url                      = {https://dx.doi.org/10.1007/978-3-319-47602-5_41}
    }
    ```
   
