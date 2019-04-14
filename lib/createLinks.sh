@@ -19,6 +19,11 @@
 ###################### TRANSFORMING WIKI NAMES WITH DASH CHARACTERS
 wiki=$(echo "$1" | sed "s/-/_/g")
 
+# Wiki "be_x_old" has been renamed to "be_tarask", dump with old name
+if [ "$wiki" == 'be_tarask' ]; then
+   wiki='be_x_old'
+fi
+
 ###################### VARIABLES
 download="http://download.wikimedia.org/""$wiki""wiki/"
 rss="https://dumps.wikimedia.org/""$wiki""wiki/latest/"
