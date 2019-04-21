@@ -147,9 +147,9 @@ This software is licensed under GPLv3. (see https://www.gnu.org/licenses/).
 
    _We consider TSV as sufficient. Any other format and/or mapping can easily be produced with a simple script._
 
-3. __Why is this not programmed with Apache Hadoop?__
+3. __Why is this not programmed with Apache Hadoop/NetworkX/etc.?__
 
-   _We believe that ranking computations should be transparent. In the best case, everyone who wants to verify the computed rankings should be enabled to do so. Therefore, we also support computation on off-the-shelf hardware. However, the provided code can be extended and also be ported to other platforms (under consideration of the license terms)._
+   _We believe that ranking computations should be transparent. In the best case, everyone who wants to verify the computed rankings should be enabled to do so. Therefore, we also support computation on off-the-shelf hardware. We do this taking into account that we don't need this to finish in one or two days (also the Wikipedia dumps are not that frequent). In general, the provided code can be extended and also be ported to other platforms (under consideration of the license terms)._
 
 4. __Why does it take so long (up to two weeks) to compute PageRank with the ALL option?__
 
@@ -165,12 +165,12 @@ This software is licensed under GPLv3. (see https://www.gnu.org/licenses/).
    
 7. __Sorted edge lists are not a common graph representation format; compared to adjacency list or adjacency matrix. Why is it useful in this particular case?__
 
-   _That is a good question and there are multiple aspects to it. We know that the graph would not easily fit in some 8GB of memory (~3bn edges). The good news is: We don't have to. Random access to get all out/in links of a specific node is not needed for computing PageRank._
+   _This is a good question and there are multiple aspects to it. We know that the graph would not easily fit in some 8GB of memory (as we have ~3bn edges). The good news is: We don't have to fit it. Random access to get all out/in links of a specific node is not needed for computing PageRank as we access every node anyway._
    
    _With sorted edge lists we gain two main advantages:_
-   1. _We can walk through the graph node by node just by reading consecutive lines of a file._
+   1. _We can walk through the graph node by node just by reading the lines of a file consecutively._
    2. _We can transform quickly from the best way accessing out-links to the best way of accessing in-links by sorting by the second column ("best way" refers to this specific case)._
    
    _Trade offs:_
-   1. _We use much more diskspace than actually needed as we repeat nodes (compared to adjacency lists). Still, computation usually needs < 100GB of space and disk space is cheaper then memory._
+   1. _We use much more diskspace than actually needed as we repeat nodes (compared to adjacency lists). Still, computation usually needs < 100GB of space and disk space is cheaper than memory._
    2. _Isolated nodes can not be represented with edge lists. However their PageRank would be `(1 - damping)`._
