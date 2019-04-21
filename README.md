@@ -162,3 +162,15 @@ This software is licensed under GPLv3. (see https://www.gnu.org/licenses/).
 6. __Why do the scores not form a nice probability distribution?__
 
    _This has multiple reasons. First, we do not compute the normalized version of PageRank. Instead of `(1 - damping)/N` (N is the total number of nodes) we only use `(1 - damping)`. This doesn't change the ranking as it is just multiplying by a constant factor. Second, according to the theory, given the non-normalized version, all scores should add up to N. This would only be true if there would be no dangling nodes (pages with no outlinks) - these serve as energy sinks. One way to mitigate this would be to create links from dangling nodes to all pages (including itself). However, this also would only introduce a constant factor and therefore also has no effect on the final ranking. More information on the topic can be found in Monica Bianchini, Marco Gori, and Franco Scarselli. 2005. Inside PageRank. ACM Trans. Internet Technol. 5, 1 (February 2005), 92-128. DOI: https://doi.org/10.1145/1052934.1052938_
+   
+7. __Sorted edge lists are not a common graph representation format; compared to adjacency list or adjacency matrix. Why is it useful in this particular case?__
+
+   _That is a good question and there are multiple aspects to it. We know that the graph would not easily fit in some 8GB of memory (~3bn edges). The good news is: We don't have to. Random access to get all out/in links of a specific node is not needed for computing PageRank. 
+   
+   With sorted edge lists we gain two main advantages: 
+   1. We can walk through the graph node by node just by reading consecutive lines of a file. 
+   2. We can transform quickly from the best way accessing out-links to the best way of accessing in-links by sorting by the second column ("best way" refers to this specific case). 
+   
+   Trade offs: 
+   1. We use much more diskspace than actually needed as we repeat nodes (compared to adjacency lists). Still, computation usually needs < 100GB of space and disk space is cheaper then memory.
+   2. Isolated nodes can not be represented with edge lists. However their PageRank would be `(1 - damping)`.
