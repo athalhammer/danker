@@ -165,12 +165,12 @@ This software is licensed under GPLv3. (see https://www.gnu.org/licenses/).
    
 7. __Sorted edge lists are not a common graph representation format; compared to adjacency list or adjacency matrix. Why is it useful in this particular case?__
 
-   _That is a good question and there are multiple aspects to it. We know that the graph would not easily fit in some 8GB of memory (~3bn edges). The good news is: We don't have to. Random access to get all out/in links of a specific node is not needed for computing PageRank.
+   _That is a good question and there are multiple aspects to it. We know that the graph would not easily fit in some 8GB of memory (~3bn edges). The good news is: We don't have to. Random access to get all out/in links of a specific node is not needed for computing PageRank._
    
-   With sorted edge lists we gain two main advantages: 
+   _With sorted edge lists we gain two main advantages: 
    1. We can walk through the graph node by node just by reading consecutive lines of a file. 
-   2. We can transform quickly from the best way accessing out-links to the best way of accessing in-links by sorting by the second column ("best way" refers to this specific case).
+   2. We can transform quickly from the best way accessing out-links to the best way of accessing in-links by sorting by the second column ("best way" refers to this specific case)._
    
-   Trade offs: 
+   _Trade offs: 
    1. We use much more diskspace than actually needed as we repeat nodes (compared to adjacency lists). Still, computation usually needs < 100GB of space and disk space is cheaper then memory.
    2. Isolated nodes can not be represented with edge lists. However their PageRank would be `(1 - damping)`._
