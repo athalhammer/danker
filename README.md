@@ -167,10 +167,10 @@ This software is licensed under GPLv3. (see https://www.gnu.org/licenses/).
 
    _That is a good question and there are multiple aspects to it. We know that the graph would not easily fit in some 8GB of memory (~3bn edges). The good news is: We don't have to. Random access to get all out/in links of a specific node is not needed for computing PageRank._
    
-   _With sorted edge lists we gain two main advantages: 
-   1. We can walk through the graph node by node just by reading consecutive lines of a file. 
-   2. We can transform quickly from the best way accessing out-links to the best way of accessing in-links by sorting by the second column ("best way" refers to this specific case)._
+   _With sorted edge lists we gain two main advantages:_
+   1. _We can walk through the graph node by node just by reading consecutive lines of a file._
+   2. _We can transform quickly from the best way accessing out-links to the best way of accessing in-links by sorting by the second column ("best way" refers to this specific case)._
    
-   _Trade offs: 
-   1. We use much more diskspace than actually needed as we repeat nodes (compared to adjacency lists). Still, computation usually needs < 100GB of space and disk space is cheaper then memory.
-   2. Isolated nodes can not be represented with edge lists. However their PageRank would be `(1 - damping)`._
+   _Trade offs:_
+   1. _We use much more diskspace than actually needed as we repeat nodes (compared to adjacency lists). Still, computation usually needs < 100GB of space and disk space is cheaper then memory._
+   2. _Isolated nodes can not be represented with edge lists. However their PageRank would be `(1 - damping)`._
