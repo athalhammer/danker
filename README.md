@@ -163,7 +163,7 @@ This software is licensed under GPLv3. (see https://www.gnu.org/licenses/).
 
    _This has multiple reasons. First, we do not compute the normalized version of PageRank. Instead of `(1 - damping)/N` (N is the total number of nodes) we only use `(1 - damping)`. This doesn't change the ranking as it is just multiplying by a constant factor. Second, according to the theory, given the non-normalized version, all scores should add up to N. This would only be true if there would be no dangling nodes (pages with no outlinks) - these serve as energy sinks. One way to mitigate this would be to create links from dangling nodes to all pages (including itself). However, this also would only introduce a constant factor and therefore also has no effect on the final ranking. More information on the topic can be found in Monica Bianchini, Marco Gori, and Franco Scarselli. 2005. Inside PageRank. ACM Trans. Internet Technol. 5, 1 (February 2005), 92-128. DOI: https://doi.org/10.1145/1052934.1052938_
    
-7. __Sorted edge lists are not a common graph representation format; compared to adjacency list or adjacency matrix. Why is it useful in this particular case?__
+7. __Sorted edge lists are not a common graph representation format (compared to adjacency list or adjacency matrix). Why is it useful in this particular case?__
 
    _This is a good question and there are multiple aspects to it. We know that the graph would not easily fit in some 8GB of memory (as we have ~3bn edges). The good news is: We don't have to fit it. Random access to get all out/in links of a specific node is not needed for computing PageRank as we access every node anyway._
    
