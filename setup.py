@@ -8,5 +8,5 @@ setup(
     author_email='andreas@thalhammer.bayern',
     description='Compute PageRank on ~3 billion Wikipedia links on off-the-shelf hardware.',
     packages=find_packages(),
-    install_requires=['numpy>=1.16.2', 'networkx>=2.2'],
+    install_requires=[]
 )
