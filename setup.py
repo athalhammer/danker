@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='danker',
-    version='3.2.0',
+    version='0.3.2',
     url='https://github.com/athalhammer/danker',
     author='Andreas Thalhammer',
     author_email='andreas@thalhammer.bayern',
