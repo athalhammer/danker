@@ -31,6 +31,12 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
    for i in `./script/getLanguages.sh`; do ./danker.sh "$i"; done
    for i in `./script/getLanguages.sh`; do ./danker.sh "$i" "BIGMEM"; done
    ```
+* As a library for computing PageRank on large graphs:
+   ```
+   $ pip install git+https://github.com/athalhammer/danker.git#egg=danker
+   $ python3
+   $ import danker
+   ```
 
 ## Download
 Output of ``./danker.sh ALL`` on bi-weekly Wikipedia dumps.
