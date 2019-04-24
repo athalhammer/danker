@@ -25,8 +25,8 @@ start_value=0.1
 
 if [ "$1" == "ALL" ]; then
   filename=$(date +"%Y-%m-%d").all.links
-  for i in $(./lib/getLanguages.sh); do
-    ./lib/createLinks.sh "$i" >> "$filename.files.txt"
+  for i in $(./script/getLanguages.sh); do
+    ./script/createLinks.sh "$i" >> "$filename.files.txt"
   done
   
   for i in $(cat "$filename.files.txt"); do 
@@ -42,13 +42,13 @@ if [ "$1" == "ALL" ]; then
   wc -l "$filename" >> "$filename.stats.txt"
   tar --remove-files -cjf "$filename.tar.bz2" `cat "$filename.files.txt"`
 else
-  filename=`./lib/createLinks.sh "$1"`
+  filename=`./script/createLinks.sh "$1"`
 fi
 if [ "$2" == "BIGMEM" ]; then
-  ./lib/danker.py  "$filename" $damping_factor $iterations $start_value | sed "s/\(.*\)/Q\1/" > "$filename".rank
+  ./danker/danker.py  "$filename" $damping_factor $iterations $start_value | sed "s/\(.*\)/Q\1/" > "$filename".rank
 else
   sort -S 50% --field-separator=$'\t' --key=2 --temporary-directory=. -no "$filename"".right" "$filename"
-  ./lib/danker.py  "$filename" --right_sorted "$filename"".right"  $damping_factor $iterations $start_value | sed "s/\(.*\)/Q\1/" > "$filename".rank
+  ./danker/danker.py  "$filename" --right_sorted "$filename"".right"  $damping_factor $iterations $start_value | sed "s/\(.*\)/Q\1/" > "$filename".rank
   rm "$filename"".right"
 fi
 sort -S 50% -nro "$filename"".rank" --field-separator=$'\t' --key=2 "$filename"".rank"

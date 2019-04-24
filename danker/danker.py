@@ -24,7 +24,7 @@ import time
 import argparse
 #import memory_profiler
 
-INPUT_ASSERTION_ERROR = 'Input file "{0}" is not correctly sorted. "{1}" after "{2}"'
+_INPUT_ASSERTION_ERROR = 'Input file "{0}" is not correctly sorted. "{1}" after "{2}"'
 
 def _conv_int(string):
     """
@@ -68,8 +68,8 @@ def init(left_sorted, start_value, smallmem):
             else:
                 if previous != -1:
                     # make sure input is correctly sorted
-                    assert current > previous, INPUT_ASSERTION_ERROR.format(left_sorted,
-                                                                            current, previous)
+                    assert current > previous, _INPUT_ASSERTION_ERROR.format(left_sorted,
+                                                                             current, previous)
 
                     # store previousQID and reset counter
                     prev = dictionary_i_1.get(previous, _get_std_tuple(smallmem, start_value))
@@ -95,7 +95,7 @@ def danker_smallmem(dictionary_i_1, right_sorted, iterations, damping, start_val
             for line in rs_file:
                 current = _conv_int(line.split("\t")[1].strip())
                 if previous != current:
-                    assert previous == 0 or current > previous, INPUT_ASSERTION_ERROR.format(
+                    assert previous == 0 or current > previous, _INPUT_ASSERTION_ERROR.format(
                         right_sorted, current, previous)
                     dank = 1 - damping
                 current_dank = dictionary_i_1.get(current, (0, start_value))
@@ -133,7 +133,7 @@ def danker_bigmem(dictionary_i_1, iterations, damping):
     return dictionary_i_1
 
 #@profile
-def main():
+def _main():
     """
     Execute main program.
     """
@@ -157,4 +157,4 @@ def main():
         print("{0}\t{1:.17g}".format(i, dictionary_i[i][1]))
 
 if __name__ == '__main__':
-    main()
+    _main()
