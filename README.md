@@ -35,7 +35,8 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
    ```
    $ pip install git+https://github.com/athalhammer/danker.git#egg=danker
    $ python3
-   $ import danker
+   >>> import danker
+   >>> danker.init(...
    ```
 
 ## Download
