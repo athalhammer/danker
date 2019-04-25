@@ -33,7 +33,7 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
    ```
 * As a library for computing PageRank on large graphs:
    ```
-   $ pip install git+https://github.com/athalhammer/danker.git#egg=danker
+   $ pip install git+https://github.com/athalhammer/danker.git
    $ python3
    >>> import danker
    >>> danker.init(...
