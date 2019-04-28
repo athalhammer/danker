@@ -4,6 +4,7 @@
 danker test cases
 """
 import unittest
+import os
 import networkx as nx
 import numpy as np
 import danker
@@ -60,6 +61,21 @@ class DankerTest(unittest.TestCase):
         self._compare(nx_pr, danker_pr_big)
         danker_pr_small = danker.danker_smallmem(danker_graph, link_file_right, 50, 0.85, 0.1)
         self._compare(nx_pr, danker_pr_small)
+
+    def test_empty(self):
+        """
+        Test with an empty file
+        """
+        link_file = open("./test/graphs/nill.links", mode='x')
+        link_file_right = open("./test/graphs/nill.right.links", mode='x')
+        danker_graph = danker.init(link_file.name, 0.1, False)
+        danker_pr_big = danker.danker_bigmem(danker_graph, 50, 0.85)
+        danker_pr_small = danker.danker_smallmem(danker_graph, link_file_right.name, 50, 0.85, 0.1)
+        self.assertEqual(len(danker_pr_big) + len(danker_pr_small), 0)
+
+        # cleanup
+        os.remove(link_file.name)
+        os.remove(link_file_right.name)
 
     def test_bar(self):
         """
