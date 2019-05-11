@@ -25,8 +25,9 @@ import signal
 # More details: https://bugs.python.org/issue1652
 signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 
+# TODO this probably doesn't match all possible names
+COLUMN_DEF_REGEX = r'^\s*`([\w\d_$]+)` (\w+)(\(\d+\))? '
 
-COLUMN_DEF_REGEX = r'^\s*`([\w_]+)` (\w+)(\(\d+\))? '
 PLAIN_MARIADB_DATATYPE = '([^,]*)'
 QUOTED_MARIADB_DATATYPE = r"('([^']|\\\')*')"
 SQL_NULL = 'NULL'
@@ -76,6 +77,8 @@ def main():
         pattern = re.compile(regex)
         while line.startswith('INSERT'):
             for match in pattern.finditer(line):
+                # TODO check that size of column def and
+                # the matched group are the same.
                 try:
                     print(match.group()[1:-1])
                 except KeyboardInterrupt:
