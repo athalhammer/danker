@@ -39,6 +39,10 @@ def main():
     parser.add_argument('dump_file', nargs='?', type=str, default=sys.stdin.fileno(),
                         help='Path of MariaDB dump file.')
     args = parser.parse_args()
+    if args.dump_file == sys.stdin.fileno() and sys.stdin.isatty():
+        print("[Error] maria2csv has no interactive mode. Use with --help for options.",
+              file=sys.stderr)
+        sys.exit(1)
 
     # Note that errors='ignore' ignores rows with blobs.
     with open(args.dump_file, mode='r', encoding='utf-8', errors='ignore') as in_file:
