@@ -35,10 +35,10 @@ wget -q "$RSS""$wiki""wiki-latest-pagelinks.sql.gz-rss.xml" \
 	"$RSS""$wiki""wiki-latest-page.sql.gz-rss.xml" \
 	"$RSS""$wiki""wiki-latest-redirect.sql.gz-rss.xml"
 dump_date=$(cat *.xml | sed -n "s#.*$DOWNLOAD\([0-9]\+\).*#\1#p" | sort -u)
-rm *.xml
+rm "$wiki"*.xml
 
-if [ $(echo "$dump_date" | wc -l) != '1' ]; then
-	(>&2 printf "[Error]\tMultiple or no date for '$wiki' dump.")
+if [ $(echo "$dump_date" | wc -l) != '1' ] || [ "$dump_date" == '' ]; then
+	(>&2 printf "[Error]\tMultiple or no date for '$wiki' dump.\n")
 	exit 1
 fi
 
