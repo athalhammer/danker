@@ -16,12 +16,10 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# configuration
-export LC_ALL=C
+DAMPING_FACTOR=0.85
+ITERATIONS=40
+START_VALUE=0.1
 
-iterations=40
-damping_factor=0.85
-start_value=0.1
 
 if [ "$1" == "ALL" ]; then
   filename=$(date +"%Y-%m-%d").all.links
@@ -45,10 +43,10 @@ else
   filename=`./script/createLinks.sh "$1"`
 fi
 if [ "$2" == "BIGMEM" ]; then
-  ./danker/danker.py  "$filename" $damping_factor $iterations $start_value | sed "s/\(.*\)/Q\1/" > "$filename".rank
+  ./danker/danker.py  "$filename" $DAMPING_FACTOR $ITERATIONS $START_VALUE | sed "s/\(.*\)/Q\1/" > "$filename".rank
 else
   sort -S 50% --field-separator=$'\t' --key=2 --temporary-directory=. -no "$filename"".right" "$filename"
-  ./danker/danker.py  "$filename" --right_sorted "$filename"".right"  $damping_factor $iterations $start_value | sed "s/\(.*\)/Q\1/" > "$filename".rank
+  ./danker/danker.py  "$filename" --right_sorted "$filename"".right" $DAMPING_FACTOR $ITERATIONS $START_VALUE | sed "s/\(.*\)/Q\1/" > "$filename".rank
   rm "$filename"".right"
 fi
 sort -S 50% -nro "$filename"".rank" --field-separator=$'\t' --key=2 "$filename"".rank"
