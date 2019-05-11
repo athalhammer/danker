@@ -23,10 +23,7 @@ import signal
 
 # Fix broken pipe error.
 # More details: https://bugs.python.org/issue1652
-try:
-    signal.signal(signal.SIGPIPE, signal.SIG_DFL)
-except (ImportError, AttributeError):
-    pass
+signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 
 
 COLUMN_DEF_REGEX = r'^\s*`([\w_]+)` (\w+)(\(\d+\))? '
