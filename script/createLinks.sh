@@ -17,7 +17,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 if [ ! "$1" ]; then
-    printf "Missing positional language parameter.\nExamples: \n\ten\n\tde\n\tbar\n\t...\n"
+    (>&2 printf "[Error]\tMissing positional wiki language parameter.
+    \tExamples: [en, de, bar, ...]\n")
     exit 1
 fi
 
@@ -29,9 +30,17 @@ DOWNLOAD="http://download.wikimedia.org/""$wiki""wiki/"
 RSS="https://dumps.wikimedia.org/""$wiki""wiki/latest/"
 
 # Latest dumps
-wget -q "$RSS""$wiki""wiki-latest-pagelinks.sql.gz-rss.xml" "$RSS""$wiki""wiki-latest-page_props.sql.gz-rss.xml" "$RSS""$wiki""wiki-latest-page.sql.gz-rss.xml" "$RSS""$wiki""wiki-latest-redirect.sql.gz-rss.xml"
-dump_date=$(cat *.xml | sed -n "s#^                <link>$DOWNLOAD\(.*\)</link>#\1#p" | sort -S 50% -u | head -n 1)
+wget -q "$RSS""$wiki""wiki-latest-pagelinks.sql.gz-rss.xml" \
+	"$RSS""$wiki""wiki-latest-page_props.sql.gz-rss.xml" \
+	"$RSS""$wiki""wiki-latest-page.sql.gz-rss.xml" \
+	"$RSS""$wiki""wiki-latest-redirect.sql.gz-rss.xml"
+dump_date=$(cat *.xml | sed -n "s#.*$DOWNLOAD\([0-9]\+\).*#\1#p" | sort -u)
 rm *.xml
+
+if [ $(echo "$dump_date" | wc -l) != '1' ]; then
+	(>&2 printf "[Error]\tMultiple or no date for '$wiki' dump.")
+	exit 1
+fi
 
 # File locations
 pagelinks="$wiki""wiki-""$dump_date""-pagelinks.sql"
@@ -47,7 +56,7 @@ curl -sL "$DOWNLOAD$dump_date/$page.gz" \
     | csvcut -c page_id,page_namespace,page_title \
            | csvgrep -c page_namespace -r "^0$|^14$" \
 > "$wiki"page.csv
-exit
+
 curl -sL "$DOWNLOAD$dump_date/$pagelinks.gz" \
     | gunzip \
     | "$dir"/maria2csv.py \
