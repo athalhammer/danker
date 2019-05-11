@@ -40,7 +40,7 @@ def main():
                         help='Path of MariaDB dump file.')
     args = parser.parse_args()
     if args.dump_file == sys.stdin.fileno() and sys.stdin.isatty():
-        print("[Error] maria2csv has no interactive mode. Use with --help for options.",
+        print("[Error] maria2csv has no interactive mode. Type --help for options.",
               file=sys.stderr)
         sys.exit(1)
 
