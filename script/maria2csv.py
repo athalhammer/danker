@@ -39,11 +39,17 @@ QUOTED_DATATYPES = ['varchar', 'varbinary', 'blob', 'char', 'binary', 'text']
 
 def main():
     parser = argparse.ArgumentParser(description="Parse MariaDB dumps.")
-    parser.add_argument('mysqldump', type=str, help='Location of the MariaDB dump.')
+    parser.add_argument('dump_file', nargs='?', type=str, default=sys.stdin.fileno(),
+                        help='Path of MariaDB dump file.')
     args = parser.parse_args()
 
+    # Default: read from stdin
+    #in_stream = sys.stdin.fileno()
+    #if args.mysqldump:
+    #    in_stream = args.mysqldump
+
     # Note that errors='ignore' ignores rows with blobs.
-    with open(args.mysqldump, mode='r', encoding='utf-8', errors='ignore') as in_file:
+    with open(args.dump_file, mode='r', encoding='utf-8', errors='ignore') as in_file:
         data_dict = {}
         line = in_file.readline()
         while not line.startswith('INSERT'):
