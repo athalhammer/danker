@@ -43,11 +43,6 @@ def main():
                         help='Path of MariaDB dump file.')
     args = parser.parse_args()
 
-    # Default: read from stdin
-    #in_stream = sys.stdin.fileno()
-    #if args.mysqldump:
-    #    in_stream = args.mysqldump
-
     # Note that errors='ignore' ignores rows with blobs.
     with open(args.dump_file, mode='r', encoding='utf-8', errors='ignore') as in_file:
         data_dict = {}
