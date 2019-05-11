@@ -48,7 +48,7 @@ def main():
     with open(args.dump_file, mode='r', encoding='utf-8', errors='ignore') as in_file:
         data_dict = {}
         line = in_file.readline()
-        while not line.startswith('INSERT'):
+        while not line.startswith('INSERT') and line != '':
 
             # Check for column definition lines
             # Assumption: each column definition has its own line (typical for dumps)
