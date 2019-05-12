@@ -20,6 +20,7 @@ import re
 import argparse
 import sys
 import signal
+from collections import OrderedDict
 
 # Fix broken pipe error.
 # More details: https://bugs.python.org/issue1652
@@ -48,8 +49,11 @@ def main():
 
     # Note that errors='ignore' ignores rows with blobs.
     with open(args.dump_file, mode='r', encoding='utf-8', errors='ignore') as in_file:
-        data_dict = {}
+        data_dict = OrderedDict()
         line = in_file.readline()
+
+        # counter for expected regex matches based on data_dict entries
+        group_counter = 0
         while not line.startswith('INSERT') and line != '':
 
             # Check for column definition lines
@@ -60,28 +64,29 @@ def main():
                 datatype = match.group(2)
                 if datatype.lower() in QUOTED_DATATYPES:
                     expr = QUOTED_MARIADB_DATATYPE[:-1]
+                    group_counter += 2
                 else:
                     expr = PLAIN_MARIADB_DATATYPE[:-1]
+                    group_counter += 1
                 if 'NOT NULL' not in line:
                     expr += '|' + SQL_NULL
                 expr += ')'
                 data_dict[name] = expr
             line = in_file.readline()
-
-        # This only works in Python 3.7 as earlier versions do not guarantee
-        # insertion order in dictionaries (3.6 has it implemented though)
         regex = r'\(' + ','.join([data_dict[i] for i in data_dict]) + r'\)'
 
+        # header of CSV
         print(",".join(data_dict))
 
         # Parse rest of file
         pattern = re.compile(regex)
         while line.startswith('INSERT'):
             for match in pattern.finditer(line):
-                if len(match.groups()) - 1 != len(data_dict):
+                if len(match.groups()) != group_counter:
                     print('[Error] "' + match.group() +
-                          '" does not correspond to "' +
-                          ",".join(data_dict) + '".', file=sys.stderr)
+                          '" (size=' + str(len(match.groups())) +
+                          ') does not correspond to "' + ",".join(data_dict) +
+                          '" (size=' + str(len(data_dict)) + ').', file=sys.stderr)
                     sys.exit(1)
                 print(match.group()[1:-1])
             line = in_file.readline()
