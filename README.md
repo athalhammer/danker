@@ -4,10 +4,14 @@ danker
 __danker__ is a compilation of Bash and Python3 scripts that enables the computation of PageRank on Wikipedia on normal off-the-shelf hardware (e.g., a quad-core CPU, 8 GB of main memory, and 250 GB hard disk storage). The BIGMEM option enables to speed up computation given that enough main memory is available (this depends on the Wikipedia language edition and your hardware configuration).
 
 * __INPUT__ Wikipedia language edition, e.g. "en" OR "ALL" (for computing PR on the union of all language editions - "bag of links" semantics); optional parameter "BIGMEM".
-* __PROCESSING__ danker downloads the required Wikipedia dump files (https://dumps.wikimedia.org/LANGwiki/latest/), resolves links, redirects, Wikidata Q-ids, produces a link-file, and computes PageRank.
+* __PROCESSING__ danker downloads the needed Wikipedia dump files (https://dumps.wikimedia.org/LANGwiki/latest/), resolves links, redirects, Wikidata Q-ids, produces a link-file and computes PageRank.
 * __OUTPUT__ 
-  * LANG-DUMPDATE.links - a link file (edge list), the input for PageRank. Every line reads from left to right: Q-id left --links to--> Q-id right)
+  * LANG-DUMPDATE.links - a link file, the input for PageRank (every line reads from left to right: Q-id left --links to--> Q-id right)
   * LANG-DUMPDATE.links.rank - a series of Wikidata Q-ids with their respective PageRank (sorted descending)
+
+## Requirements
+* `python3`
+* `csvkit` (e.g., via `pip install csvkit`)
 
 ## Usage
 
@@ -36,7 +40,6 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
    $ pip install git+https://github.com/athalhammer/danker.git
    $ python3
    >>> import danker
-   >>> danker.init(...
    ```
 
 ## Download
