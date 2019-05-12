@@ -25,8 +25,9 @@ import signal
 # More details: https://bugs.python.org/issue1652
 signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 
-# TODO this probably doesn't match all possible names
-COLUMN_DEF_REGEX = r'^\s*`([\w\d_$]+)` (\w+)(\(\d+\))? '
+# \w matches most unicode characters including _. $ is needed in addition.
+# TODO add reference to MariaDB column naming guideline
+COLUMN_DEF_REGEX = r'^\s*`([\w$]+)` (\w+)(\(\d+\))? '
 
 PLAIN_MARIADB_DATATYPE = '([^,]*)'
 QUOTED_MARIADB_DATATYPE = r"('([^']|\\\')*')"
@@ -77,13 +78,16 @@ def main():
         pattern = re.compile(regex)
         while line.startswith('INSERT'):
             for match in pattern.finditer(line):
-                # TODO check that size of column def and
-                # the matched group are the same.
-                try:
-                    print(match.group()[1:-1])
-                except KeyboardInterrupt:
+                if len(match.groups()) - 1 != len(data_dict):
+                    print('[Error] "' + match.group() +
+                          '" does not correspond to "' +
+                          ",".join(data_dict) + '".', file=sys.stderr)
                     sys.exit(1)
+                print(match.group()[1:-1])
             line = in_file.readline()
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        sys.exit(1)
