@@ -190,5 +190,5 @@ sort -S 50% \
 	-o "$wiki"-"$dump_date"".links" \
 	"$wiki"-"$dump_date"".links"
 
-#rm "$wiki"*.lines
+rm "$wiki"*.lines
 echo "$wiki"-"$dump_date"".links"
