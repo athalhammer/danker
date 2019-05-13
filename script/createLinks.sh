@@ -190,5 +190,13 @@ sort -S 50% \
 	-o "$wiki"-"$dump_date"".links" \
 	"$wiki"-"$dump_date"".links"
 
-rm "$wiki"*.lines
+# Delete temporary files
+rm "$wiki""page.lines" \
+	"$wiki""pagelinks.lines" \
+	"$wiki""pagelinks_norm.lines" \
+	"$wiki""redirect.lines" \
+	"$wiki""redirect_norm.lines" \
+	"$wiki""pagelinks_redirected.lines" \
+	"$wiki""pageprops.lines"
+
 echo "$wiki"-"$dump_date"".links"
