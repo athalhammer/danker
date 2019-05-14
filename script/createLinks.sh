@@ -91,7 +91,7 @@ gunzip "$page.gz" "$pagelinks.gz" "$redirect.gz" "$pageprops.gz"
 > "$wiki"redirect.lines
 
 "$dir"/maria2csv.py "$pageprops" \
-    | csvformat -q "'" -b -p '\' \
+    | csvformat -q "'" \
     | csvcut -c pp_page,pp_propname,pp_value \
     | csvgrep -c pp_propname -r "^wikibase_item$" \
     | csvcut -c pp_value,pp_page \
