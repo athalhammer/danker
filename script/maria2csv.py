@@ -47,8 +47,8 @@ def main():
               file=sys.stderr)
         sys.exit(1)
 
-    # Note that errors='ignore' ignores rows with blobs.
-    with open(args.dump_file, mode='r', encoding='utf-8', errors='ignore') as in_file:
+    # Note: Lines with non-unicode characters will be ignored
+    with open(args.dump_file, mode='r', encoding='utf-8', errors='surrogateescape') as in_file:
         data_dict = OrderedDict()
         line = in_file.readline()
 
@@ -84,11 +84,16 @@ def main():
             for match in pattern.finditer(line):
                 if len(match.groups()) != group_counter:
                     print('[Error] "' + match.group() +
-                          '" (size=' + str(len(match.groups())) +
-                          ') does not correspond to "' + ",".join(data_dict) +
-                          '" (size=' + str(len(data_dict)) + ').', file=sys.stderr)
+                          ' does not correspond to "' + ",".join(data_dict) +
+                          '".', file=sys.stderr)
                     sys.exit(1)
-                print(match.group()[1:-1])
+
+                # Handle errors when surrogate escapes can not be printed
+                try:
+                    print(match.group()[1:-1])
+                except UnicodeEncodeError:
+                    # ignore lines with non-unicode characters
+                    pass
             line = in_file.readline()
 
 if __name__ == '__main__':

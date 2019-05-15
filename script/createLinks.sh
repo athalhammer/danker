@@ -91,7 +91,7 @@ gunzip "$page.gz" "$pagelinks.gz" "$redirect.gz" "$pageprops.gz"
 > "$wiki"redirect.lines
 
 "$dir"/maria2csv.py "$pageprops" \
-    | csvformat -q "'" \
+    | csvformat -q "'" -b -p '\' \
     | csvcut -c pp_page,pp_propname,pp_value \
     | csvgrep -c pp_propname -r "^wikibase_item$" \
     | csvcut -c pp_value,pp_page \
@@ -99,9 +99,10 @@ gunzip "$page.gz" "$pagelinks.gz" "$redirect.gz" "$pageprops.gz"
     | tail -n+2 \
 > "$wiki"pageprops.lines
 
+# Delete sql files.
 rm "$page" "$pagelinks" "$redirect" "$pageprops"
 
-
+# Ensure proper sorting order
 export LC_ALL=C
 
 # Prepare page table - needed to normalize pagelinks and redirects
