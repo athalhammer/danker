@@ -30,7 +30,7 @@ signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 # TODO add reference to MariaDB column naming guideline
 COLUMN_DEF_REGEX = r'^\s*`([\w$]+)` (\w+)(\(\d+\))? '
 
-PLAIN_MARIADB_DATATYPE = '([^,]*)'
+PLAIN_MARIADB_DATATYPE = '([^,^a-z^A-Z]*)'
 QUOTED_MARIADB_DATATYPE = r"('([^']|\\\')*')"
 SQL_NULL = 'NULL'
 
@@ -73,8 +73,10 @@ def main():
                 expr += ')'
                 data_dict[name] = expr
             line = in_file.readline()
-        regex = r'\(' + ','.join([data_dict[i] for i in data_dict]) + r'\)'
 
+        # build regex with a bit of lookahead
+        regex = r'\(' + ','.join([data_dict[i] for i in data_dict]) + r'\)(?=((,\()|;))'
+        group_counter += 2
         # header of CSV
         print(",".join(data_dict))
 
