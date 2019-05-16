@@ -27,7 +27,7 @@ from collections import OrderedDict
 signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 
 # \w matches most unicode characters including _. $ is needed in addition.
-# TODO add reference to MariaDB column naming guideline
+# https://mariadb.com/kb/en/library/identifier-names/
 COLUMN_DEF_REGEX = r'^\s*`([\w$]+)` (\w+)(\(\d+\))? '
 
 PLAIN_MARIADB_DATATYPE = '([^,^a-z^A-Z]*)'
