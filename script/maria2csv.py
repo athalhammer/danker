@@ -30,12 +30,12 @@ signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 # https://mariadb.com/kb/en/library/identifier-names/
 COLUMN_DEF_REGEX = r'^\s*`([\w$]+)` (\w+)(\(\d+\))? '
 
-PLAIN_MARIADB_DATATYPE = '([^,^a-z^A-Z]*)'
-QUOTED_MARIADB_DATATYPE = r"('([^']|\\\')*')"
+PLAIN_MARIADB_DATATYPE = "([^,^a-z^A-Z^']*)"
+QUOTED_MARIADB_DATATYPE = r"('([^']|\\\')*(?<!\\)')"
 SQL_NULL = 'NULL'
 
 # TODO extend
-QUOTED_DATATYPES = ['varchar', 'varbinary', 'blob', 'char', 'binary', 'text']
+QUOTED_DATATYPES = ['varchar', 'varbinary', 'tinyblob', 'blob', 'char', 'binary', 'text']
 
 def main():
     parser = argparse.ArgumentParser(description="Parse MariaDB dumps.")

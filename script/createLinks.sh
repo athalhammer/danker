@@ -99,8 +99,9 @@ gunzip "$page.gz" "$pagelinks.gz" "$redirect.gz" "$pageprops.gz"
     | tail -n+2 \
 > "$wiki"pageprops.lines
 
+exit
 # Delete sql files.
-rm "$page" "$pagelinks" "$redirect" "$pageprops"
+#rm "$page" "$pagelinks" "$redirect" "$pageprops"
 
 # Ensure proper sorting order
 export LC_ALL=C
