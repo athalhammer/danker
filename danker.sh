@@ -20,6 +20,11 @@ DAMPING_FACTOR=0.85
 ITERATIONS=40
 START_VALUE=0.1
 
+if [ ! "$1" ]; then
+    (>&2 printf "[Error]\tMissing positional wiki language parameter.
+    \tExamples: [en, de, bar, ...]\n")
+    exit 1
+fi
 
 if [ "$1" == "ALL" ]; then
   filename=$(date +"%Y-%m-%d").all.links
@@ -38,15 +43,19 @@ if [ "$1" == "ALL" ]; then
     wc -l "$i" >> "$filename.stats.txt"
   done
   wc -l "$filename" >> "$filename.stats.txt"
-  tar --remove-files -cjf "$filename.tar.bz2" `cat "$filename.files.txt"`
+  tar --remove-files -cjf "$filename.tar.bz2" $(cat "$filename.files.txt")
 else
-  filename=`./script/createLinks.sh "$1"`
+  filename=$(./script/createLinks.sh "$1")
 fi
 if [ "$2" == "BIGMEM" ]; then
-  ./danker/danker.py  "$filename" $DAMPING_FACTOR $ITERATIONS $START_VALUE | sed "s/\(.*\)/Q\1/" > "$filename".rank
+  ./danker/danker.py  "$filename" $DAMPING_FACTOR $ITERATIONS $START_VALUE \
+	 | sed "s/\(.*\)/Q\1/" \
+  > "$filename".rank
 else
   sort -S 50% --field-separator=$'\t' --key=2 --temporary-directory=. -no "$filename"".right" "$filename"
-  ./danker/danker.py  "$filename" --right_sorted "$filename"".right" $DAMPING_FACTOR $ITERATIONS $START_VALUE | sed "s/\(.*\)/Q\1/" > "$filename".rank
+  ./danker/danker.py  "$filename" --right_sorted "$filename"".right" $DAMPING_FACTOR $ITERATIONS $START_VALUE \
+	  | sed "s/\(.*\)/Q\1/" \
+  > "$filename".rank
   rm "$filename"".right"
 fi
 sort -S 50% -nro "$filename"".rank" --field-separator=$'\t' --key=2 "$filename"".rank"
