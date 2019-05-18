@@ -27,36 +27,36 @@ if [ ! "$1" ]; then
 fi
 
 if [ "$1" == "ALL" ]; then
-  filename=$(date +"%Y-%m-%d").all.links
-  for i in $(./script/getLanguages.sh); do
-    ./script/createLinks.sh "$i" >> "$filename.files.txt"
-  done
+    filename=$(date +"%Y-%m-%d").all.links
+    for i in $(./script/getLanguages.sh); do
+        ./script/createLinks.sh "$i" >> "$filename.files.txt"
+    done
   
-  for i in $(cat "$filename.files.txt"); do 
-    cat "$i" >> "$filename"
-  done
+    for i in $(cat "$filename.files.txt"); do 
+        cat "$i" >> "$filename"
+    done
   
-  sort -S 50% --field-separator=$'\t' --key=1 --temporary-directory=. -no "$filename" "$filename"
+    sort -S 50% --field-separator=$'\t' --key=1 --temporary-directory=. -no "$filename" "$filename"
 
-  # collect stats and add language-specific source files to a compressed archive
-  for i in $(cat "$filename.files.txt"); do
-    wc -l "$i" >> "$filename.stats.txt"
-  done
-  wc -l "$filename" >> "$filename.stats.txt"
-  tar --remove-files -cjf "$filename.tar.bz2" $(cat "$filename.files.txt")
+    # collect stats and add language-specific source files to a compressed archive
+    for i in $(cat "$filename.files.txt"); do
+        wc -l "$i" >> "$filename.stats.txt"
+    done
+    wc -l "$filename" >> "$filename.stats.txt"
+    tar --remove-files -cjf "$filename.tar.bz2" $(cat "$filename.files.txt")
 else
-  filename=$(./script/createLinks.sh "$1")
+    filename=$(./script/createLinks.sh "$1")
 fi
 if [ "$2" == "BIGMEM" ]; then
-  ./danker/danker.py  "$filename" $DAMPING_FACTOR $ITERATIONS $START_VALUE \
-	 | sed "s/\(.*\)/Q\1/" \
-  > "$filename".rank
+    ./danker/danker.py  "$filename" $DAMPING_FACTOR $ITERATIONS $START_VALUE \
+        | sed "s/\(.*\)/Q\1/" \
+    > "$filename".rank
 else
-  sort -S 50% --field-separator=$'\t' --key=2 --temporary-directory=. -no "$filename"".right" "$filename"
-  ./danker/danker.py  "$filename" --right_sorted "$filename"".right" $DAMPING_FACTOR $ITERATIONS $START_VALUE \
-	  | sed "s/\(.*\)/Q\1/" \
-  > "$filename".rank
-  rm "$filename"".right"
+    sort -S 50% --field-separator=$'\t' --key=2 --temporary-directory=. -no "$filename"".right" "$filename"
+    ./danker/danker.py  "$filename" --right_sorted "$filename"".right" $DAMPING_FACTOR $ITERATIONS $START_VALUE \
+        | sed "s/\(.*\)/Q\1/" \
+    > "$filename".rank
+    rm "$filename"".right"
 fi
 sort -S 50% -nro "$filename"".rank" --field-separator=$'\t' --key=2 "$filename"".rank"
 bzip2 "$filename"
