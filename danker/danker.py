@@ -158,18 +158,18 @@ def _main():
     parser.add_argument('start_value', type=float)
     args = parser.parse_args()
     start = time.time()
-    dictionary_i_1 = init(args.left_sorted, args.start_value, args.right_sorted)
+    dictionary = init(args.left_sorted, args.start_value, args.right_sorted)
     result_position = (args.iterations % 2) + 1
     if args.right_sorted:
-        danker_smallmem(dictionary_i_1, args.right_sorted,
-                        args.iterations, args.damping, args.start_value)
+        danker_smallmem(dictionary, args.right_sorted, args.iterations,
+                        args.damping, args.start_value)
     else:
-        danker_bigmem(dictionary_i_1, args.iterations, args.damping)
+        danker_bigmem(dictionary, args.iterations, args.damping)
     print("Computation of PageRank on '{0}' with {1} took {2:.2f} seconds.".format(
         args.left_sorted, 'danker', time.time() - start), file=sys.stderr)
 
-    for i in dictionary_i_1:
-        print("{0}\t{1:.17g}".format(i, dictionary_i_1[i][result_position]))
+    for i in dictionary:
+        print("{0}\t{1:.17g}".format(i, dictionary[i][result_position]))
 
 if __name__ == '__main__':
     _main()
