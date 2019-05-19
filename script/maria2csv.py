@@ -31,7 +31,7 @@ signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 COLUMN_DEF_REGEX = r'^\s*`([\w$]+)` (\w+)(\(\d+\))? '
 
 PLAIN_MARIADB_DATATYPE = "([^,^a-z^A-Z^']*)"
-QUOTED_MARIADB_DATATYPE = r"('([^']|\\\')*(?<!\\)')"
+QUOTED_MARIADB_DATATYPE = r"('([^']|\\\')*')"
 SQL_NULL = 'NULL'
 
 # TODO extend
