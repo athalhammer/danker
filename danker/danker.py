@@ -80,6 +80,7 @@ def init(left_sorted, start_value, smallmem):
             dictionary[previous] = [current_count] + prev[1:]
     return dictionary
 
+#@profile
 def danker_smallmem(dictionary, right_sorted, iterations, damping, start_value):
     """
     Compute PageRank with right sorted file.
@@ -92,33 +93,37 @@ def danker_smallmem(dictionary, right_sorted, iterations, damping, start_value):
         i_location = (iteration % 2) + 1
         i_plus_1_location = ((iteration + 1) % 2) + 1
 
-        # track nodes with inlinks
-        to_nodes = []
         with open(right_sorted, encoding="utf-8") as rs_file:
             for line in rs_file:
                 current = _conv_int(line.split("\t")[1].strip())
-                to_nodes.append(current)
                 if previous != current:
                     assert previous == 0 or current > previous, _INPUT_ASSERTION_ERROR.format(
                         right_sorted, current, previous)
                     # reset dank
                     dank = 1 - damping
+                    # initialize in case of no outgoing links
+                    dictionary.setdefault(current, _get_std_tuple(True, start_value))
 
-                current_dank = dictionary.setdefault(current, [0, start_value, start_value])
                 in_link = _conv_int(line.split("\t")[0].strip())
                 in_dank = dictionary.get(in_link)
                 dank = dank + (damping * in_dank[i_location] / in_dank[0])
                 dictionary[current][i_plus_1_location] = dank
                 previous = current
 
-            # fix nodes where no update happened in the fist iteration
+                # record current node as 'touched' (it has incoming links)
+                if iteration == 0:
+                    dictionary[current][3] = True
+
+            # fix 'untouched' nodes (they do not have incoming links)
             if iteration == 0:
-                for k in dictionary.keys() - to_nodes:
+                for k in dictionary.keys():
+                    if not dictionary[k][3]:
                         dictionary[k][i_plus_1_location] = 1 - damping
                         dictionary[k][i_location] = 1 - damping
     print("", file=sys.stderr)
     return dictionary
 
+#@profile
 def danker_bigmem(dictionary, iterations, damping):
     """
     Compute PageRank with big memory option.
@@ -154,16 +159,17 @@ def _main():
     args = parser.parse_args()
     start = time.time()
     dictionary_i_1 = init(args.left_sorted, args.start_value, args.right_sorted)
+    result_position = (args.iterations % 2) + 1
     if args.right_sorted:
         danker_smallmem(dictionary_i_1, args.right_sorted,
-                                       args.iterations, args.damping, args.start_value)
+                        args.iterations, args.damping, args.start_value)
     else:
         danker_bigmem(dictionary_i_1, args.iterations, args.damping)
     print("Computation of PageRank on '{0}' with {1} took {2:.2f} seconds.".format(
         args.left_sorted, 'danker', time.time() - start), file=sys.stderr)
 
     for i in dictionary_i_1:
-        print("{0}\t{1:.17g}".format(i, dictionary_i_1[i][((args.iterations) % 2) + 1]))
+        print("{0}\t{1:.17g}".format(i, dictionary_i_1[i][result_position]))
 
 if __name__ == '__main__':
     _main()
