@@ -63,27 +63,6 @@ Output of ``./danker.sh ALL`` on bi-weekly Wikipedia dumps.
 * 2019-03-05
   * https://danker.s3.amazonaws.com/2019-03-05.all.links.stats.txt
   * https://danker.s3.amazonaws.com/2019-03-05.all.links.rank.bz2
-* 2019-02-26
-  * https://danker.s3.amazonaws.com/2019-02-26.all.links.stats.txt
-  * https://danker.s3.amazonaws.com/2019-02-26.all.links.rank.bz2
-* 2019-02-05
-  * https://danker.s3.amazonaws.com/2019-02-05.all.links.stats.txt
-  * https://danker.s3.amazonaws.com/2019-02-05.all.links.rank.bz2
-* 2019-01-25
-  * https://danker.s3.amazonaws.com/2019-01-25.all.links.stats.txt
-  * https://danker.s3.amazonaws.com/2019-01-25.all.links.rank.bz2
-* 2019-01-05
-  * https://danker.s3.amazonaws.com/2019-01-05.all.links.stats.txt
-  * https://danker.s3.amazonaws.com/2019-01-05.all.links.rank.bz2
-* 2018-12-26
-  * https://danker.s3.amazonaws.com/2018-12-26.all.links.stats.txt
-  * https://danker.s3.amazonaws.com/2018-12-26.all.links.rank.bz2
-* 2018-12-05
-  * https://danker.s3.amazonaws.com/2018-12-05.all.links.stats.txt
-  * https://danker.s3.amazonaws.com/2018-12-05.all.links.rank.bz2
-* 2018-11-25
-  * https://danker.s3.amazonaws.com/2018-11-25.all.links.stats.txt
-  * https://danker.s3.amazonaws.com/2018-11-25.all.links.rank.bz2
 
 ## Previous work
 Before __danker__, I performed a number of experiments with [DBpedia "page links" datasets](https://wiki.dbpedia.org/services-resources/documentation/datasets#pagelinks) most of which are documented at https://web.archive.org/web/20180222182923/https://people.aifb.kit.edu/ath/.
@@ -190,3 +169,4 @@ This software is licensed under GPLv3. (see https://www.gnu.org/licenses/).
    _Trade offs:_
    1. _We use much more diskspace than actually needed as we repeat nodes (compared to adjacency lists). Still, computation usually needs < 100GB of space and disk space is cheaper than memory._
    2. _Isolated nodes can not be represented with edge lists. However their PageRank would be `(1 - damping)`._
+   3. _Computation by iterating over files is much slower than storing the graph in memory. If you have a graph that can fit into memory you can use the BIGMEM option and speed up computation time._
