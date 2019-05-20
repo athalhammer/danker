@@ -34,9 +34,9 @@ def _conv_int(string):
         return int(string)
     return string
 
-def _get_std_tuple(smallmem, start_value):
+def _get_std_list(smallmem, start_value):
     """
-    Helper function to return standard tuple (with or without linked list)
+    Helper function to return standard list for smallmem vs bigmem.
     """
     if smallmem:
         return [0, start_value, start_value, False]
@@ -56,7 +56,7 @@ def init(left_sorted, start_value, smallmem):
 
             # take care of inlinks
             if not smallmem:
-                data = dictionary.setdefault(receiver, _get_std_tuple(smallmem, start_value))
+                data = dictionary.setdefault(receiver, _get_std_list(smallmem, start_value))
                 data[3].append(current)
 
             # take care of counts
@@ -69,14 +69,14 @@ def init(left_sorted, start_value, smallmem):
                     assert current > previous, _INPUT_ASSERTION_ERROR.format(left_sorted,
                                                                              current, previous)
                     # store previous Q-ID and reset counter
-                    prev = dictionary.get(previous, _get_std_tuple(smallmem, start_value))
+                    prev = dictionary.get(previous, _get_std_list(smallmem, start_value))
                     dictionary[previous] = [current_count] + prev[1:]
                     current_count = 1
             previous = current
 
         # take care of last item
         if previous != -1:
-            prev = dictionary.get(previous, _get_std_tuple(smallmem, start_value))
+            prev = dictionary.get(previous, _get_std_list(smallmem, start_value))
             dictionary[previous] = [current_count] + prev[1:]
     return dictionary
 
@@ -102,7 +102,7 @@ def danker_smallmem(dictionary, right_sorted, iterations, damping, start_value):
                     # reset dank
                     dank = 1 - damping
                     # initialize in case of no outgoing links
-                    dictionary.setdefault(current, _get_std_tuple(True, start_value))
+                    dictionary.setdefault(current, _get_std_list(True, start_value))
 
                 in_link = _conv_int(line.split("\t")[0].strip())
                 in_dank = dictionary.get(in_link)
