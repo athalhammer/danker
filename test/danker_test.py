@@ -8,6 +8,7 @@ import os
 import networkx as nx
 import numpy as np
 import danker
+import pathlib
 
 class DankerTest(unittest.TestCase):
     """
@@ -66,16 +67,18 @@ class DankerTest(unittest.TestCase):
         """
         Test with an empty file
         """
-        link_file = open("./test/graphs/nill.links", mode='x')
-        link_file_right = open("./test/graphs/nill.right.links", mode='x')
-        danker_graph = danker.init(link_file.name, 0.1, False)
+        link_file = "./test/graphs/nill.links"
+        link_file_right = "./test/graphs/nill.links.right"
+        pathlib.Path(link_file).touch(exist_ok=True)
+        pathlib.Path(link_file_right).touch(exist_ok=True)
+        danker_graph = danker.init(link_file, 0.1, False)
         danker_pr_big = danker.danker_bigmem(danker_graph, 50, 0.85)
-        danker_pr_small = danker.danker_smallmem(danker_graph, link_file_right.name, 50, 0.85, 0.1)
+        danker_pr_small = danker.danker_smallmem(danker_graph, link_file_right, 50, 0.85, 0.1)
         self.assertEqual(len(danker_pr_big) + len(danker_pr_small), 0)
-
+        
         # cleanup
-        os.remove(link_file.name)
-        os.remove(link_file_right.name)
+        os.remove(link_file)
+        os.remove(link_file_right)
 
     def test_bar(self):
         """
