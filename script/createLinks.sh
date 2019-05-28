@@ -30,7 +30,7 @@ download="http://download.wikimedia.org/""$wiki""wiki/"
 rss="https://dumps.wikimedia.org/""$wiki""wiki/latest/"
 
 # Latest dump date
-wget "$rss""$wiki""wiki-latest-page.sql.gz-rss.xml" \
+wget -q "$rss""$wiki""wiki-latest-page.sql.gz-rss.xml" \
 	"$rss""$wiki""wiki-latest-pagelinks.sql.gz-rss.xml" \
 	"$rss""$wiki""wiki-latest-redirect.sql.gz-rss.xml" \
 	"$rss""$wiki""wiki-latest-page_props.sql.gz-rss.xml"
@@ -53,7 +53,7 @@ redirect="$wiki""wiki-""$dump_date""-redirect.sql"
 pageprops="$wiki""wiki-""$dump_date""-page_props.sql"
 
 # Download and unzip
-wget "$download$dump_date/$page.gz" \
+wget -q "$download$dump_date/$page.gz" \
 	"$download$dump_date/$pagelinks.gz" \
 	"$download$dump_date/$redirect.gz" \
 	"$download$dump_date/$pageprops.gz"
