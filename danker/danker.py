@@ -24,7 +24,12 @@ import time
 import argparse
 #import memory_profiler
 
-_INPUT_ASSERTION_ERROR = 'Input file "{0}" is not correctly sorted. "{1}" after "{2}"'
+_INPUT_NOT_SORTED_MSG = 'Input file "{0}" is not correctly sorted. "{1}" after "{2}"'
+
+class InputNotSortedException(Exception):
+    def __init__(self, file_name, line1, line2):
+        message = _INPUT_NOT_SORTED_MSG.format(file_name, line1, line2)
+        Exception.__init__(self, message)
 
 def _conv_int(string):
     """
@@ -47,7 +52,7 @@ def init(left_sorted, start_value, smallmem):
     Read left_sorted link file and initialization steps.
     """
     dictionary = {}
-    previous = -1
+    previous = None
     current_count = 1
     with open(left_sorted, encoding="utf-8") as ls_file:
         for line in ls_file:
@@ -64,10 +69,10 @@ def init(left_sorted, start_value, smallmem):
                 # increase counter
                 current_count = current_count + 1
             else:
-                if previous != -1:
+                if previous:
                     # make sure input is correctly sorted
-                    assert current > previous, _INPUT_ASSERTION_ERROR.format(left_sorted,
-                                                                             current, previous)
+                    if current < previous:
+                        raise InputNotSortedException(left_sorted, current, previous)
                     # store previous Q-ID and reset counter
                     prev = dictionary.get(previous, _get_std_list(smallmem, start_value))
                     dictionary[previous] = [current_count] + prev[1:]
@@ -75,7 +80,7 @@ def init(left_sorted, start_value, smallmem):
             previous = current
 
         # take care of last item
-        if previous != -1:
+        if previous:
             prev = dictionary.get(previous, _get_std_list(smallmem, start_value))
             dictionary[previous] = [current_count] + prev[1:]
     return dictionary
@@ -87,7 +92,7 @@ def danker_smallmem(dictionary, right_sorted, iterations, damping, start_value):
     """
     for iteration in range(0, iterations):
         print(str(iteration + 1) + ".", end="", flush=True, file=sys.stderr)
-        previous = 0
+        previous = None
 
         # positions for i and i+1 result values (alternating with iterations).
         i_location = (iteration % 2) + 1
@@ -97,8 +102,9 @@ def danker_smallmem(dictionary, right_sorted, iterations, damping, start_value):
             for line in rs_file:
                 current = _conv_int(line.split("\t")[1].strip())
                 if previous != current:
-                    assert previous == 0 or current > previous, _INPUT_ASSERTION_ERROR.format(
-                        right_sorted, current, previous)
+                    if previous and current < previous:
+                        raise InputNotSortedException(right_sorted, current, previous)
+
                     # reset dank
                     dank = 1 - damping
                     # initialize in case of no outgoing links

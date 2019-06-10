@@ -31,21 +31,21 @@ class DankerTest(unittest.TestCase):
         print(np.corrcoef(res[0], res[1]))
         self.assertAlmostEqual(np.corrcoef(res[0], res[1])[0][1], 1, places=6)
 
-    def test_assert_left_sort(self):
+    def test_left_sort(self):
         """
         Test if assert for left sort works (test with right sorted file)
         """
         link_file_right = "./test/graphs/test.links.right"
-        with self.assertRaises(AssertionError):
+        with self.assertRaises(danker.InputNotSortedException):
             danker.init(link_file_right, 0.1, False)
 
-    def test_assert_right_sort(self):
+    def test_right_sort(self):
         """
         Test if assert for right sort works (test with left sorted file)
         """
         link_file = "./test/graphs/test.links"
         danker_graph = danker.init(link_file, 0.1, True)
-        with self.assertRaises(AssertionError):
+        with self.assertRaises(danker.InputNotSortedException):
             danker.danker_smallmem(danker_graph, link_file, 50, 0.85, 0.1)
 
     def test_general(self):
