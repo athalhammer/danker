@@ -24,11 +24,12 @@ import time
 import argparse
 #import memory_profiler
 
-_INPUT_NOT_SORTED_MSG = 'Input file "{0}" is not correctly sorted. "{1}" after "{2}"'
-
 class InputNotSortedException(Exception):
+
+    _MESSAGE = 'Input file "{0}" is not correctly sorted. "{1}" after "{2}"'
+
     def __init__(self, file_name, line1, line2):
-        message = _INPUT_NOT_SORTED_MSG.format(file_name, line1, line2)
+        message = self._MESSAGE.format(file_name, line1, line2)
         Exception.__init__(self, message)
 
 def _conv_int(string):
