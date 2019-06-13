@@ -6,7 +6,11 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
 * __INPUT__ Wikipedia language edition, e.g. "en" OR "ALL" (for computing PR on the union of all language editions - "bag of links" semantics); optional parameter "BIGMEM".
 * __PROCESSING__ danker downloads the required Wikipedia dump files (https://dumps.wikimedia.org/LANGwiki/latest/), resolves links, redirects, Wikidata Q-IDs, produces a link-file and computes PageRank.
 * __OUTPUT__ 
-  * LANG-DUMPDATE.links - a link file (edge list), the input for PageRank. Every line reads from left to right: Q-ID left --links to--> Q-ID right)
+  * LANG-DUMPDATE.links - a link file (edge list, tab-separated), the input for PageRank. Every line reads from left to right: 
+  ```
+  # Q-ID left --links to--> Q-ID right
+  Q30    Q46
+  ```
   * LANG-DUMPDATE.links.rank - a series of Wikidata Q-ID with their respective PageRank (sorted descending)
 
 ## Requirements
