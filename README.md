@@ -192,10 +192,10 @@ This software is licensed under GPLv3. (see https://www.gnu.org/licenses/).
    A -> C
    A -> B
    ```
-   _B gets `2/3 * PR(A)` while C gets `1/3 * PR(A)` (the damping factor is ignored here for brevity). This basic principle holds for every web site and can also be leveraged for Wikipedia. However, in the particular case of Wikipedia there is a ["one link only" policy](https://en.wikipedia.org/wiki/Wikipedia:Manual_of_Style/Linking#Duplicate_and_repeat_links) and multiple occurrences of a link may be arbitrary or due to quality issues of the article. However, as we align all links across all Wikipedia language editions we can leverage the different language editions as "votes" for links - the above example with Wikipedia language editions:_
+   _B gets `2/3 * PR(A)` while C gets `1/3 * PR(A)` (the damping factor is ignored here for brevity). This basic principle holds for every web site and can also be leveraged for Wikipedia. However, in the particular case of Wikipedia there is a ["one link only" policy](https://en.wikipedia.org/wiki/Wikipedia:Manual_of_Style/Linking#Duplicate_and_repeat_links) and multiple occurrences of a link may be arbitrary or due to quality issues of the article. However, with the `ALL` option we extract and align all page links from all Wikipedia language editions with the Wikidata identifiers of each article. In this mode, we leverage the different language editions as link voting entities - the above example with Wikipedia language editions:_
    ```
    A -> B   # en
    A -> C   # en
    A -> B   # de
    ```
-   _This is similar to the [bag-of-words model](https://en.wikipedia.org/wiki/Bag-of-words_model) of the information retrieval domain where the word count is tracked and the resulting frequencies are fed into a probabilistic model (such as topic modeling). Due to this relation we call it informally "bag-of-links model"._
+   _For example, the link `Q159 -> Q46` appears in 254 different language editions. As stated above, PageRank automatically handles multiple link occurrences and adjusts the scores accordingly. The whole methodology is similar to the [bag-of-words model](https://en.wikipedia.org/wiki/Bag-of-words_model) of the information retrieval domain where the word count is tracked and the resulting frequencies are fed into a probabilistic model (such as topic modeling). Due to this relation we call this method informally "bag-of-links model"._
