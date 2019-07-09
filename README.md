@@ -186,16 +186,16 @@ This software is licensed under GPLv3. (see https://www.gnu.org/licenses/).
 
 8. __What is the ALL option and what is the bag-of-links model?__
 
-  _Naturall, the PageRank algorithm works with lists rather than sets. It also does not make any assumptions on the uniqueness of a link on a given web site. Therefore, if a link to page B apears multiple times on page A (say twice) it basically means that page B gets double the share of A's PageRank score than any other page C that is only linked once on page A. The following example shows that scenario:_
- ```
- A -> B
- A -> C
- A -> B
- ```
- _B gets `2/3 * PR(A)` while C gets `1/3 * PR(A)` (the damping factor is ignored here for brevity). This basic principle holds for every web site and can also be leveraged for Wikipedia. However, in the particular case of Wikipedia there is a ["one link only" policy](https://en.wikipedia.org/wiki/Wikipedia:Manual_of_Style/Linking#Duplicate_and_repeat_links) and multiple occurrences of a link may be arbitrary or due to quality issues of the article. However, as we align all links across all Wikipedia language editions we can leverage the different language editions as "votes" for links - the above example with Wikipedia language editions:_
-  ```
- A -> B   # en
- A -> C   # en
- A -> B   # de
- ```
- _This is similar to the [bag-of-words model](https://en.wikipedia.org/wiki/Bag-of-words_model) of the information retrieval domain where the word count is tracked and the resulting frequencies are fed into a probabilistic model (such as topic modeling). Due to this relation we call it informally "bag-of-links model"._
+   _Naturally, the PageRank algorithm works with lists rather than sets. It also does not make any assumptions on the uniqueness of a link on a given web site. Therefore, if a link to page B apears multiple times on page A (say twice) it basically means that page B gets double the share of A's PageRank score than any other page C that is only linked once on page A. The following example shows that scenario:_
+   ```
+   A -> B
+   A -> C
+   A -> B
+   ```
+   _B gets `2/3 * PR(A)` while C gets `1/3 * PR(A)` (the damping factor is ignored here for brevity). This basic principle holds for every web site and can also be leveraged for Wikipedia. However, in the particular case of Wikipedia there is a ["one link only" policy](https://en.wikipedia.org/wiki/Wikipedia:Manual_of_Style/Linking#Duplicate_and_repeat_links) and multiple occurrences of a link may be arbitrary or due to quality issues of the article. However, as we align all links across all Wikipedia language editions we can leverage the different language editions as "votes" for links - the above example with Wikipedia language editions:_
+   ```
+   A -> B   # en
+   A -> C   # en
+   A -> B   # de
+   ```
+   _This is similar to the [bag-of-words model](https://en.wikipedia.org/wiki/Bag-of-words_model) of the information retrieval domain where the word count is tracked and the resulting frequencies are fed into a probabilistic model (such as topic modeling). Due to this relation we call it informally "bag-of-links model"._
