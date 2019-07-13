@@ -28,8 +28,8 @@ fi
 
 if [ "$1" == "ALL" ]; then
     filename=$(date +"%Y-%m-%d").all.links
-    for i in $(./script/getLanguages.sh); do
-        ./script/createLinks.sh "$i" >> "$filename.files.txt"
+    for i in $(./script/get_languages.sh); do
+        ./script/create_links.sh "$i" >> "$filename.files.txt"
     done
   
     for i in $(cat "$filename.files.txt"); do 
@@ -45,7 +45,7 @@ if [ "$1" == "ALL" ]; then
     wc -l "$filename" >> "$filename.stats.txt"
     tar --remove-files -cjf "$filename.tar.bz2" $(cat "$filename.files.txt")
 else
-    filename=$(./script/createLinks.sh "$1")
+    filename=$(./script/create_links.sh "$1")
 fi
 if [ "$2" == "BIGMEM" ]; then
     ./danker/danker.py  "$filename" $DAMPING_FACTOR $ITERATIONS $START_VALUE \

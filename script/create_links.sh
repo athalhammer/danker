@@ -16,14 +16,24 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
+dir=$(dirname "$0")
+
 if [ ! "$1" ]; then
     (>&2 printf "[Error]\tMissing positional wiki language parameter.
     \tExamples: [en, de, bar, ...]\n")
     exit 1
+else
+    invalid=$(grep "$1" <("$dir"/get_languages.sh))
+    if [ -z "$invalid" ]; then
+        (>&2 printf "[Error]\t'$1' is an invalid language parameter.
+        \tPlease check: http://wikistats.wmflabs.org/display.php?t=wp\n")
+        exit 1
+    fi
 fi
 
 wiki="$1"
-dir=$(dirname "$0")
+
 
 # Location of wikipedia dumps
 download="http://download.wikimedia.org/""$wiki""wiki/"
@@ -31,20 +41,24 @@ rss="https://dumps.wikimedia.org/""$wiki""wiki/latest/"
 
 # Latest dump date
 wget -q "$rss""$wiki""wiki-latest-page.sql.gz-rss.xml" \
-	"$rss""$wiki""wiki-latest-pagelinks.sql.gz-rss.xml" \
-	"$rss""$wiki""wiki-latest-redirect.sql.gz-rss.xml" \
-	"$rss""$wiki""wiki-latest-page_props.sql.gz-rss.xml"
-dump_date=$(cat "$wiki"*.xml | sed -n "s#.*$download\([0-9]\+\).*#\1#p" | sort -u)
+    "$rss""$wiki""wiki-latest-pagelinks.sql.gz-rss.xml" \
+    "$rss""$wiki""wiki-latest-redirect.sql.gz-rss.xml" \
+    "$rss""$wiki""wiki-latest-page_props.sql.gz-rss.xml"
 
-rm "$wiki""wiki-latest-page.sql.gz-rss.xml" \
-	"$wiki""wiki-latest-pagelinks.sql.gz-rss.xml" \
-	"$wiki""wiki-latest-redirect.sql.gz-rss.xml" \
-	"$wiki""wiki-latest-page_props.sql.gz-rss.xml"
+if [ $? -eq 0 ]; then
+    dump_date=$(cat "$wiki"*.xml | sed -n "s#.*$download\([0-9]\+\).*#\1#p" | sort -u)
+fi
+
 
 if [ $(echo "$dump_date" | wc -l) != '1' ] || [ "$dump_date" == '' ]; then
-	(>&2 printf "[Error]\tMultiple or no date for '$wiki' dump.\n")
-	exit 1
+    (>&2 printf "[Error]\tMultiple or no date for '$wiki' dump.\n")
+    exit 1
 fi
+
+rm "$wiki""wiki-latest-page.sql.gz-rss.xml" \
+    "$wiki""wiki-latest-pagelinks.sql.gz-rss.xml" \
+    "$wiki""wiki-latest-redirect.sql.gz-rss.xml" \
+    "$wiki""wiki-latest-page_props.sql.gz-rss.xml"
 
 # File locations
 page="$wiki""wiki-""$dump_date""-page.sql"
@@ -54,9 +68,9 @@ pageprops="$wiki""wiki-""$dump_date""-page_props.sql"
 
 # Download and unzip
 wget -q "$download$dump_date/$page.gz" \
-	"$download$dump_date/$pagelinks.gz" \
-	"$download$dump_date/$redirect.gz" \
-	"$download$dump_date/$pageprops.gz"
+    "$download$dump_date/$pagelinks.gz" \
+    "$download$dump_date/$redirect.gz" \
+    "$download$dump_date/$pageprops.gz"
 
 gunzip "$page.gz" "$pagelinks.gz" "$redirect.gz" "$pageprops.gz"
 
@@ -107,53 +121,53 @@ export LC_ALL=C
 
 # Prepare page table - needed to normalize pagelinks and redirects
 sort -S 50% \
-	--field-separator=$'\t' --key=2 \
-	-o "$wiki""page.lines" \
-	"$wiki""page.lines"
+    --field-separator=$'\t' --key=2 \
+    -o "$wiki""page.lines" \
+   "$wiki""page.lines"
 
 # Prepare pagelinks
 sort -S 50% \
-	--field-separator=$'\t' --key=2 \
-	-o "$wiki""pagelinks.lines" \
-	"$wiki""pagelinks.lines"
+    --field-separator=$'\t' --key=2 \
+    -o "$wiki""pagelinks.lines" \
+    "$wiki""pagelinks.lines"
 
 # Normalize pagelinks
 join -j 2 \
-	"$wiki""pagelinks.lines" \
-	"$wiki""page.lines" \
-	-o 1.1,2.1 -t $'\t' \
+    "$wiki""pagelinks.lines" \
+    "$wiki""page.lines" \
+    -o 1.1,2.1 -t $'\t' \
 > "$wiki""pagelinks_norm.lines"
 
 # Prepare redirects
 sort -S 50% \
-	--field-separator=$'\t' --key=2 \
-	-o "$wiki""redirect.lines" \
-	"$wiki""redirect.lines"
+    --field-separator=$'\t' --key=2 \
+    -o "$wiki""redirect.lines" \
+    "$wiki""redirect.lines"
 
 # Normalize redirects
 join -j 2 \
-	"$wiki""redirect.lines" \
-	"$wiki""page.lines" \
-	-o 2.1,1.1 -t $'\t' \
+    "$wiki""redirect.lines" \
+    "$wiki""page.lines" \
+    -o 2.1,1.1 -t $'\t' \
 > "$wiki""redirect_norm.lines"
 
 
 # Take care of redirects. Note: 'double redirects' are fixed by bots
 # (https://en.wikipedia.org/wiki/Wikipedia:Double_redirects).
 sort -S 50% \
-	--field-separator=$'\t' --key=2 \
-	-o "$wiki""pagelinks_norm.lines" \
-	"$wiki""pagelinks_norm.lines"
+    --field-separator=$'\t' --key=2 \
+    -o "$wiki""pagelinks_norm.lines" \
+    "$wiki""pagelinks_norm.lines"
 
 sort -S 50% \
-	--field-separator=$'\t' --key=2 \
-	-o "$wiki""redirect_norm.lines" \
-	"$wiki""redirect_norm.lines"
+    --field-separator=$'\t' --key=2 \
+    -o "$wiki""redirect_norm.lines" \
+    "$wiki""redirect_norm.lines"
 
 join -j 2 \
-	"$wiki""pagelinks_norm.lines" \
-	"$wiki""redirect_norm.lines" \
-	-o 1.1,2.1 -t $'\t' \
+    "$wiki""pagelinks_norm.lines" \
+    "$wiki""redirect_norm.lines" \
+    -o 1.1,2.1 -t $'\t' \
 > "$wiki""pagelinks_redirected.lines"
 
 
@@ -164,44 +178,44 @@ cat "$wiki""pagelinks_redirected.lines" >> "$wiki""pagelinks_norm.lines"
 
 # Resolve internal IDs to Wikidata Q-Is
 sort -S 50% \
-	--field-separator=$'\t' --key=2 \
-	-o "$wiki""pagelinks_norm.lines" \
-	"$wiki""pagelinks_norm.lines"
+    --field-separator=$'\t' --key=2 \
+    -o "$wiki""pagelinks_norm.lines" \
+    "$wiki""pagelinks_norm.lines"
 sort -S 50% \
-	--field-separator=$'\t' --key=2 \
-	-o "$wiki""pageprops.lines" \
-	"$wiki""pageprops.lines"
+    --field-separator=$'\t' --key=2 \
+    -o "$wiki""pageprops.lines" \
+    "$wiki""pageprops.lines"
 join -j 2 \
-	"$wiki""pagelinks_norm.lines" \
-	"$wiki""pageprops.lines" \
-	-o 2.1,1.1 -t $'\t' \
+    "$wiki""pagelinks_norm.lines" \
+    "$wiki""pageprops.lines" \
+    -o 2.1,1.1 -t $'\t' \
 > "$wiki""pagelinks.lines"
 
 sort -S 50% \
-	--field-separator=$'\t' --key=2 \
-	-o "$wiki""pagelinks.lines" \
-	"$wiki""pagelinks.lines"
+    --field-separator=$'\t' --key=2 \
+    -o "$wiki""pagelinks.lines" \
+    "$wiki""pagelinks.lines"
 join -j 2 \
-	"$wiki""pagelinks.lines" \
-	"$wiki""pageprops.lines" \
-	-o 2.1,1.1 -t $'\t' \
-	| sed "s/\(Q\|q\)\(.*\)\t\(Q\|q\)\(.*\)/\2\t\4/" \
+    "$wiki""pagelinks.lines" \
+    "$wiki""pageprops.lines" \
+    -o 2.1,1.1 -t $'\t' \
+    | sed "s/\(Q\|q\)\(.*\)\t\(Q\|q\)\(.*\)/\2\t\4/" \
 > "$wiki"-"$dump_date"".links"
 
 # Sort final output, cleanup, and print filename
 sort -S 50% \
-	--field-separator=$'\t' \
-	-k1 -k2 -nu \
-	-o "$wiki"-"$dump_date"".links" \
-	"$wiki"-"$dump_date"".links"
+    --field-separator=$'\t' \
+    -k1 -k2 -nu \
+    -o "$wiki"-"$dump_date"".links" \
+    "$wiki"-"$dump_date"".links"
 
 # Delete temporary files
 rm "$wiki""page.lines" \
-	"$wiki""pagelinks.lines" \
-	"$wiki""pagelinks_norm.lines" \
-	"$wiki""redirect.lines" \
-	"$wiki""redirect_norm.lines" \
-	"$wiki""pagelinks_redirected.lines" \
-	"$wiki""pageprops.lines"
+    "$wiki""pagelinks.lines" \
+    "$wiki""pagelinks_norm.lines" \
+    "$wiki""redirect.lines" \
+    "$wiki""redirect_norm.lines" \
+    "$wiki""pagelinks_redirected.lines" \
+    "$wiki""pageprops.lines"
 
 echo "$wiki"-"$dump_date"".links"
