@@ -60,4 +60,4 @@ else
 fi
 sort -S 50% -nro "$filename"".rank" --field-separator=$'\t' --key=2 "$filename"".rank"
 bzip2 "$filename"
-echo "$filename"
+wc -l "$filename"".rank"
