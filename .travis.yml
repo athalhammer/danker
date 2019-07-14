@@ -4,4 +4,4 @@ python:
 install:
   - pip install networkx numpy
 script:
-  -pytest
+  - pytest
