@@ -45,6 +45,7 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
    $ python3
    >>> import danker
    ```
+   More information on this option can be found at https://danker.rtfd.org.
 
 ## Download
 Output of ``./danker.sh ALL`` on bi-weekly Wikipedia dumps.
