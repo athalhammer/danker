@@ -1,6 +1,6 @@
-
-danker v0.4.0
-=============
+================
+danker |release|
+================
 
 .. toctree::
    :maxdepth: 2
