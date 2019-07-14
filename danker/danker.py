@@ -52,6 +52,7 @@ right column::
    # Sort by right column
    sort --key=2 -o output-right link-file
 
+The :func:`init` function is used to initialize the PageRank computation.
 The following code shows a minimal example for computing PageRank with the
 :func:`danker_bigmem` option (right-sorted file not needed)::
 
