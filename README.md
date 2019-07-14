@@ -1,4 +1,5 @@
 [![Documentation Status](https://readthedocs.org/projects/danker/badge/?version=latest)](https://danker.readthedocs.io/en/latest/?badge=latest)
+[![Build Status](https://travis-ci.com/athalhammer/danker.svg?branch=master)](https://travis-ci.com/athalhammer/danker)
 
 danker
 ======
