@@ -44,3 +44,6 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # a list of builtin themes.
 #
 html_theme = 'default'
+
+# readthedocs master doc pointer
+master_doc = 'index'
