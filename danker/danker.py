@@ -25,7 +25,6 @@ import argparse
 #import memory_profiler
 
 class InputNotSortedException(Exception):
-
     _MESSAGE = 'Input file "{0}" is not correctly sorted. "{1}" after "{2}"'
 
     def __init__(self, file_name, line1, line2):
@@ -50,7 +49,26 @@ def _get_std_list(smallmem, start_value):
 
 def init(left_sorted, start_value, smallmem):
     """
-    Read left_sorted link file and initialization steps.
+    This function creates the data structure for PageRank computation by
+    indexing every node. Main indexing steps include setting the starting
+    value as well as counting the number of outgoing links for each node.
+
+    :param left_sorted: A tab-separated link file that is sorted by the
+                        left column.
+    :param start_value: The PageRank starting value.
+    :param smallmem: This value is interpreted as a boolean that indicates
+                     whether the indexing should be done for
+                     :func:`danker_smallmem` (file iteration) or
+                     :func:`danker_bigmem` (in-memory). Default is "False".
+    :returns: Dictionary with each key referencing a node. The value is a
+              list with the following contentsi - depending on the smallmem
+              parameter and the intended use:
+
+              * :func:`danker_bigmem` [link_count:int, start_value:float,
+                start_value:float, linked_pages:list]
+
+              * :func:`danker_smallmem` [link_cout:int, start_value:float,
+                start_value:float, touched_in_1st_iteration:boolean]
     """
     dictionary = {}
     previous = None
@@ -90,6 +108,16 @@ def init(left_sorted, start_value, smallmem):
 def danker_smallmem(dictionary, right_sorted, iterations, damping, start_value):
     """
     Compute PageRank with right sorted file.
+
+    :param dictionary: Python dictionary created with :func:`init`
+                       (smallmem set to True).
+    :param right_sorted: The same tab-separated link file that was used for
+                         :func:`init` sorted by the right column.
+    :param iterations: The number of PageRank iterations.
+    :param damping: The PageRank damping factor.
+    :param start_value: The PageRank starting value (same as was used for
+                        :func:`init`).
+    :return:
     """
     for iteration in range(0, iterations):
         print(str(iteration + 1) + ".", end="", flush=True, file=sys.stderr)
@@ -134,6 +162,12 @@ def danker_smallmem(dictionary, right_sorted, iterations, damping, start_value):
 def danker_bigmem(dictionary, iterations, damping):
     """
     Compute PageRank with big memory option.
+
+    :param dictionary: Python dictionary created with :func:`init`
+                       (smallmem set to False).
+    :param iterations: The number of PageRank iterations.
+    :param damping: The PageRank damping factor.
+    :return:
     """
     for iteration in range(0, iterations):
 
