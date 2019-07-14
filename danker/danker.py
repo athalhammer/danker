@@ -17,7 +17,64 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-danker
+danker is a light-weight package/module to compute PageRank on very large
+graphs with limited hardware resources. The input format are edge lists of
+the following format::
+
+    A   B
+    B   C
+    C   D
+
+The nodes can be denoted as strings or integers. However, depending on the
+size of the graph and the amount of available memory you may have to index
+string node as integers and map back after computation::
+
+    # link file
+    1   2
+    2   3
+    3   4
+
+    # index file
+    1   A
+    2   B
+    3   C
+    4   D
+
+A pre-requisite for danker is that the input file is sorted. For this, you
+can use the Linux `sort <https://linux.die.net/man/1/sort>`_ command. If
+you want to use the :func:`danker_smallmem` option you need two copies of
+the same link file: one sorted by the left column and one sorted by the
+right column::
+
+   # Sort by left column
+   sort --key=1 -o output-left link-file
+
+   # Sort by right column
+   sort --key=2 -o output-right link-file
+
+The following code shows a minimal example for computing PageRank with the
+:func:`danker_bigmem` option (right-sorted file not needed)::
+
+    import danker
+    start_value, iterations, damping = 0.1, 40, 0.85
+    pr_dict = danker.init("output-left", start_value, False)
+    pr_out = danker.danker_bigmem(pr_dict, iterations, damping)
+    result_loc = (iterations % 2) + 1
+    for i in pr_out:
+        print(i, pr_out[i][result_loc], sep='\\t')
+
+
+The following code shows a minimal example for computing PageRank with the
+:func:`danker_smallmem` option::
+
+    import danker
+    start_value, iterations, damping = 0.1, 40, 0.85
+    pr_dict = danker.init("output-left", start_value, True)
+    pr_out = danker.danker_smallmem(pr_dict, "output-right", iterations, damping, start_value)
+    result_loc = (iterations % 2) + 1
+    for i in pr_out:
+        print(i, pr_out[i][result_loc], sep='\\t')
+
 """
 import sys
 import time
@@ -25,6 +82,13 @@ import argparse
 #import memory_profiler
 
 class InputNotSortedException(Exception):
+    """
+    Custom exception thrown in case the input file is not correctly sorted.
+
+    :param file_name: The name of the file that is not correctly sorted.
+    :param line1: The line that should be first (but is not).
+    :param line2: The line that should be second (but is not).
+    """
     _MESSAGE = 'Input file "{0}" is not correctly sorted. "{1}" after "{2}"'
 
     def __init__(self, file_name, line1, line2):
@@ -117,7 +181,10 @@ def danker_smallmem(dictionary, right_sorted, iterations, damping, start_value):
     :param damping: The PageRank damping factor.
     :param start_value: The PageRank starting value (same as was used for
                         :func:`init`).
-    :return:
+    :return: The same dictionary that was created by :func:`init`. The keys
+             are the nodes of the graph. The output score is located at
+             the ``iterations % 2) + 1`` position of the respecive list
+             (that is the value of the key).
     """
     for iteration in range(0, iterations):
         print(str(iteration + 1) + ".", end="", flush=True, file=sys.stderr)
@@ -167,7 +234,10 @@ def danker_bigmem(dictionary, iterations, damping):
                        (smallmem set to False).
     :param iterations: The number of PageRank iterations.
     :param damping: The PageRank damping factor.
-    :return:
+    :return: The same dictionary that was created by :func:`init`. The keys
+             are the nodes of the graph. The output score is located at
+             the ``iterations % 2) + 1`` position of the respecive list
+             (that is the value of the key).
     """
     for iteration in range(0, iterations):
 
