@@ -1,3 +1,5 @@
+[![Documentation Status](https://readthedocs.org/projects/danker/badge/?version=latest)](https://danker.readthedocs.io/en/latest/?badge=latest)
+
 danker
 ======
 
