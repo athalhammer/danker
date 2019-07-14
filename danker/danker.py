@@ -17,9 +17,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-`danker <https://github.com/athalhammer/danker>`_ is a light-weight package/module to compute PageRank on very large
-graphs with limited hardware resources. The input format are edge lists of
-the following format::
+`danker <https://github.com/athalhammer/danker>`_ is a light-weight
+package/module to compute PageRank on very large graphs with limited
+hardware resources. The input format are edge lists of the following format::
 
     A   B
     B   C
