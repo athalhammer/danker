@@ -184,7 +184,7 @@ def danker_smallmem(dictionary, right_sorted, iterations, damping, start_value):
                         :func:`init`).
     :return: The same dictionary that was created by :func:`init`. The keys
              are the nodes of the graph. The output score is located at
-             the ``iterations % 2) + 1`` position of the respecive list
+             the ``(iterations % 2) + 1`` position of the respecive list
              (that is the value of the key).
     """
     for iteration in range(0, iterations):
@@ -237,7 +237,7 @@ def danker_bigmem(dictionary, iterations, damping):
     :param damping: The PageRank damping factor.
     :return: The same dictionary that was created by :func:`init`. The keys
              are the nodes of the graph. The output score is located at
-             the ``iterations % 2) + 1`` position of the respecive list
+             the ``(iterations % 2) + 1`` position of the respecive list
              (that is the value of the key).
     """
     for iteration in range(0, iterations):
