@@ -114,7 +114,7 @@ H	0.15000000000000002
 I	0.15000000000000002
 K	0.15000000000000002
 L	0.15000000000000002
-$ ./danker/danker.py ./test/graphs/test.links 0.85 40 1 --right_sorted ./test/graphs/test.links.right
+$ ./danker/danker.py ./test/graphs/test.links ./test/graphs/test.links.right 0.85 40 1
 1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19.20.21.22.23.24.25.26.27.28.29.30.31.32.33.34.35.36.37.38.39.40.
 Computation of PageRank on './test/graphs/test.links' with danker took 0.01 seconds.
 A	0.30410528185693986
@@ -172,7 +172,7 @@ This software is licensed under GPLv3. (see https://www.gnu.org/licenses/).
    
 5. __Can I use danker to compute PageRank on other graphs than Wikipedia?__
 
-   _Sure, you can use the file `./danker/danker.py` for computing PageRank on your graph. If you pass a "right sorted" file with the optional parameter `--right_sorted` automatically the slower method with low memory footprint will be used. The memory-intensive method will be used otherwise. You can sort tab-separated files with the Unix command `sort --key=2 -o output-file input-file`._ 
+   _Sure, you can use the file `./danker/danker.py` for computing PageRank on your graph. If you pass a "right sorted" file with the optional parameter `right_sorted` automatically the slower method with low memory footprint will be used. The memory-intensive method will be used otherwise. You can sort tab-separated files with the Unix command `sort --key=2 -o output-file input-file`. Type `./danker/danker.py -h` for options. In addition, you can use danker as a library in your Python 3.x code (cf.: https://danker.rtfd.org)_
    
 6. __Why do the scores not form a nice probability distribution?__
 

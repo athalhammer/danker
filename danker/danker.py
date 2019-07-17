@@ -126,7 +126,7 @@ def init(left_sorted, start_value, smallmem):
                      :func:`danker_smallmem` (file iteration) or
                      :func:`danker_bigmem` (in-memory). Default is "False".
     :returns: Dictionary with each key referencing a node. The value is a
-              list with the following contentsi - depending on the smallmem
+              list with the following contents - depending on the smallmem
               parameter and the intended use:
 
               * :func:`danker_bigmem` [link_count:int, start_value:float,
@@ -262,14 +262,19 @@ def _main():
     """
     Execute main program.
     """
-    parser = argparse.ArgumentParser(description='danker PageRank.')
-    parser.add_argument('left_sorted')
-    parser.add_argument('--right_sorted')
-    parser.add_argument('damping', type=float)
-    parser.add_argument('iterations', type=int)
-    parser.add_argument('start_value', type=float)
+    parser = argparse.ArgumentParser(description='danker PageRank. Compute ' +
+                                     'PageRank on large graphs on low-cost hardware.')
+    parser.add_argument('left_sorted', type=str, help='A two-column, ' +
+                        'tab-separated file sorted by the left column.')
+    parser.add_argument('right_sorted', nargs='?', type=str, help='The same ' +
+                        'file as left_sorted but sorted by the right column.')
+    parser.add_argument('damping', type=float, help='PageRank damping factor.')
+    parser.add_argument('iterations', type=int, help='Number of PageRank ' +
+                        'iterations.')
+    parser.add_argument('start_value', type=float, help='PageRank starting value.')
     args = parser.parse_args()
     start = time.time()
+
     dictionary = init(args.left_sorted, args.start_value, args.right_sorted)
     result_position = (args.iterations % 2) + 1
     if args.right_sorted:

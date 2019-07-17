@@ -53,7 +53,7 @@ if [ "$2" == "BIGMEM" ]; then
     > "$filename".rank
 else
     sort -S 50% --field-separator=$'\t' --key=2 --temporary-directory=. -no "$filename"".right" "$filename"
-    ./danker/danker.py  "$filename" --right_sorted "$filename"".right" $DAMPING_FACTOR $ITERATIONS $START_VALUE \
+    ./danker/danker.py  "$filename" "$filename"".right" $DAMPING_FACTOR $ITERATIONS $START_VALUE \
         | sed "s/\(.*\)/Q\1/" \
     > "$filename".rank
     rm "$filename"".right"
