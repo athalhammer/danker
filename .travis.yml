@@ -4,6 +4,6 @@ python:
 install:
   - pip install networkx numpy coveralls
 script:
-  - pytest
+  - nosetests --with-coverage --cover-package=danker
 after_success:
   - coveralls
