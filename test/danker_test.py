@@ -5,6 +5,7 @@ danker test cases
 """
 import unittest
 import os
+import sys
 import networkx as nx
 import numpy as np
 import danker
@@ -30,6 +31,13 @@ class DankerTest(unittest.TestCase):
         print("Pearson correlation:")
         print(np.corrcoef(res[0], res[1]))
         self.assertAlmostEqual(np.corrcoef(res[0], res[1])[0][1], 1, places=6)
+
+    def test_main(self):
+        """
+        Test main method
+        """
+        sys.argv=[sys.argv[0], './test/graphs/test.links', '0.85', '10', '1']
+        danker.danker._main()
 
     def test_left_sort(self):
         """
