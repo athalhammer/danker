@@ -36,7 +36,7 @@ if [ "$1" == "ALL" ]; then
         cat "$i" >> "$filename"
     done
   
-    sort -S 50% --field-separator=$'\t' --key=1 --temporary-directory=. -no "$filename" "$filename"
+    sort -k 1,1n -T . -S 50% -o "$filename" "$filename"
 
     # collect stats and add language-specific source files to a compressed archive
     for i in $(cat "$filename.files.txt"); do
@@ -52,12 +52,12 @@ if [ "$2" == "BIGMEM" ]; then
         | sed "s/\(.*\)/Q\1/" \
     > "$filename".rank
 else
-    sort -S 50% --field-separator=$'\t' --key=2 --temporary-directory=. -no "$filename"".right" "$filename"
+    sort -k 2,2n -T . -S 50% -o "$filename"".right" "$filename"
     ./danker/danker.py  "$filename" "$filename"".right" $DAMPING_FACTOR $ITERATIONS $START_VALUE \
         | sed "s/\(.*\)/Q\1/" \
     > "$filename".rank
     rm "$filename"".right"
 fi
-sort -S 50% -nro "$filename"".rank" --field-separator=$'\t' --key=2 "$filename"".rank"
+sort -k 2,2nr -T . -S 50% -o "$filename"".rank" "$filename"".rank"
 bzip2 "$filename"
 wc -l "$filename"".rank"
