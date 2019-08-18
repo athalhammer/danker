@@ -52,8 +52,6 @@ def main():
         data_dict = OrderedDict()
         line = in_file.readline()
 
-        # counter for expected regex matches based on data_dict entries
-        group_counter = 0
         while not line.startswith('INSERT') and line != '':
 
             # Check for column definition lines
@@ -64,10 +62,8 @@ def main():
                 datatype = match.group(2)
                 if datatype.lower() in QUOTED_DATATYPES:
                     expr = QUOTED_MARIADB_DATATYPE[:-1]
-                    group_counter += 2
                 else:
                     expr = PLAIN_MARIADB_DATATYPE[:-1]
-                    group_counter += 1
                 if 'NOT NULL' not in line:
                     expr += '|' + SQL_NULL
                 expr += ')'
@@ -76,7 +72,7 @@ def main():
 
         # build regex with a bit of lookahead
         regex = r'\(' + ','.join([data_dict[i] for i in data_dict]) + r'\)(?=((,\()|;))'
-        group_counter += 2
+
         # header of CSV
         print(",".join(data_dict))
 
@@ -84,11 +80,6 @@ def main():
         pattern = re.compile(regex)
         while line.startswith('INSERT'):
             for match in pattern.finditer(line):
-                if len(match.groups()) != group_counter:
-                    print('[Error] "' + match.group() +
-                          ' does not correspond to "' + ",".join(data_dict) +
-                          '".', file=sys.stderr)
-                    sys.exit(1)
 
                 # Handle errors when surrogate escapes can not be printed
                 try:
