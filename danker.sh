@@ -28,22 +28,28 @@ fi
 
 if [ "$1" == "ALL" ]; then
     filename=$(date +"%Y-%m-%d").all.links
-    for i in $(./script/get_languages.sh); do
-        ./script/create_links.sh "$i" >> "$filename.files.txt"
-    done
-  
-    for i in $(cat "$filename.files.txt"); do 
-        cat "$i" >> "$filename"
-    done
-  
-    sort -k 1,1n -T . -S 50% -o "$filename" "$filename"
+    languages=$(./script/get_languages.sh)
+    if [ $? -eq 0 ]; then
+        for i in $(echo "$languages"); do
+            ./script/create_links.sh "$i" >> "$filename.files.txt"
+        done
 
-    # collect stats and add language-specific source files to a compressed archive
-    for i in $(cat "$filename.files.txt"); do
-        wc -l "$i" >> "$filename.stats.txt"
-    done
-    wc -l "$filename" >> "$filename.stats.txt"
-    tar --remove-files -cjf "$filename.tar.bz2" $(cat "$filename.files.txt")
+        for i in $(cat "$filename.files.txt"); do
+            cat "$i" >> "$filename"
+        done
+
+	sort -k 1,1n -T . -S 50% -o "$filename" "$filename"
+
+        # collect stats and add language-specific source files to a compressed archive
+        for i in $(cat "$filename.files.txt"); do
+            wc -l "$i" >> "$filename.stats.txt"
+        done
+        wc -l "$filename" >> "$filename.stats.txt"
+        tar --remove-files -cjf "$filename.tar.bz2" $(cat "$filename.files.txt")
+    else
+	(>&2 printf "[Error]\tCouldn't retrieve languages...\n")
+        exit 1
+    fi
 else
     filename=$(./script/create_links.sh "$1")
 fi
