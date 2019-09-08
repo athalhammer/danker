@@ -16,8 +16,16 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-curl -s "http://wikistats.wmflabs.org/display.php?t=wp" \
+result=$(curl -s "http://wikistats.wmflabs.org/display.php?t=wp" \
 	| sed -n 's;\(.*text\)\{2\}.*>\(.*\)</a>.*;\2;p'  `# Parse wiki names` \
 	| sed "s/-/_/g"                                   `# Replace "-" with "_"` \
 	| sed "s/be_tarask/be_x_old/" 	                  `# Manual fix for be_x_old` \
-	| sort
+	| sort)
+
+# ensure proper exit code
+if [ "$result" ]; then
+	echo "$result"
+	exit 0
+else
+	exit 1
+fi
