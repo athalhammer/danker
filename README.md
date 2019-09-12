@@ -1,3 +1,11 @@
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org/",
+  "@type": "Dataset",
+  "name": "danker Wikidata PageRank"
+}
+</script>
+
 [![Build Status](https://travis-ci.com/athalhammer/danker.svg?branch=master)](https://travis-ci.com/athalhammer/danker)
 [![Coverage Status](https://coveralls.io/repos/github/athalhammer/danker/badge.svg?branch=master)](https://coveralls.io/github/athalhammer/danker?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/danker/badge/?version=latest)](https://danker.readthedocs.io/en/latest/?badge=latest)
