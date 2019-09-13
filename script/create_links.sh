@@ -72,8 +72,12 @@ wget -q "$download$dump_date/$page.gz" \
     "$download$dump_date/$redirect.gz" \
     "$download$dump_date/$pageprops.gz"
 
-gunzip "$page.gz" "$pagelinks.gz" "$redirect.gz" "$pageprops.gz"
+if [ $? -ne 0 ]; then
+    (>&2 printf "Couldn't download dumps of '$wiki'.\n")
+    exit 1
+fi
 
+gunzip "$page.gz" "$pagelinks.gz" "$redirect.gz" "$pageprops.gz"
 
 # Pre-process
 "$dir"/maria2csv.py "$page" \
