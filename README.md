@@ -46,8 +46,10 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
    ```
 * Standalone with any input graph:
    ```
-   usage: danker.py [-h]
-                    left_sorted [right_sorted] damping iterations start_value
+   $ pip install git+https://github.com/athalhammer/danker.git
+   $ python3 -m danker -h
+   usage: __main__.py [-h]
+                      left_sorted [right_sorted] damping iterations start_value
 
    danker PageRank. Compute PageRank on large graphs on low-cost hardware.
 
