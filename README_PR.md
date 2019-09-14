@@ -29,4 +29,4 @@
    ```
    More information on this option can be found at https://danker.rtfd.org.
 
-More information: [Compute PageRank on the Wikipedia graph](https://github.com/athalhammer/danker)
+More information on the project: [Compute PageRank on the Wikipedia graph](https://github.com/athalhammer/danker)
