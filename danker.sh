@@ -54,12 +54,12 @@ else
     filename=$(./script/create_links.sh "$1")
 fi
 if [ "$2" == "BIGMEM" ]; then
-    ./danker/danker.py  "$filename" $DAMPING_FACTOR $ITERATIONS $START_VALUE \
+    python3 -m danker  "$filename" $DAMPING_FACTOR $ITERATIONS $START_VALUE \
         | sed "s/\(.*\)/Q\1/" \
     > "$filename".rank
 else
     sort -k 2,2n -T . -S 50% -o "$filename"".right" "$filename"
-    ./danker/danker.py  "$filename" "$filename"".right" $DAMPING_FACTOR $ITERATIONS $START_VALUE \
+    python3 -m danker  "$filename" "$filename"".right" $DAMPING_FACTOR $ITERATIONS $START_VALUE \
         | sed "s/\(.*\)/Q\1/" \
     > "$filename".rank
     rm "$filename"".right"
