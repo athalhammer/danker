@@ -1,12 +1,19 @@
 language: python
 python:
-  - "3.4"
-  - "3.5"
-  - "3.6"
-  - "3.7"
+- '3.4'
+- '3.5'
+- '3.6'
+- '3.7'
 install:
-  - pip install networkx numpy coveralls
+- pip install networkx numpy coveralls
 script:
-  - nosetests --with-coverage --cover-package=danker
+- nosetests --with-coverage --cover-package=danker
 after_success:
-  - coveralls
+- coveralls
+deploy:
+  provider: pypi
+  user: thalhamm
+  password:
+    secure: bDQi/oSpKG7yu8TjewmnxSAuDKJLeX3Z0FrITXF7lF6/hp5OOpKpP8VpV7cZ0WesKRK/ez3oMFZqmaOpo1q0pUWtNS1aUTAzL8NXBjEu8Ii8SGb7TtqUYv++Pu0o5zfIqlpdspmbezzvYnMjlYCv6npMh0n4n7WRzy3DAAhysqcZW0dxDK2eZBHbL0upEx/pWnxe+by6Y8mShDEOCkZiAoUU8yRbDW0CZ9mozKBSIqwmBgRbczjKCPIiLH2bWKx5WOPh2H6eXno2+NRi//NGve5zBTzy3ZrHXxMZJvS85ACb33Go9ARSsgBjIIllPHrf4QJ9gZN2CrWV87lQCpgJKgg1m0ka3qmyfpx+rhwvMMTr/ESTQAm2LLptu9YWerrqHTBHgTDUO0e3AgnipRiAxVrzjikTtnljMHhDaMhThW2OxjrZAlXACySU5y6pBo3zeYI35EY8AlHMFhuBo1Ud0RrsgO7pBZ5SBItvDecBw8mxJD0Kx665BbiC+T7uvcH7YGCnGY6iUm/4zt/ggahtgD7PMd9/0AbLxUMhapa3o2sGt18bEdsXzClL2ZXI77pNcRjFwsTT/GGj7/akH82Cwe0LVOIdTOw20EaAKnCdV8ctpHKGXmsws5ro8SSJk+MSJKTApRce/3a/LeCGO+6OOGI2jPmLk3Qicu/u5H1gLeY=
+  on:
+    tags: true
