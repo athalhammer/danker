@@ -45,7 +45,7 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
    $ for i in $(./script/get_languages.sh); do ./danker.sh "$i" "BIGMEM"; done
    ```
 
-* [Compute PageRank on any other graph](https://github.com/athalhammer/danker/README_PR.md)
+* [Compute PageRank on any other graph](./README_PR.md)
 
 
 ## Download
