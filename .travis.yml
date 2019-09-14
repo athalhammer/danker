@@ -10,11 +10,3 @@ script:
 - nosetests --with-coverage --cover-package=danker
 after_success:
 - coveralls
-deploy:
-  provider: pypi
-  username: "thalhamm"
-  password: "VwFvvAaIQ9i1v31VzfC2s5xBeLtzQOAIOPqwNaIAmJvmjIAjZDQ3BQ8ZMK9gGUVCTMskK2Q6hTVPxS/f9qHs83YvArmCbcwilRGRhmVraI8YwXc/GJ5XN/XpEpa6dSxuf7PTe8AIvPv+GG+v76X2348JoV5H+W/Nbn6rP5HO93XEvGpbtEb/yBlkUWHPhXAEOgxD5j5NMptP+umEPcQck3wkwa2uRAnW3c9WPr9CgmeVTSb+8DmJNDpGVyC6OGHc8Kb7WvWdTlTUjcAE8uYGSyD3VmxK8TYwjFZEFPQcpEaiw4Zg3hNq07ogPnA0dWIKsDTUD93RpaoAakDp+bB37NqgABBh+0ZJPfbW0365DixVKdkQOHdFpm5dh9Mb/SJQb+SwjmI1YCuCgGFtxZuc3cObjSBbCl0O7yKG/QQDoS8pPs7/z3rWmegvdb3ZovqyUihMAUxhItbHdLSbL1B/zyeXwTNL+OmzKnLY4peyAwTGCZx/sWuaWhISWCxdRMeV3AJm0u40X7HJsvvTqJDl4wUVwAaBKn5vils4pf+nWBd88I+4FHsNXgVfxfp/OJlFj2H3blwtYRgvaO7i3H2FxuiBT0/i15YckAIpV/2PPpKQowLkdwKUW9q1srSRQXk6i9OM3db42pB2UYwrq4tHGisvOJET40o+X6HwZt4lDtg="
-  edge: true
-  on:
-    tags: true
-  skip_existing: true
