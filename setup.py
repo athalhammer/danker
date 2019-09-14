@@ -1,6 +1,6 @@
 from setuptools import setup
 
-with open("README.md", "r") as f:
+with open("README_PR.md", "r") as f:
     long_description = f.read()
 
 setup(
@@ -9,7 +9,7 @@ setup(
     url='https://github.com/athalhammer/danker',
     author='Andreas Thalhammer',
     author_email='andreas@thalhammer.bayern',
-    description='Compute PageRank on large graphs on ' +
+    description='Compute PageRank on large graphs with ' +
                 'off-the-shelf hardware.',
     long_description=long_description,
     long_description_content_type="text/markdown",

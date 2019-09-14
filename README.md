@@ -44,34 +44,9 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
    $ for i in $(./script/get_languages.sh); do ./danker.sh "$i"; done
    $ for i in $(./script/get_languages.sh); do ./danker.sh "$i" "BIGMEM"; done
    ```
-* Standalone with any input graph:
-   ```
-   $ pip install git+https://github.com/athalhammer/danker.git
-   $ python3 -m danker -h
-   usage: __main__.py [-h]
-                      left_sorted [right_sorted] damping iterations start_value
 
-   danker PageRank. Compute PageRank on large graphs on low-cost hardware.
+* [Compute PageRank on any other graph](https://github.com/athalhammer/danker/README_PR.md)
 
-   positional arguments:
-     left_sorted   A two-column, tab-separated file sorted by the left column.
-     right_sorted  The same file as left_sorted but sorted by the right column.
-     damping       PageRank damping factor.
-     iterations    Number of PageRank iterations.
-     start_value   PageRank starting value.
-
-   optional arguments:
-     -h, --help    show this help message and exit
-
-   ```
-
-* As Python library for computing PageRank on large graphs:
-   ```
-   $ pip install git+https://github.com/athalhammer/danker.git
-   $ python3
-   >>> import danker
-   ```
-   More information on this option can be found at https://danker.rtfd.org.
 
 ## Download
 Output of ``./danker.sh ALL`` on bi-weekly Wikipedia dumps.
