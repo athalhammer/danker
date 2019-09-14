@@ -262,8 +262,8 @@ def _main():
     """
     Execute main program.
     """
-    parser = argparse.ArgumentParser(description='danker PageRank. Compute ' +
-                                     'PageRank on large graphs on low-cost hardware.')
+    parser = argparse.ArgumentParser(description='danker - Compute PageRank ' +
+                                     'on large graphs with off-the-shelf hardware.')
     parser.add_argument('left_sorted', type=str, help='A two-column, ' +
                         'tab-separated file sorted by the left column.')
     parser.add_argument('right_sorted', nargs='?', type=str, help='The same ' +
@@ -287,4 +287,3 @@ def _main():
 
     for i in dictionary:
         print("{0}\t{1:.17g}".format(i, dictionary[i][result_position]))
-

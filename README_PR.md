@@ -2,12 +2,10 @@
  
 * Standalone with any input graph:
    ```
-   $ pip install git+https://github.com/athalhammer/danker.git
-   $ python3 -m danker -h
    usage: __main__.py [-h]
                       left_sorted [right_sorted] damping iterations start_value
 
-   danker PageRank. Compute PageRank on large graphs on low-cost hardware.
+   danker - Compute PageRank on large graphs with off-the-shelf hardware.
 
    positional arguments:
      left_sorted   A two-column, tab-separated file sorted by the left column.
@@ -23,7 +21,7 @@
 
 * As Python library for computing PageRank on large graphs:
    ```
-   $ pip install git+https://github.com/athalhammer/danker.git
+   $ pip install danker
    $ python3
    >>> import danker
    ```
