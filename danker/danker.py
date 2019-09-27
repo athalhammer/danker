@@ -272,6 +272,11 @@ def _main():
     parser.add_argument('iterations', type=int, help='Number of PageRank ' +
                         'iterations.')
     parser.add_argument('start_value', type=float, help='PageRank starting value.')
+
+    # fix program name
+    if parser.prog == '__main__.py':
+        parser.prog = 'python -m danker'
+
     args = parser.parse_args()
     start = time.time()
 
