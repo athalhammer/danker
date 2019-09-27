@@ -3,7 +3,7 @@
 * Standalone with any input graph:
    ```
    $ pip install danker
-   $ python3 -m danker -h
+   $ python -m danker -h
    usage: python -m danker [-h]
                         left_sorted [right_sorted] damping iterations
                         start_value
