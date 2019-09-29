@@ -262,8 +262,9 @@ def _main():
     """
     Execute main program.
     """
-    parser = argparse.ArgumentParser(description='danker - Compute PageRank ' +
-                                     'on large graphs with off-the-shelf hardware.')
+    parser = argparse.ArgumentParser(prog='python -m danker', description='danker' +
+                                     '- Compute PageRank on large graphs with ' +
+                                     'off-the-shelf hardware.')
     parser.add_argument('left_sorted', type=str, help='A two-column, ' +
                         'tab-separated file sorted by the left column.')
     parser.add_argument('right_sorted', nargs='?', type=str, help='The same ' +
@@ -272,14 +273,9 @@ def _main():
     parser.add_argument('iterations', type=int, help='Number of PageRank ' +
                         'iterations.')
     parser.add_argument('start_value', type=float, help='PageRank starting value.')
-
-    # fix program name
-    if parser.prog == '__main__.py':
-        parser.prog = 'python -m danker'
-
     args = parser.parse_args()
-    start = time.time()
 
+    start = time.time()
     dictionary = init(args.left_sorted, args.start_value, args.right_sorted)
     result_position = (args.iterations % 2) + 1
     if args.right_sorted:
