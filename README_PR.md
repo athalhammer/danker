@@ -3,7 +3,7 @@
 * Standalone with any input graph:
    ```
    $ pip install danker
-   $ python3 -m danker -h
+   $ python -m danker -h
    usage: python -m danker [-h]
                         left_sorted [right_sorted] damping iterations
                         start_value
@@ -21,7 +21,7 @@
      -h, --help    show this help message and exit
 
    $ wget https://raw.githubusercontent.com/athalhammer/danker/master/test/graphs/test.links
-   $ python3 -m danker test.links 0.85 30 1
+   $ python -m danker test.links 0.85 30 1
       1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19.20.21.22.23.24.25.26.27.28.29.30.
       Computation of PageRank on 'test.links' with danker took 0.00 seconds.
       C	3.1898535044738043
@@ -40,7 +40,7 @@
 * As Python library for computing PageRank on large graphs:
    ```
    $ pip install danker
-   $ python3
+   $ python
    >>> import danker
    ```
    More information on this option can be found at https://danker.rtfd.org.
