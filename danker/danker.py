@@ -263,26 +263,32 @@ def _main():
     Execute main program.
     """
     parser = argparse.ArgumentParser(prog='python -m danker', description='danker' +
-                                     '- Compute PageRank on large graphs with ' +
+                                     ' - Compute PageRank on large graphs with ' +
                                      'off-the-shelf hardware.')
     parser.add_argument('left_sorted', type=str, help='A two-column, ' +
                         'tab-separated file sorted by the left column.')
     parser.add_argument('right_sorted', nargs='?', type=str, help='The same ' +
                         'file as left_sorted but sorted by the right column.')
-    parser.add_argument('damping', type=float, help='PageRank damping factor.')
+    parser.add_argument('damping', type=float, help='PageRank damping factor' +
+                        '(between 0 and 1).')
     parser.add_argument('iterations', type=int, help='Number of PageRank ' +
-                        'iterations.')
-    parser.add_argument('start_value', type=float, help='PageRank starting value.')
+                        'iterations (>0).')
+    parser.add_argument('start_value', type=float, help='PageRank starting value'
+                        '(>0).')
     args = parser.parse_args()
-
+    if args.iterations <= 0 or args.damping > 1 or args.damping < 0 or args.start_value <= 0:
+        parser.print_help()
+        sys.exit(1)
     start = time.time()
     dictionary = init(args.left_sorted, args.start_value, args.right_sorted)
     result_position = (args.iterations % 2) + 1
+
     if args.right_sorted:
         danker_smallmem(dictionary, args.right_sorted, args.iterations,
                         args.damping, args.start_value)
     else:
         danker_bigmem(dictionary, args.iterations, args.damping)
+
     print("Computation of PageRank on '{0}' with {1} took {2:.2f} seconds.".format(
         args.left_sorted, 'danker', time.time() - start), file=sys.stderr)
 
