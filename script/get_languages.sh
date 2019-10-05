@@ -17,7 +17,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 declare -A WIKIS
-WIKIS=( ["books"]="wb" ["source"]="ws")
+WIKIS=( ["books"]="wb" ["source"]="ws" ["versity"]="wv" ["news"]="wn" )
 
 # default is normal Wikipedia (wp)
 project="wp"
