@@ -24,26 +24,60 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
 * `csvkit` (e.g., via `pip install csvkit`)
 
 ## Usage
+```
+  usage: ./danker.sh [-h] [-p PROJECT] [-i ITERATIONS] [-d DAMPING] [-s START]
+                     [-b]
+                     wikilang
+
+  Compute PageRank on Wikipedia.
+
+  positional arguments:
+    wikilang              Wikipedia language edition, e.g. "en". "ALL" for
+                          computing PageRank over all languages available in a
+                          project.
+
+  optional arguments:
+    -h, --help            show this help message and exit
+    -p PROJECT, --project PROJECT
+                          Wiki project, currently supported [wiki, books,
+                          source]. (default: wiki)
+    -i ITERATIONS, --iterations ITERATIONS
+                          PageRank number of iterations. (default: 40)
+    -d DAMPING, --damping DAMPING
+                          PageRank damping factor. (default: 0.85)
+    -s START, --start START
+                          PageRank starting value. (default: 0.1)
+    -b, --bigmem          Switch for "big memory" option. (default: False)
+```
+
+## Examples
+
 
 * Compute PageRank on the current dump of English Wikipedia:
 
    ```bash
    $ ./danker.sh en
-   $ ./danker.sh en BIGMEM
+   $ ./danker.sh en --bigmem
    ```
    
 * Compute PageRank on the union of all language editions:
 
    ```bash
    $ ./danker.sh ALL
-   $ ./danker.sh ALL BIGMEM    # caution, you will need some main memory for that
+   $ ./danker.sh ALL --bigmem    # caution, you will need some main memory for that
    ```
    
-* Compute PageRank for each Wikipedia language edition:
+* Compute PageRank for each Wikipedia language edition separately:
 
    ```bash
    $ for i in $(./script/get_languages.sh); do ./danker.sh "$i"; done
    $ for i in $(./script/get_languages.sh); do ./danker.sh "$i" "BIGMEM"; done
+   ```
+* Compute PageRank on the english version of Wikibooks:
+
+   ```bash
+   $ ./danker.sh en --project books
+   $ ./danker.sh en --bigmem --project books
    ```
 
 * [Compute PageRank on any other graph](./README_PR.md)

@@ -4,8 +4,8 @@ parser = argparse.ArgumentParser(prog='./danker.sh',
         description='Compute PageRank on Wikipedia.',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('wikilang', type=str, help='Wikipedia language edition, e.g. "en".' +
-                                               '"ALL" for all languages available in ' +
-                                               'the project')
+                                               ' "ALL" for computing PageRank over all' +
+                                               ' languages available in a project.')
 parser.add_argument('-p', '--project', type=str, default='wiki',
                     help='Wiki project, currently supported [wiki, books, source].')
 parser.add_argument('-i', '--iterations', type=int, default=40,
