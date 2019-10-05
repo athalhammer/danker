@@ -33,17 +33,17 @@ else
 fi
 
 wiki="$1"
-
+project="$2"
 
 # Location of wikipedia dumps
-download="http://download.wikimedia.org/""$wiki""wiki/"
-rss="https://dumps.wikimedia.org/""$wiki""wiki/latest/"
+download="http://download.wikimedia.org/""$wiki""wiki"$project"/"
+rss="https://dumps.wikimedia.org/""$wiki""wiki""$project""/latest/""$rss""$wiki""wiki""$project""-latest-"
 
 # Latest dump date
-wget -q "$rss""$wiki""wiki-latest-page.sql.gz-rss.xml" \
-    "$rss""$wiki""wiki-latest-pagelinks.sql.gz-rss.xml" \
-    "$rss""$wiki""wiki-latest-redirect.sql.gz-rss.xml" \
-    "$rss""$wiki""wiki-latest-page_props.sql.gz-rss.xml"
+wget -q "$rss""page.sql.gz-rss.xml" \
+    "$rss""pagelinks.sql.gz-rss.xml" \
+    "$rss""redirect.sql.gz-rss.xml" \
+    "$rss""page_props.sql.gz-rss.xml"
 
 if [ $? -eq 0 ]; then
     dump_date=$(cat "$wiki"*.xml | sed -n "s#.*$download\([0-9]\+\).*#\1#p" | sort -u)
@@ -55,16 +55,16 @@ if [ $(echo "$dump_date" | wc -l) != '1' ] || [ "$dump_date" == '' ]; then
     exit 1
 fi
 
-rm "$wiki""wiki-latest-page.sql.gz-rss.xml" \
-    "$wiki""wiki-latest-pagelinks.sql.gz-rss.xml" \
-    "$wiki""wiki-latest-redirect.sql.gz-rss.xml" \
-    "$wiki""wiki-latest-page_props.sql.gz-rss.xml"
+rm "$wiki""wiki""$project""-latest-page.sql.gz-rss.xml" \
+    "$wiki""wiki""$project""-latest-pagelinks.sql.gz-rss.xml" \
+    "$wiki""wiki""$project""-latest-redirect.sql.gz-rss.xml" \
+    "$wiki""wiki""$project""-latest-page_props.sql.gz-rss.xml"
 
 # File locations
-page="$wiki""wiki-""$dump_date""-page.sql"
-pagelinks="$wiki""wiki-""$dump_date""-pagelinks.sql"
-redirect="$wiki""wiki-""$dump_date""-redirect.sql"
-pageprops="$wiki""wiki-""$dump_date""-page_props.sql"
+page="$wiki""wiki$project-""$dump_date""-page.sql"
+pagelinks="$wiki""wiki$project-""$dump_date""-pagelinks.sql"
+redirect="$wiki""wiki$project-""$dump_date""-redirect.sql"
+pageprops="$wiki""wiki$project-""$dump_date""-page_props.sql"
 
 # Download and unzip
 wget -q "$download$dump_date/$page.gz" \
