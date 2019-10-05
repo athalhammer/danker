@@ -8,7 +8,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 # argparse with Python
-formatted=$(python3 args.py $args)
+formatted=$(python3 ./script/args.py $args)
 pyexit=$?
 
 # should not contain "usage" (e.g., from --help)
@@ -18,5 +18,5 @@ formexit=$?
 if [ $formexit -eq 0 ] || [ $pyexit -ne 0 ]; then
 	printf "%s\n" "$formatted"
 else
-	./dank.sh $formatted
+	./script/dank.sh $formatted
 fi
