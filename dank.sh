@@ -16,9 +16,29 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-DAMPING_FACTOR=0.85
-ITERATIONS=40
-START_VALUE=0.1
+while getopts ":p:i:d:s:b" a; do
+    case "${a}" in
+        p)
+            project=${OPTARG}
+            ;;
+        i)
+            iterations=${OPTARG}
+            ;;
+        d)
+            damping=${OPTARG}
+            ;;
+        s)
+            start_value=${OPTARG}
+            ;;
+        b)
+            bigmem=1
+            ;;
+        *)
+	    # should not occur
+            ;;
+    esac
+done
+shift $((OPTIND-1))
 
 if [ ! "$1" ]; then
     (>&2 printf "[Error]\tMissing positional wiki language parameter.
@@ -28,10 +48,10 @@ fi
 
 if [ "$1" == "ALL" ]; then
     filename=$(date +"%Y-%m-%d").all.links
-    languages=$(./script/get_languages.sh)
+    languages=$(./script/get_languages.sh "$project")
     if [ $? -eq 0 ]; then
         for i in $(echo "$languages"); do
-            ./script/create_links.sh "$i" >> "$filename.files.txt"
+            ./script/create_links.sh "$i" "$project" >> "$filename.files.txt"
         done
 
         for i in $(cat "$filename.files.txt"); do
@@ -51,15 +71,15 @@ if [ "$1" == "ALL" ]; then
         exit 1
     fi
 else
-    filename=$(./script/create_links.sh "$1")
+    filename=$(./script/create_links.sh "$1" "$project")
 fi
-if [ "$2" == "BIGMEM" ]; then
-    python3 -m danker  "$filename" $DAMPING_FACTOR $ITERATIONS $START_VALUE \
+if [ $bigmem ]; then
+    python3 -m danker  "$filename" $damping $iterations $start_value \
         | sed "s/\(.*\)/Q\1/" \
     > "$filename".rank
 else
     sort -k 2,2n -T . -S 50% -o "$filename"".right" "$filename"
-    python3 -m danker  "$filename" "$filename"".right" $DAMPING_FACTOR $ITERATIONS $START_VALUE \
+    python3 -m danker  "$filename" "$filename"".right" $damping $iterations $start_value \
         | sed "s/\(.*\)/Q\1/" \
     > "$filename".rank
     rm "$filename"".right"
