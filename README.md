@@ -26,7 +26,7 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
 ## Usage
 ```
   usage: ./danker.sh [-h] [-p PROJECT] [-i ITERATIONS] [-d DAMPING] [-s START]
-                     [-b]
+                     [-b] [-l]
                      wikilang
 
   Compute PageRank on Wikipedia.
