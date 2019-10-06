@@ -16,7 +16,21 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-result=$(curl -s "http://wikistats.wmflabs.org/display.php?t=wp" \
+declare -A WIKIS
+WIKIS=( ["books"]="wb" ["source"]="ws" ["versity"]="wv" ["news"]="wn" )
+
+# default is normal Wikipedia (wp)
+project="wp"
+
+if [ "$1" ]; then
+	project=${WIKIS[$1]}
+fi
+if [ ! "$project" ]; then
+	(>&2 printf "[Error]\tno project found for '$1'.\n")
+	exit 1
+fi
+
+result=$(curl -s "http://wikistats.wmflabs.org/display.php?t=$project" \
 	| sed -n 's;\(.*text\)\{2\}.*>\(.*\)</a>.*;\2;p'  `# Parse wiki names` \
 	| sed "s/-/_/g"                                   `# Replace "-" with "_"` \
 	| sed "s/be_tarask/be_x_old/" 	                  `# Manual fix for be_x_old` \

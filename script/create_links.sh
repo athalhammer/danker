@@ -24,26 +24,26 @@ if [ ! "$1" ]; then
     \tExamples: [en, de, bar, ...]\n")
     exit 1
 else
-    invalid=$(grep "$1" <("$dir"/get_languages.sh))
+    invalid=$(grep "$1" <("$dir"/get_languages.sh $2))
     if [ -z "$invalid" ]; then
-        (>&2 printf "[Error]\t'$1' is an invalid language parameter.
-        \tPlease check: http://wikistats.wmflabs.org/display.php?t=wp\n")
+	(>&2 printf "[Error]\t'$1' is an invalid language parameter for 'wiki$2'.
+	 \tPlease check: http://wikistats.wmflabs.org/display.php\n")
         exit 1
     fi
 fi
 
 wiki="$1"
-
+project="$2"
 
 # Location of wikipedia dumps
-download="http://download.wikimedia.org/""$wiki""wiki/"
-rss="https://dumps.wikimedia.org/""$wiki""wiki/latest/"
+download="http://download.wikimedia.org/""$wiki""wiki"$project"/"
+rss="https://dumps.wikimedia.org/""$wiki""wiki""$project""/latest/""$rss""$wiki""wiki""$project""-latest-"
 
 # Latest dump date
-wget -q "$rss""$wiki""wiki-latest-page.sql.gz-rss.xml" \
-    "$rss""$wiki""wiki-latest-pagelinks.sql.gz-rss.xml" \
-    "$rss""$wiki""wiki-latest-redirect.sql.gz-rss.xml" \
-    "$rss""$wiki""wiki-latest-page_props.sql.gz-rss.xml"
+wget -q "$rss""page.sql.gz-rss.xml" \
+    "$rss""pagelinks.sql.gz-rss.xml" \
+    "$rss""redirect.sql.gz-rss.xml" \
+    "$rss""page_props.sql.gz-rss.xml"
 
 if [ $? -eq 0 ]; then
     dump_date=$(cat "$wiki"*.xml | sed -n "s#.*$download\([0-9]\+\).*#\1#p" | sort -u)
@@ -55,16 +55,16 @@ if [ $(echo "$dump_date" | wc -l) != '1' ] || [ "$dump_date" == '' ]; then
     exit 1
 fi
 
-rm "$wiki""wiki-latest-page.sql.gz-rss.xml" \
-    "$wiki""wiki-latest-pagelinks.sql.gz-rss.xml" \
-    "$wiki""wiki-latest-redirect.sql.gz-rss.xml" \
-    "$wiki""wiki-latest-page_props.sql.gz-rss.xml"
+rm "$wiki""wiki""$project""-latest-page.sql.gz-rss.xml" \
+    "$wiki""wiki""$project""-latest-pagelinks.sql.gz-rss.xml" \
+    "$wiki""wiki""$project""-latest-redirect.sql.gz-rss.xml" \
+    "$wiki""wiki""$project""-latest-page_props.sql.gz-rss.xml"
 
 # File locations
-page="$wiki""wiki-""$dump_date""-page.sql"
-pagelinks="$wiki""wiki-""$dump_date""-pagelinks.sql"
-redirect="$wiki""wiki-""$dump_date""-redirect.sql"
-pageprops="$wiki""wiki-""$dump_date""-page_props.sql"
+page="$wiki""wiki$project-""$dump_date""-page.sql"
+pagelinks="$wiki""wiki$project-""$dump_date""-pagelinks.sql"
+redirect="$wiki""wiki$project-""$dump_date""-redirect.sql"
+pageprops="$wiki""wiki$project-""$dump_date""-page_props.sql"
 
 # Download and unzip
 wget -q "$download$dump_date/$page.gz" \
@@ -206,13 +206,13 @@ join -j 2 \
      "$wiki""pageprops.lines" \
      -o 2.1,1.1 -t $'\t' \
      | sed "s/\(Q\|q\)\(.*\)\t\(Q\|q\)\(.*\)/\2\t\4/" \
-> "$wiki"-"$dump_date"".links"
+> "$wiki""wiki""$project"-"$dump_date"".links"
 
 # Sort final output, cleanup, and print filename
 sort -k 1,1n -k 2,2n -u \
      -S 50% -T . \
-     -o "$wiki"-"$dump_date"".links" \
-     "$wiki"-"$dump_date"".links"
+     -o "$wiki""wiki""$project"-"$dump_date"".links" \
+     "$wiki""wiki""$project"-"$dump_date"".links"
 
 # Delete temporary files
 rm "$wiki""page.lines" \
@@ -223,4 +223,4 @@ rm "$wiki""page.lines" \
    "$wiki""pagelinks_redirected.lines" \
    "$wiki""pageprops.lines"
 
-echo "$wiki"-"$dump_date"".links"
+echo "$wiki""wiki""$project"-"$dump_date"".links"

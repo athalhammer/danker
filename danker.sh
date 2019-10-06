@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #    danker - PageRank on Wikipedia/Wikidata
-#    Copyright (C) 2017  Andreas Thalhammer
+#    Copyright (C) 2019  Andreas Thalhammer
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -16,54 +16,24 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-DAMPING_FACTOR=0.85
-ITERATIONS=40
-START_VALUE=0.1
 
-if [ ! "$1" ]; then
-    (>&2 printf "[Error]\tMissing positional wiki language parameter.
-    \tExamples: [en, de, bar, ...]\n")
-    exit 1
-fi
+# reproduce all arguments for Python's argparse
+args=""
+while [[ $# -gt 0 ]]; do
+    args="$args $1"
+    shift
+done
 
-if [ "$1" == "ALL" ]; then
-    filename=$(date +"%Y-%m-%d").all.links
-    languages=$(./script/get_languages.sh)
-    if [ $? -eq 0 ]; then
-        for i in $(echo "$languages"); do
-            ./script/create_links.sh "$i" >> "$filename.files.txt"
-        done
+# Flexible argparse with Python and formatting for bash.
+formatted=$(python3 ./script/args.py $args)
+pyexit=$?
 
-        for i in $(cat "$filename.files.txt"); do
-            cat "$i" >> "$filename"
-        done
+# Output should not contain "usage" (e.g., from --help)
+echo "$formatted" | grep "usage" > /dev/null
+formexit=$?
 
-	sort -k 1,1n -T . -S 50% -o "$filename" "$filename"
-
-        # collect stats and add language-specific source files to a compressed archive
-        for i in $(cat "$filename.files.txt"); do
-            wc -l "$i" >> "$filename.stats.txt"
-        done
-        wc -l "$filename" >> "$filename.stats.txt"
-        tar --remove-files -cjf "$filename.tar.bz2" $(cat "$filename.files.txt")
-    else
-	(>&2 printf "[Error]\tCouldn't retrieve languages...\n")
-        exit 1
-    fi
+if [ $formexit -eq 0 ] || [ $pyexit -ne 0 ]; then
+	printf "%s\n" "$formatted"
 else
-    filename=$(./script/create_links.sh "$1")
+	./script/dank.sh $formatted
 fi
-if [ "$2" == "BIGMEM" ]; then
-    python3 -m danker  "$filename" $DAMPING_FACTOR $ITERATIONS $START_VALUE \
-        | sed "s/\(.*\)/Q\1/" \
-    > "$filename".rank
-else
-    sort -k 2,2n -T . -S 50% -o "$filename"".right" "$filename"
-    python3 -m danker  "$filename" "$filename"".right" $DAMPING_FACTOR $ITERATIONS $START_VALUE \
-        | sed "s/\(.*\)/Q\1/" \
-    > "$filename".rank
-    rm "$filename"".right"
-fi
-sort -k 2,2nr -T . -S 50% -o "$filename"".rank" "$filename"".rank"
-bzip2 "$filename"
-wc -l "$filename"".rank"

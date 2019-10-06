@@ -7,9 +7,9 @@
 danker
 ======
 
-__danker__ is a compilation of Bash and Python3 scripts that enables the computation of PageRank on Wikipedia on normal off-the-shelf hardware (e.g., a quad-core CPU, 8 GB of main memory, and 250 GB hard disk storage). The BIGMEM option enables to speed up computation given that enough main memory is available (this depends on the Wikipedia language edition and your hardware configuration).
+__danker__ is a compilation of Bash and Python3 scripts that enables the computation of PageRank on Wikipedia on normal off-the-shelf hardware (e.g., a quad-core CPU, 8 GB of main memory, and 250 GB hard disk storage). The "--bigmem/-b" option enables to speed up computation given that enough main memory is available (this depends on the Wikipedia language edition, project and your hardware configuration).
 
-* __INPUT__ Wikipedia language edition, e.g. "en" OR "ALL" (for computing PR on the union of all language editions using the bag-of-links model); optional parameter "BIGMEM".
+* __INPUT__ Wikipedia language edition, e.g. "en" OR "ALL" (for computing PR on the union of all language editions using the bag-of-links model); optional parameter "--bigmem/-b".
 * __PROCESSING__ danker downloads the required Wikipedia dump files (https://dumps.wikimedia.org/LANGwiki/latest/), resolves links, redirects, Wikidata Q-IDs, produces a link-file and computes PageRank.
 * __OUTPUT__ 
   * LANG-DUMPDATE.links - a link file (edge list, tab-separated), the input for PageRank. Every line reads from left to right: 
@@ -24,26 +24,61 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
 * `csvkit` (e.g., via `pip install csvkit`)
 
 ## Usage
+```
+  usage: ./danker.sh [-h] [-p PROJECT] [-i ITERATIONS] [-d DAMPING] [-s START]
+                     [-b] [-l]
+                     wikilang
+
+  Compute PageRank on Wikipedia.
+
+  positional arguments:
+    wikilang              Wikipedia language edition, e.g. "en". "ALL" for
+                          computing PageRank over all languages available in a
+                          project.
+
+  optional arguments:
+    -h, --help            show this help message and exit
+    -p PROJECT, --project PROJECT
+                          Wiki project, currently supported [wiki, books,
+                          source]. (default: wiki)
+    -i ITERATIONS, --iterations ITERATIONS
+                          PageRank number of iterations. (default: 40)
+    -d DAMPING, --damping DAMPING
+                          PageRank damping factor. (default: 0.85)
+    -s START, --start START
+                          PageRank starting value. (default: 0.1)
+    -b, --bigmem          PageRank big memory flag. (default: False)
+    -l, --links           Only extract links (skip PageRank). (default: False)
+```
+
+## Examples
+
 
 * Compute PageRank on the current dump of English Wikipedia:
 
    ```bash
    $ ./danker.sh en
-   $ ./danker.sh en BIGMEM
+   $ ./danker.sh en --bigmem
    ```
    
 * Compute PageRank on the union of all language editions:
 
    ```bash
    $ ./danker.sh ALL
-   $ ./danker.sh ALL BIGMEM    # caution, you will need some main memory for that
+   $ ./danker.sh ALL --bigmem    # caution, you will need some main memory for that
    ```
    
-* Compute PageRank for each Wikipedia language edition:
+* Compute PageRank for each Wikipedia language edition separately:
 
    ```bash
    $ for i in $(./script/get_languages.sh); do ./danker.sh "$i"; done
-   $ for i in $(./script/get_languages.sh); do ./danker.sh "$i" "BIGMEM"; done
+   $ for i in $(./script/get_languages.sh); do ./danker.sh "$i" -b; done
+   ```
+* Compute PageRank on the english version of Wikibooks:
+
+   ```bash
+   $ ./danker.sh en --project books
+   $ ./danker.sh en --bigmem --project books
    ```
 
 * [Compute PageRank on any other graph](./README_PR.md)
@@ -186,7 +221,7 @@ This software is licensed under GPLv3. (see https://www.gnu.org/licenses/).
    _Trade offs:_
    1. _We use much more diskspace than actually needed as we repeat nodes (compared to adjacency lists). Still, computation usually needs < 100GB of space and disk space is cheaper than memory._
    2. _Isolated nodes can not be represented with edge lists. However their PageRank would be `(1 - damping)`._
-   3. _Computation by iterating over files is much slower than storing the graph in memory. If you have a graph that can fit into memory you can use the BIGMEM option and speed up computation time._
+   3. _Computation by iterating over files is much slower than storing the graph in memory. If you have a graph that can fit into memory you can use the --bigmem/-b option and speed up computation time._
 
 8. __What is the ALL option and what is the bag-of-links model?__
 
