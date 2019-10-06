@@ -74,7 +74,7 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
    $ for i in $(./script/get_languages.sh); do ./danker.sh "$i"; done
    $ for i in $(./script/get_languages.sh); do ./danker.sh "$i" -b; done
    ```
-* Compute PageRank on the english version of Wikibooks:
+* Compute PageRank on the English version of Wikibooks:
 
    ```bash
    $ ./danker.sh en --project books
