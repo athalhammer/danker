@@ -16,7 +16,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-while getopts ":p:i:d:s:b" a; do
+while getopts ":p:i:d:s:bl" a; do
     case "${a}" in
         p)
             project=${OPTARG}
@@ -33,6 +33,9 @@ while getopts ":p:i:d:s:b" a; do
         b)
             bigmem=1
             ;;
+	l)
+	    links=1
+	    ;;
         *)
 	    # should not occur
             ;;
@@ -73,6 +76,13 @@ if [ "$1" == "ALL" ]; then
 else
     filename=$(./script/create_links.sh "$1" "$project")
 fi
+
+# "extract links only" option
+if [ $links ]; then
+    echo "$filename"
+    exit 0
+fi
+
 if [ $bigmem ]; then
     python3 -m danker  "$filename" $damping $iterations $start_value \
         | sed "s/\(.*\)/Q\1/" \

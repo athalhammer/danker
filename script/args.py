@@ -34,7 +34,9 @@ parser.add_argument('-d', '--damping', type=float, default=0.85,
 parser.add_argument('-s', '--start', type=float, default=0.1,
                     help='PageRank starting value.')
 parser.add_argument('-b', '--bigmem', action='store_true',
-                    help='Switch for "big memory" option.')
+                    help='PageRank big memory flag.')
+parser.add_argument('-l', '--links', action='store_true',
+                    help='Only extract links (skip PageRank).')
 args = parser.parse_args()
 
 # Preparing arguments for Bash
@@ -49,4 +51,6 @@ if args.start:
     print('', '-s', args.start, end='')
 if args.bigmem:
     print('', '-b', end='')
+if args.links:
+    print('', '-l', end='')
 print('', args.wikilang)
