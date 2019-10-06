@@ -277,7 +277,10 @@ def _main():
                         '(>0).')
     args = parser.parse_args()
     if args.iterations <= 0 or args.damping > 1 or args.damping < 0 or args.start_value <= 0:
-        parser.print_help()
+        print("ERROR: Provided PageRank parameters\n\t[iterations ({0}), damping ({1}), "
+              "start value({2})]\n\tout of allowed range.\n\n".
+              format(args.iterations, args.damping, args.start_value), file=sys.stderr)
+        parser.print_help(sys.stderr)
         sys.exit(1)
     start = time.time()
     dictionary = init(args.left_sorted, args.start_value, args.right_sorted)
