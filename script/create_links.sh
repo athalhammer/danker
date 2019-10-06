@@ -206,13 +206,13 @@ join -j 2 \
      "$wiki""pageprops.lines" \
      -o 2.1,1.1 -t $'\t' \
      | sed "s/\(Q\|q\)\(.*\)\t\(Q\|q\)\(.*\)/\2\t\4/" \
-> "$wiki"-"$dump_date"".links"
+> "$wiki""wiki""$project"-"$dump_date"".links"
 
 # Sort final output, cleanup, and print filename
 sort -k 1,1n -k 2,2n -u \
      -S 50% -T . \
-     -o "$wiki"-"$dump_date"".links" \
-     "$wiki"-"$dump_date"".links"
+     -o "$wiki""wiki""$project"-"$dump_date"".links" \
+     "$wiki""wiki""$project"-"$dump_date"".links"
 
 # Delete temporary files
 rm "$wiki""page.lines" \
@@ -223,4 +223,4 @@ rm "$wiki""page.lines" \
    "$wiki""pagelinks_redirected.lines" \
    "$wiki""pageprops.lines"
 
-echo "$wiki"-"$dump_date"".links"
+echo "$wiki""wiki""$project"-"$dump_date"".links"

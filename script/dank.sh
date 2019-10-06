@@ -47,7 +47,7 @@ if [ ! "$1" ]; then
 fi
 
 if [ "$1" == "ALL" ]; then
-    filename=$(date +"%Y-%m-%d").all.links
+    filename=$(date +"%Y-%m-%d").allwiki"$project".links
     languages=$(./script/get_languages.sh "$project")
     if [ $? -eq 0 ]; then
         for i in $(echo "$languages"); do
