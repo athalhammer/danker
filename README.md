@@ -47,7 +47,8 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
                           PageRank damping factor. (default: 0.85)
     -s START, --start START
                           PageRank starting value. (default: 0.1)
-    -b, --bigmem          Switch for "big memory" option. (default: False)
+    -b, --bigmem          PageRank big memory flag. (default: False)
+    -l, --links           Only extract links (skip PageRank). (default: False)
 ```
 
 ## Examples
