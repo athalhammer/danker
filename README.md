@@ -20,8 +20,9 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
   * LANG-DUMPDATE.links.rank - a series of Wikidata Q-ID with their respective PageRank (sorted descending)
 
 ## Requirements
-* `python3`
+* `python>=3.4`
 * `csvkit` (e.g., via `pip install csvkit`)
+* `numpy>=1.16.3` and `networkx>=2.3` for running unit tests
 
 ## Usage
 ```
