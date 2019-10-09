@@ -21,7 +21,7 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
 
 ## Requirements
 * `python>=3.4`
-* `csvkit` (e.g., via `pip install csvkit`)
+* `csvkit>=1.0.4`
 * `numpy>=1.16.3` and `networkx>=2.3` for running unit tests
 
 ## Usage
