@@ -17,23 +17,18 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# reproduce all arguments for Python's argparse
-args=""
-while [[ $# -gt 0 ]]; do
-    args="$args $1"
-    shift
-done
 
 # Flexible argparse with Python and formatting for bash.
-formatted=$(python3 ./script/args.py $args)
-pyexit=$?
+formatted=$(./script/args.py $@)
+py_exit=$?
 
 # Output should not contain "usage" (e.g., from --help)
 echo "$formatted" | grep "usage" > /dev/null
-formexit=$?
+has_usage=$?
 
-if [ $formexit -eq 0 ] || [ $pyexit -ne 0 ]; then
+if [ $has_usage -eq 0 ] || [ $py_exit -ne 0 ]; then
 	printf "%s\n" "$formatted"
+	exit $py_exit
 else
 	./script/dank.sh $formatted
 fi
