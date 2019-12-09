@@ -67,7 +67,7 @@ redirect="$wiki""wiki$project-""$dump_date""-redirect.sql"
 pageprops="$wiki""wiki$project-""$dump_date""-page_props.sql"
 
 # Download and unzip
-wget -q -w 1m --retry-connrefused "$download$dump_date/$page.gz" \
+wget -q --waitretry=1m --retry-connrefused "$download$dump_date/$page.gz" \
     "$download$dump_date/$pagelinks.gz" \
     "$download$dump_date/$redirect.gz" \
     "$download$dump_date/$pageprops.gz"
