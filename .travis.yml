@@ -8,5 +8,6 @@ install:
 - pip install networkx numpy coveralls
 script:
 - nosetests --with-coverage --cover-package=danker
+- ./danker.sh ch
 after_success:
 - coveralls
