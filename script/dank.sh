@@ -63,12 +63,14 @@ if [ "$1" == "ALL" ]; then
 
 	sort -k 1,1n -T . -S 50% -o "$filename" "$filename"
 
-        # collect stats and add language-specific source files to a compressed archive
+        # collect stats
         for i in $(cat "$filename.files.txt"); do
             wc -l "$i" >> "$filename.stats.txt"
         done
         wc -l "$filename" >> "$filename.stats.txt"
-        tar --remove-files -cjf "$filename.tar.bz2" $(cat "$filename.files.txt")
+
+        # clean up
+        rm $(cat "$filename.files.txt")
     else
 	(>&2 printf "[Error]\tCouldn't retrieve languages...\n")
         exit 1

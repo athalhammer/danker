@@ -205,7 +205,7 @@ join -j 2 \
      "$wiki""pagelinks.lines" \
      "$wiki""pageprops.lines" \
      -o 2.1,1.1 -t $'\t' \
-     | sed "s/\(Q\|q\)\(.*\)\t\(Q\|q\)\(.*\)/\2\t\4/" \
+     | sed "s/\(Q\|q\)\(.*\)\t\(Q\|q\)\(.*\)/\2\t\4\t""$wiki""wiki$project-$dump_date/" \
 > "$wiki""wiki""$project"-"$dump_date"".links"
 
 # Sort final output, cleanup, and print filename

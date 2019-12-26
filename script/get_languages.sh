@@ -16,6 +16,10 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Substitute output for testing 'ALL' option.
+# printf "ch\ncr\nfj\n"
+# exit 0
+
 declare -A WIKIS
 WIKIS=( ["books"]="wb" ["source"]="ws" ["versity"]="wv" ["news"]="wn" )
 
