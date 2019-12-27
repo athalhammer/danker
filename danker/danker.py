@@ -119,8 +119,8 @@ def _get_open(is_compressed):
     Helper for getting file opener (either bzip2, or normal).
     """
     if is_compressed:
-        return bz2.open, 'rt'
-    return open, 'r'
+        return bz2.open
+    return open
 
 
 def init(left_sorted, start_value, smallmem, is_compressed=False):
@@ -146,11 +146,11 @@ def init(left_sorted, start_value, smallmem, is_compressed=False):
               * :func:`danker_smallmem` [link_cout:int, start_value:float,
                 start_value:float, touched_in_1st_iteration:boolean]
     """
-    opener, mode = _get_open(is_compressed)
+    opener = _get_open(is_compressed)
     dictionary = {}
     previous = None
     current_count = 1
-    with opener(left_sorted, mode=mode, encoding="utf-8") as ls_file:
+    with opener(left_sorted, mode='rt', encoding="utf-8") as ls_file:
         for line in ls_file:
             current = _conv_int(line.split("\t")[0].strip())
             receiver = _conv_int(line.split("\t")[1].strip())
@@ -200,7 +200,7 @@ def danker_smallmem(dictionary, right_sorted, iterations, damping, start_value,
              the ``(iterations % 2) + 1`` position of the respecive list
              (that is the value of the key).
     """
-    opener, mode = _get_open(is_compressed)
+    opener = _get_open(is_compressed)
     for iteration in range(0, iterations):
         print(str(iteration + 1) + ".", end="", flush=True, file=sys.stderr)
         previous = None
@@ -209,7 +209,7 @@ def danker_smallmem(dictionary, right_sorted, iterations, damping, start_value,
         i_location = (iteration % 2) + 1
         i_plus_1_location = ((iteration + 1) % 2) + 1
 
-        with opener(right_sorted, mode=mode, encoding="utf-8") as rs_file:
+        with opener(right_sorted, mode='rt', encoding="utf-8") as rs_file:
             for line in rs_file:
                 current = _conv_int(line.split("\t")[1].strip())
                 if previous != current:
