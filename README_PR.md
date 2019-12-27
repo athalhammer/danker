@@ -19,6 +19,7 @@
 
      optional arguments:
        -h, --help    show this help message and exit
+       -b, --bzip2   Flag - the input file(s) is/are bzip2 compressed
 
    $ wget https://raw.githubusercontent.com/athalhammer/danker/master/test/graphs/test.links
    $ python -m danker test.links 0.85 30 1
