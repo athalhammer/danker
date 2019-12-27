@@ -47,6 +47,25 @@ class DankerTest(unittest.TestCase):
         with self.assertRaises(danker.InputNotSortedException):
             danker.init(link_file_right, 0.1, False)
 
+    def test_compress_left(self):
+        """
+        Test if danker works with a bzip2-compressed left-sorted file.
+        """
+        link_file_left = "./test/graphs/test.links.bz2"
+        out = danker.init(link_file_left, 0.1, False, True)
+        self.assertEqual(len(out), 11)
+
+    def test_compress_right(self):
+        """
+        Test if danker works with two bzip2-compressed sorted files.
+        """
+        link_file_left = "./test/graphs/test.links.bz2"
+        out = danker.init(link_file_left, 0.1, True, True)
+        self.assertEqual(len(out), 10)
+        link_file_right = "./test/graphs/test.links.right.bz2"
+        danker_pr_small = danker.danker_smallmem(out, link_file_right, 10, 0.85, 0.1, True)
+        self.assertEqual(len(danker_pr_small), 11)
+
     def test_right_sort(self):
         """
         Test if assert for right sort works (test with left sorted file)

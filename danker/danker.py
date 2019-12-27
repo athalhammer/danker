@@ -80,6 +80,7 @@ The following code shows a minimal example for computing PageRank with the
 import sys
 import time
 import argparse
+import bz2
 #import memory_profiler
 
 class InputNotSortedException(Exception):
@@ -112,7 +113,17 @@ def _get_std_list(smallmem, start_value):
         return [0, start_value, start_value, False]
     return [0, start_value, start_value, []]
 
-def init(left_sorted, start_value, smallmem):
+
+def _get_open(is_compressed):
+    """
+    Helper for getting file opener (either bzip2, or normal).
+    """
+    if is_compressed:
+        return bz2.open, 'rt'
+    return open, 'r'
+
+
+def init(left_sorted, start_value, smallmem, is_compressed=False):
     """
     This function creates the data structure for PageRank computation by
     indexing every node. Main indexing steps include setting the starting
@@ -135,10 +146,11 @@ def init(left_sorted, start_value, smallmem):
               * :func:`danker_smallmem` [link_cout:int, start_value:float,
                 start_value:float, touched_in_1st_iteration:boolean]
     """
+    opener, mode = _get_open(is_compressed)
     dictionary = {}
     previous = None
     current_count = 1
-    with open(left_sorted, encoding="utf-8") as ls_file:
+    with opener(left_sorted, mode=mode, encoding="utf-8") as ls_file:
         for line in ls_file:
             current = _conv_int(line.split("\t")[0].strip())
             receiver = _conv_int(line.split("\t")[1].strip())
@@ -170,7 +182,8 @@ def init(left_sorted, start_value, smallmem):
     return dictionary
 
 #@profile
-def danker_smallmem(dictionary, right_sorted, iterations, damping, start_value):
+def danker_smallmem(dictionary, right_sorted, iterations, damping, start_value,
+                    is_compressed=False):
     """
     Compute PageRank with right sorted file.
 
@@ -187,6 +200,7 @@ def danker_smallmem(dictionary, right_sorted, iterations, damping, start_value):
              the ``(iterations % 2) + 1`` position of the respecive list
              (that is the value of the key).
     """
+    opener, mode = _get_open(is_compressed)
     for iteration in range(0, iterations):
         print(str(iteration + 1) + ".", end="", flush=True, file=sys.stderr)
         previous = None
@@ -195,7 +209,7 @@ def danker_smallmem(dictionary, right_sorted, iterations, damping, start_value):
         i_location = (iteration % 2) + 1
         i_plus_1_location = ((iteration + 1) % 2) + 1
 
-        with open(right_sorted, encoding="utf-8") as rs_file:
+        with opener(right_sorted, mode=mode, encoding="utf-8") as rs_file:
             for line in rs_file:
                 current = _conv_int(line.split("\t")[1].strip())
                 if previous != current:
@@ -275,6 +289,8 @@ def _main():
                         'iterations (>0).')
     parser.add_argument('start_value', type=float, help='PageRank starting value'
                         '(>0).')
+    parser.add_argument('-b', '--bzip2', help='Flag - the input file(s) is/are bzip2 compressed',
+                        action='store_true')
     args = parser.parse_args()
     if args.iterations <= 0 or args.damping > 1 or args.damping < 0 or args.start_value <= 0:
         print("ERROR: Provided PageRank parameters\n\t[iterations ({0}), damping ({1}), "
@@ -283,12 +299,12 @@ def _main():
         parser.print_help(sys.stderr)
         sys.exit(1)
     start = time.time()
-    dictionary = init(args.left_sorted, args.start_value, args.right_sorted)
+    dictionary = init(args.left_sorted, args.start_value, args.right_sorted, args.bzip2)
     result_position = (args.iterations % 2) + 1
 
     if args.right_sorted:
         danker_smallmem(dictionary, args.right_sorted, args.iterations,
-                        args.damping, args.start_value)
+                        args.damping, args.start_value, args.bzip2)
     else:
         danker_bigmem(dictionary, args.iterations, args.damping)
 
@@ -297,3 +313,7 @@ def _main():
 
     for i in dictionary:
         print("{0}\t{1:.17g}".format(i, dictionary[i][result_position]))
+
+
+if __name__ == '__main__':
+    _main()
