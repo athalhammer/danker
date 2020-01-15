@@ -297,3 +297,6 @@ def _main():
 
     for i in dictionary:
         print("{0}\t{1:.17g}".format(i, dictionary[i][result_position]))
+
+if __name__ == '__main__':
+    _main()
