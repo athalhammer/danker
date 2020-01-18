@@ -233,7 +233,7 @@ This software is licensed under GPLv3. (see https://www.gnu.org/licenses/).
    
 7. __Sorted edge lists are not a common graph representation format (compared to adjacency list or adjacency matrix). Why is it useful in this particular case?__
 
-   _This is a good question and there are multiple aspects to it. We know that the graph would not easily fit in some 8GB of memory (as we have ~3bn edges). The good news is: We don't have to fit it. Random access to get all out/in links of a specific node is not needed for computing PageRank as we access every node anyway._
+   _This is a good question and there are multiple aspects to it. We know that the graph would not easily fit in some 8GB of memory (as we have ~3bn edges). The good news is: We don't have to fit it. Random access to get all out/in links of a specific node is not needed for computing PageRank as we access every node anyway (some of these ideas are presented in Taher H. Haveliwala. 1999. Efficient Computation of PageRank. http://ilpubs.stanford.edu:8090/386/)._
    
    _With sorted edge lists we gain two main advantages:_
    1. _We can walk through the graph node by node just by reading the lines of a file consecutively._
@@ -243,6 +243,7 @@ This software is licensed under GPLv3. (see https://www.gnu.org/licenses/).
    1. _We use much more diskspace than actually needed as we repeat nodes (compared to adjacency lists). Still, computation usually needs < 100GB of space and disk space is cheaper than memory._
    2. _Isolated nodes can not be represented with edge lists. However their PageRank would be `(1 - damping)`._
    3. _Computation by iterating over files is much slower than storing the graph in memory. If you have a graph that can fit into memory you can use the --bigmem/-b option and speed up computation time._
+
 
 8. __What is the ALL option and what is the bag-of-links model?__
 
