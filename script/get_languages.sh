@@ -30,7 +30,7 @@ if [ "$1" ]; then
 	project=${WIKIS[$1]}
 fi
 if [ ! "$project" ]; then
-	(>&2 printf "[Error]\tno project found for '$1'.\n")
+	(>&2 printf "[Error]\tno project found for '%s'.\n" "$1")
 	exit 1
 fi
 

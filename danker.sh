@@ -19,7 +19,7 @@
 
 
 # Flexible argparse with Python and formatting for bash.
-formatted=$(./script/args.py $@)
+formatted=$(./script/args.py "$@")
 py_exit=$?
 
 # Output should not contain "usage" (e.g., from --help)
@@ -30,5 +30,6 @@ if [ $has_usage -eq 0 ] || [ $py_exit -ne 0 ]; then
 	printf "%s\n" "$formatted"
 	exit $py_exit
 else
+	# shellcheck disable=SC2086
 	./script/dank.sh $formatted
 fi

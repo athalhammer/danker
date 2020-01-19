@@ -24,10 +24,10 @@ if [ ! "$1" ]; then
     \tExamples: [en, de, bar, ...]\n")
     exit 1
 else
-    invalid=$(grep "$1" <("$dir"/get_languages.sh $2))
+    invalid=$(grep "$1" <("$dir"/get_languages.sh "$2"))
     if [ -z "$invalid" ]; then
-	(>&2 printf "[Error]\t'$1' is an invalid language parameter for 'wiki$2'.
-	 \tPlease check: http://wikistats.wmflabs.org/display.php\n")
+        (>&2 printf "[Error]\t'%s' is an invalid language parameter for 'wiki%s'.
+	\tPlease check: http://wikistats.wmflabs.org/display.php\n" "$1" "$2")
         exit 1
     fi
 fi
@@ -36,22 +36,19 @@ wiki="$1"
 project="$2"
 
 # Location of wikipedia dumps
-download="http://download.wikimedia.org/""$wiki""wiki"$project"/"
+download="http://download.wikimedia.org/""$wiki""wiki""$project""/"
 rss="https://dumps.wikimedia.org/""$wiki""wiki""$project""/latest/""$rss""$wiki""wiki""$project""-latest-"
 
 # Latest dump date
-wget -q "$rss""page.sql.gz-rss.xml" \
+if wget -q "$rss""page.sql.gz-rss.xml" \
     "$rss""pagelinks.sql.gz-rss.xml" \
     "$rss""redirect.sql.gz-rss.xml" \
-    "$rss""page_props.sql.gz-rss.xml"
-
-if [ $? -eq 0 ]; then
-    dump_date=$(cat "$wiki"*.xml | sed -n "s#.*$download\([0-9]\+\).*#\1#p" | sort -u)
+    "$rss""page_props.sql.gz-rss.xml"; then
+        dump_date=$(cat "$wiki"*.xml | sed -n "s#.*$download\([0-9]\+\).*#\1#p" | sort -u)
 fi
 
-
-if [ $(echo "$dump_date" | wc -l) != '1' ] || [ "$dump_date" == '' ]; then
-    (>&2 printf "[Error]\tMultiple or no date for '$wiki' dump.\n")
+if [ "$(echo "$dump_date" | wc -l)" != '1' ] || [ "$dump_date" == '' ]; then
+    (>&2 printf "[Error]\tMultiple or no date for '%s' dump.\n" "$wiki")
     exit 1
 fi
 
@@ -67,21 +64,20 @@ redirect="$wiki""wiki$project-""$dump_date""-redirect.sql"
 pageprops="$wiki""wiki$project-""$dump_date""-page_props.sql"
 
 # Download and unzip
-wget -q --waitretry=1m --retry-connrefused "$download$dump_date/$page.gz" \
+
+if ! wget -q --waitretry=1m --retry-connrefused "$download$dump_date/$page.gz" \
     "$download$dump_date/$pagelinks.gz" \
     "$download$dump_date/$redirect.gz" \
-    "$download$dump_date/$pageprops.gz"
-
-if [ $? -ne 0 ]; then
-    (>&2 printf "Couldn't download dumps of '$wiki'.\n")
-    exit 1
+    "$download$dump_date/$pageprops.gz"; then
+        (>&2 printf "Couldn't download dumps of '%s'.\n" "$wiki")
+        exit 1
 fi
 
 gunzip "$page.gz" "$pagelinks.gz" "$redirect.gz" "$pageprops.gz"
 
 # Pre-process
 "$dir"/maria2csv.py "$page" \
-    | csvformat -q "'" -b -p '\' \
+    | csvformat -q "'" -b -p "\\" \
     | csvcut -c page_id,page_namespace,page_title \
     | csvgrep -c page_namespace -r "^0$|^14$" \
     | csvformat -D $'\t' \
@@ -90,7 +86,7 @@ gunzip "$page.gz" "$pagelinks.gz" "$redirect.gz" "$pageprops.gz"
 > "$wiki"page.lines
 
 "$dir"/maria2csv.py "$pagelinks" \
-    | csvformat -q "'" -b -p '\' \
+    | csvformat -q "'" -b -p "\\" \
     | csvgrep -c pl_from_namespace -r "^0$|^14$" \
     | csvgrep -c pl_namespace -r "^0$|^14$" \
     | csvcut -C pl_from_namespace \
@@ -100,7 +96,7 @@ gunzip "$page.gz" "$pagelinks.gz" "$redirect.gz" "$pageprops.gz"
 > "$wiki"pagelinks.lines
 
 "$dir"/maria2csv.py "$redirect" \
-    | csvformat -q "'" -b -p '\' \
+    | csvformat -q "'" -b -p "\\" \
     | csvcut -c rd_from,rd_namespace,rd_title \
     | csvgrep -c rd_namespace -r "^0$|^14$" \
     | csvformat -D $'\t' \
@@ -109,7 +105,7 @@ gunzip "$page.gz" "$pagelinks.gz" "$redirect.gz" "$pageprops.gz"
 > "$wiki"redirect.lines
 
 "$dir"/maria2csv.py "$pageprops" \
-    | csvformat -q "'" -b -p '\' \
+    | csvformat -q "'" -b -p "\\" \
     | csvcut -c pp_page,pp_propname,pp_value \
     | csvgrep -c pp_propname -r "^wikibase_item$" \
     | csvcut -c pp_value,pp_page \

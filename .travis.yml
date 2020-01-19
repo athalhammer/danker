@@ -8,6 +8,7 @@ install:
 - pip install networkx numpy coveralls csvkit
 script:
 - nosetests --with-coverage --cover-package=danker
+- shellcheck *.sh */*.sh
 - ./danker.sh ch
 after_success:
 - coveralls

@@ -51,26 +51,30 @@ fi
 
 if [ "$1" == "ALL" ]; then
     filename=$(date +"%Y-%m-%d").allwiki"$project".links
-    languages=$(./script/get_languages.sh "$project")
-    if [ $? -eq 0 ]; then
-        for i in $(echo "$languages"); do
+    if languages=$(./script/get_languages.sh "$project"); then
+        for i in $languages; do
             ./script/create_links.sh "$i" "$project" >> "$filename.files.txt"
         done
 
-        for i in $(cat "$filename.files.txt"); do
+	while IFS= read -r i
+	do
             cat "$i" >> "$filename"
-        done
+	done < <(cat "$filename.files.txt")
 
 	sort -k 1,1n -T . -S 50% -o "$filename" "$filename"
 
         # collect stats
-        for i in $(cat "$filename.files.txt"); do
+	while IFS= read -r i
+	do
             wc -l "$i" >> "$filename.stats.txt"
-        done
+	done < <(cat "$filename.files.txt")
         wc -l "$filename" >> "$filename.stats.txt"
 
         # clean up
-        rm $(cat "$filename.files.txt")
+	while IFS= read -r i
+	do
+            rm "$i"
+	done < <(cat "$filename.files.txt")
     else
 	(>&2 printf "[Error]\tCouldn't retrieve languages...\n")
         exit 1
@@ -86,12 +90,12 @@ if [ $links ]; then
 fi
 
 if [ $bigmem ]; then
-    python3 -m danker  "$filename" $damping $iterations $start_value \
+    python3 -m danker  "$filename" "$damping" "$iterations" "$start_value" \
         | sed "s/\(.*\)/Q\1/" \
     > "$filename".rank
 else
     sort -k 2,2n -T . -S 50% -o "$filename"".right" "$filename"
-    python3 -m danker  "$filename" "$filename"".right" $damping $iterations $start_value \
+    python3 -m danker  "$filename" "$filename"".right" "$damping" "$iterations" "$start_value" \
         | sed "s/\(.*\)/Q\1/" \
     > "$filename".rank
     rm "$filename"".right"
