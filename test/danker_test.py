@@ -4,12 +4,12 @@
 danker test cases
 """
 import unittest
+import pathlib
 import os
 import sys
 import networkx as nx
 import numpy as np
 import danker
-import pathlib
 
 class DankerTest(unittest.TestCase):
     """
@@ -36,7 +36,7 @@ class DankerTest(unittest.TestCase):
         """
         Test main method
         """
-        sys.argv=[sys.argv[0], './test/graphs/test.links', '0.85', '10', '1']
+        sys.argv = [sys.argv[0], './test/graphs/test.links', '0.85', '10', '1']
         danker.danker._main()
 
     def test_left_sort(self):
@@ -83,7 +83,7 @@ class DankerTest(unittest.TestCase):
         danker_pr_big = danker.danker_bigmem(danker_graph, 50, 0.85)
         danker_pr_small = danker.danker_smallmem(danker_graph, link_file_right, 50, 0.85, 0.1)
         self.assertEqual(len(danker_pr_big) + len(danker_pr_small), 0)
-        
+
         # cleanup
         os.remove(link_file)
         os.remove(link_file_right)
