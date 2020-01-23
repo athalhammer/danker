@@ -86,55 +86,7 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
 
 
 ## Download
-Output of ``./danker.sh ALL`` on bi-weekly Wikipedia dumps.
-* 2020-01-10
-  * https://danker.s3.amazonaws.com/2020-01-10.allwiki.links.stats.txt
-  * https://danker.s3.amazonaws.com/2020-01-10.allwiki.links.rank.bz2
-* 2019-12-26
-  * https://danker.s3.amazonaws.com/2019-12-26.allwiki.links.stats.txt
-  * https://danker.s3.amazonaws.com/2019-12-26.allwiki.links.rank.bz2
-* 2019-12-10
-  * https://danker.s3.amazonaws.com/2019-12-10.allwiki.links.stats.txt
-  * https://danker.s3.amazonaws.com/2019-12-10.allwiki.links.rank.bz2
-* 2019-11-29
-  * https://danker.s3.amazonaws.com/2019-11-29.allwiki.links.stats.txt
-  * https://danker.s3.amazonaws.com/2019-11-29.allwiki.links.rank.bz2
-* 2019-11-09
-  * https://danker.s3.amazonaws.com/2019-11-09.allwiki.links.stats.txt
-  * https://danker.s3.amazonaws.com/2019-11-09.allwiki.links.rank.bz2
-* 2019-10-29
-  * https://danker.s3.amazonaws.com/2019-10-29.allwiki.links.stats.txt
-  * https://danker.s3.amazonaws.com/2019-10-29.allwiki.links.rank.bz2
-* 2019-10-09
-  * https://danker.s3.amazonaws.com/2019-10-09.allwiki.links.stats.txt
-  * https://danker.s3.amazonaws.com/2019-10-09.allwiki.links.rank.bz2
-* 2019-09-28
-  * https://danker.s3.amazonaws.com/2019-09-28.all.links.stats.txt
-  * https://danker.s3.amazonaws.com/2019-09-28.all.links.rank.bz2
-* 2019-09-12
-  * https://danker.s3.amazonaws.com/2019-09-12.all.links.stats.txt
-  * https://danker.s3.amazonaws.com/2019-09-12.all.links.rank.bz2
-* 2019-08-21
-  * https://danker.s3.amazonaws.com/2019-08-21.all.links.stats.txt
-  * https://danker.s3.amazonaws.com/2019-08-21.all.links.rank.bz2
-* 2019-08-15
-  * https://danker.s3.amazonaws.com/2019-08-15.all.links.stats.txt
-  * https://danker.s3.amazonaws.com/2019-08-15.all.links.rank.bz2
-* 2019-07-28
-  * https://danker.s3.amazonaws.com/2019-07-28.all.links.stats.txt
-  * https://danker.s3.amazonaws.com/2019-07-28.all.links.rank.bz2
-* 2019-07-08
-  * https://danker.s3.amazonaws.com/2019-07-08.all.links.stats.txt
-  * https://danker.s3.amazonaws.com/2019-07-08.all.links.rank.bz2
-* 2019-06-28
-  * https://danker.s3.amazonaws.com/2019-06-28.all.links.stats.txt
-  * https://danker.s3.amazonaws.com/2019-06-28.all.links.rank.bz2
-* 2019-06-07
-  * https://danker.s3.amazonaws.com/2019-06-07.all.links.stats.txt
-  * https://danker.s3.amazonaws.com/2019-06-07.all.links.rank.bz2
-* 2019-05-28
-  * https://danker.s3.amazonaws.com/2019-05-28.all.links.stats.txt
-  * https://danker.s3.amazonaws.com/2019-05-28.all.links.rank.bz2
+The output of ``./danker.sh ALL`` on bi-weekly Wikipedia dumps is available at http://danker.s3-website.eu-central-1.amazonaws.com/ ([CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)).
 
 ## Previous work
 Before __danker__, I performed a number of experiments with [DBpedia "page links" datasets](https://wiki.dbpedia.org/services-resources/documentation/datasets#pagelinks) most of which are documented at https://web.archive.org/web/20180222182923/https://people.aifb.kit.edu/ath/.
@@ -192,7 +144,7 @@ This software is licensed under GPLv3. (see https://www.gnu.org/licenses/).
 
 1. __The source code of danker is licensed under GPL v3. What about the output?__
 
-   _The output of danker has no license. It can be used without attribution. However, if you use the PageRank scores it would be nice if you would provide reference to this page or, if you use the scores in an academic work, cite the following paper:_
+   _When you use danker to compute PageRank on Wikipedia, the output of danker will have no license. It can be used without attribution. However, if you use the PageRank scores provided on this Web site for download, you need to provide attribution (https://creativecommons.org/licenses/by-sa/3.0/). In any case, if you find this work useful it would be nice if you would provide reference to this page or, if you use the scores in an academic work, cite the following paper (or both):_
 
    ```
    @InCollection{Thalhammer2016,
