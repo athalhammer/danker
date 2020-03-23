@@ -140,6 +140,9 @@ If you normalize the output values (divide each by 11) the values compare well t
 ## License
 This software is licensed under GPLv3. (see https://www.gnu.org/licenses/).
 
+## PageRank
+For a comprehensive overview on the history of PageRank I recommend the following reading: [Sebastiano Vigna. Spectral Ranking](https://arxiv.org/abs/0912.0238)
+
 ## FAQ
 
 1. __The source code of danker is licensed under GPL v3. What about the output?__
