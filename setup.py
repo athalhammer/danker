@@ -24,5 +24,6 @@ setup(
         'Topic :: Scientific/Engineering :: Information Analysis',
     ],
     python_requires='>=3.5',
+    #package_data={'readme': ['*.md']},
     install_requires=[]
 )
