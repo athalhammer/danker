@@ -5,7 +5,7 @@ with open("README_PR.md", "r") as f:
 
 setup(
     name='danker',
-    version='0.5.0',
+    version='0.5.1',
     url='https://github.com/athalhammer/danker',
     author='Andreas Thalhammer',
     author_email='andreas@thalhammer.bayern',
@@ -24,6 +24,5 @@ setup(
         'Topic :: Scientific/Engineering :: Information Analysis',
     ],
     python_requires='>=3.5',
-    #package_data={'readme': ['*.md']},
     install_requires=[]
 )
