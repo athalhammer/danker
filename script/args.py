@@ -41,7 +41,7 @@ def main():
                         help='PageRank damping factor.')
     parser.add_argument('-s', '--start', type=float, default=0.1,
                         help='PageRank starting value.')
-    parser.add_argument('-t', '--dump-date', type=str, help='Dump date (defaults to latest).')
+    parser.add_argument('-t', '--dump-date', type=str, help='Dump date in the format YYYYMMDD (defaults to latest).')
     parser.add_argument('-f', '--folder', type=str, help='Folder with existing dumps, ' +
                         'needs to match project and dump-date parameters.')
     parser.add_argument('-b', '--bigmem', action='store_true',
