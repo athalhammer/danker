@@ -89,7 +89,7 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
    $ ./danker.sh en --bigmem --project books
    ```
 
-* [Compute PageRank on any other graph](./README_PR.md)
+* [Compute PageRank on any graph](./README_PR.md)
 
 
 ## Download
