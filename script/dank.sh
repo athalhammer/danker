@@ -16,7 +16,11 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-while getopts ":p:i:d:s:bl" a; do
+# defaults
+project="wiki"
+dump_time=""
+folder=""
+while getopts ":p:i:d:s:t:f:bl" a; do
     case "${a}" in
         p)
             project=${OPTARG}
@@ -30,6 +34,12 @@ while getopts ":p:i:d:s:bl" a; do
         s)
             start_value=${OPTARG}
             ;;
+	t)
+	    dump_time=${OPTARG}
+	    ;;
+	f)
+	    folder=${OPTARG}
+	    ;;
         b)
             bigmem=1
             ;;
@@ -50,10 +60,10 @@ if [ ! "$1" ]; then
 fi
 
 if [ "$1" == "ALL" ]; then
-    filename=$(date +"%Y-%m-%d").allwiki"$project".links
+    filename=$(date +"%Y-%m-%d").all"$project".links
     if languages=$(./script/get_languages.sh "$project"); then
         for i in $languages; do
-            ./script/create_links.sh "$i" "$project" >> "$filename.files.txt"
+            ./script/create_links.sh "$i" "$project" "$dump_time" "$folder" >> "$filename.files.txt"
         done
 
 	while IFS= read -r i
@@ -80,7 +90,7 @@ if [ "$1" == "ALL" ]; then
         exit 1
     fi
 else
-    filename=$(./script/create_links.sh "$1" "$project")
+    filename=$(./script/create_links.sh "$1" "$project" "$dump_time" "$folder")
 fi
 
 # "extract links only" option

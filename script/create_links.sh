@@ -16,8 +16,47 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 dir=$(dirname "$0")
+
+latest_dump() {
+	rss="https://dumps.wikimedia.org/$wiki/latest/$wiki-latest-"
+	# Latest dump date
+	if wget -q "$rss""page.sql.gz-rss.xml" \
+	    "$rss""pagelinks.sql.gz-rss.xml" \
+	    "$rss""redirect.sql.gz-rss.xml" \
+	    "$rss""page_props.sql.gz-rss.xml"; then
+		dump_date=$(cat "$wiki"*.xml | sed -n "s#.*$download\([0-9]\+\).*#\1#p" | sort -u)
+	fi
+
+	if [ "$(echo "$dump_date" | wc -l)" != '1' ] || [ "$dump_date" == '' ]; then
+	    (>&2 printf "[Error]\tMultiple or no date for '%s' dump.\n" "$wiki.")
+	    return 1
+	fi
+
+	rm "$wiki-latest-page.sql.gz-rss.xml" \
+	    "$wiki-latest-pagelinks.sql.gz-rss.xml" \
+	    "$wiki-latest-redirect.sql.gz-rss.xml" \
+	    "$wiki-latest-page_props.sql.gz-rss.xml"
+	echo "$dump_date"
+}
+
+download() {
+	tmpdir=$(mktemp -d -t "danker.XXXX")
+	cd "$tmpdir" || return 1
+
+	# Download and unzip
+	if ! wget -q --waitretry=1m --retry-connrefused "$download$dump_date/$page.gz" \
+	    "$download$dump_date/$pagelinks.gz" \
+	    "$download$dump_date/$redirect.gz" \
+	    "$download$dump_date/$pageprops.gz"; then
+		(>&2 printf "Couldn't download dumps of '%s' for date '%s'.\n" "$wiki" "$dump_date")
+		return 1
+	fi
+
+	gunzip "$page.gz" "$pagelinks.gz" "$redirect.gz" "$pageprops.gz"
+	echo "$tmpdir"
+}
+
 
 if [ ! "$1" ]; then
     (>&2 printf "[Error]\tMissing positional wiki language parameter.
@@ -39,48 +78,31 @@ if [ ! "$2" ]; then
 fi
 wiki="$1$project"
 
-# Location of wikipedia dumps
+# Download location of dumps for project
 download="http://download.wikimedia.org/$wiki/"
-rss="https://dumps.wikimedia.org/$wiki/latest/$wiki-latest-"
 
-# Latest dump date
-if wget -q "$rss""page.sql.gz-rss.xml" \
-    "$rss""pagelinks.sql.gz-rss.xml" \
-    "$rss""redirect.sql.gz-rss.xml" \
-    "$rss""page_props.sql.gz-rss.xml"; then
-        dump_date=$(cat "$wiki"*.xml | sed -n "s#.*$download\([0-9]\+\).*#\1#p" | sort -u)
+# Take latest if no date is specified
+if [ ! "$3" ]; then
+    dump_date=$(latest_dump) || exit 1
+else
+    dump_date="$3"
 fi
 
-if [ "$(echo "$dump_date" | wc -l)" != '1' ] || [ "$dump_date" == '' ]; then
-    (>&2 printf "[Error]\tMultiple or no date for '%s' dump.\n" "$wiki")
-    exit 1
-fi
-
-rm "$wiki-latest-page.sql.gz-rss.xml" \
-    "$wiki-latest-pagelinks.sql.gz-rss.xml" \
-    "$wiki-latest-redirect.sql.gz-rss.xml" \
-    "$wiki-latest-page_props.sql.gz-rss.xml"
-
-# File locations
+# File names are now fully specified
 page="$wiki-""$dump_date""-page.sql"
 pagelinks="$wiki-""$dump_date""-pagelinks.sql"
 redirect="$wiki-""$dump_date""-redirect.sql"
 pageprops="$wiki-""$dump_date""-page_props.sql"
 
-# Download and unzip
-
-if ! wget -q --waitretry=1m --retry-connrefused "$download$dump_date/$page.gz" \
-    "$download$dump_date/$pagelinks.gz" \
-    "$download$dump_date/$redirect.gz" \
-    "$download$dump_date/$pageprops.gz"; then
-        (>&2 printf "Couldn't download dumps of '%s'.\n" "$wiki")
-        exit 1
+# If a folder is provided, take the files from the folder
+if [ ! "$4" ]; then
+    file_dir=$(download) || exit 1
+else
+    file_dir="$4"
 fi
 
-gunzip "$page.gz" "$pagelinks.gz" "$redirect.gz" "$pageprops.gz"
-
 # Pre-process
-"$dir"/maria2csv.py "$page" \
+"$dir"/maria2csv.py "$file_dir/$page" \
     | csvformat -q "'" -b -p "\\" \
     | csvcut -c page_id,page_namespace,page_title \
     | csvgrep -c page_namespace -r "^0$|^14$" \
@@ -89,7 +111,7 @@ gunzip "$page.gz" "$pagelinks.gz" "$redirect.gz" "$pageprops.gz"
     | sed "s/\([0-9]\+\)\t\([0-9]\+\)\t\(.*\)/\1\t\2\3/" \
 > "$wiki"page.lines
 
-"$dir"/maria2csv.py "$pagelinks" \
+"$dir"/maria2csv.py "$file_dir/$pagelinks" \
     | csvformat -q "'" -b -p "\\" \
     | csvgrep -c pl_from_namespace -r "^0$|^14$" \
     | csvgrep -c pl_namespace -r "^0$|^14$" \
@@ -99,7 +121,7 @@ gunzip "$page.gz" "$pagelinks.gz" "$redirect.gz" "$pageprops.gz"
     | sed "s/\([0-9]\+\)\t\([0-9]\+\)\t\(.*\)/\1\t\2\3/" \
 > "$wiki"pagelinks.lines
 
-"$dir"/maria2csv.py "$redirect" \
+"$dir"/maria2csv.py "$file_dir/$redirect" \
     | csvformat -q "'" -b -p "\\" \
     | csvcut -c rd_from,rd_namespace,rd_title \
     | csvgrep -c rd_namespace -r "^0$|^14$" \
@@ -108,7 +130,7 @@ gunzip "$page.gz" "$pagelinks.gz" "$redirect.gz" "$pageprops.gz"
     | sed "s/\([0-9]\+\)\t\([0-9]\+\)\t\(.*\)/\1\t\2\3/" \
 > "$wiki"redirect.lines
 
-"$dir"/maria2csv.py "$pageprops" \
+"$dir"/maria2csv.py "$file_dir/$pageprops" \
     | csvformat -q "'" -b -p "\\" \
     | csvcut -c pp_page,pp_propname,pp_value \
     | csvgrep -c pp_propname -r "^wikibase_item$" \
@@ -117,8 +139,10 @@ gunzip "$page.gz" "$pagelinks.gz" "$redirect.gz" "$pageprops.gz"
     | tail -n+2 \
 > "$wiki"pageprops.lines
 
-# Delete sql files.
-rm "$page" "$pagelinks" "$redirect" "$pageprops"
+# Delete files if in tmp dir
+if [ "$(dirname "$file_dir")" == "/tmp" ]; then
+	rm -rf "$file_dir"
+fi
 
 # To avoid any locale-related issues, it
 # is recommended to use the ‘C’ locale [...].

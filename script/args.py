@@ -41,6 +41,9 @@ def main():
                         help='PageRank damping factor.')
     parser.add_argument('-s', '--start', type=float, default=0.1,
                         help='PageRank starting value.')
+    parser.add_argument('-t', '--dump-date', type=str, help='Dump date in the format YYYYMMDD (defaults to latest).')
+    parser.add_argument('-f', '--folder', type=str, help='Folder with existing dumps, ' +
+                        'needs to match project and dump-date parameters.')
     parser.add_argument('-b', '--bigmem', action='store_true',
                         help='PageRank big memory flag.')
     parser.add_argument('-l', '--links', action='store_true',
@@ -49,14 +52,17 @@ def main():
 
     # Preparing arguments for Bash
     if args.project:
-        if args.project != 'wiki':
-            print('-p', args.project, end='')
+        print('-p', args.project, end='')
     if args.iterations:
         print('', '-i', args.iterations, end='')
     if args.damping:
         print('', '-d', args.damping, end='')
     if args.start:
         print('', '-s', args.start, end='')
+    if args.dump_date:
+        print('', '-t', args.dump_date, end='')
+    if args.folder:
+        print('', '-f', args.folder, end='')
     if args.bigmem:
         print('', '-b', end='')
     if args.links:
