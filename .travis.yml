@@ -10,5 +10,11 @@ script:
 - nosetests --with-coverage --cover-package=danker
 - shellcheck *.sh */*.sh
 - ./danker.sh ch
+- ./danker.sh sk --project wikisource
+- ./danker.sh cv --project wikibooks
+- ./danker.sh th --project wikinews
+- ./danker.sh hi --project wikiversity
+- ./danker.sh uz --project wikiquote
+- ./danker.sh ast --project wiktionary
 after_success:
 - coveralls

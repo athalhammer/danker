@@ -21,7 +21,8 @@
 # exit 0
 
 declare -A WIKIS
-WIKIS=( ["books"]="wb" ["source"]="ws" ["versity"]="wv" ["news"]="wn" )
+WIKIS=( ["wikibooks"]="wb" ["wikisource"]="ws" ["wikiversity"]="wv"
+        ["wikinews"]="wn" ["wiktionary"]="wt" ["wikiquote"]="wq")
 
 # default is normal Wikipedia (wp)
 project="wp"
