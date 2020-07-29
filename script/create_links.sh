@@ -49,7 +49,7 @@ download() {
 	    "$download$dump_date/$pagelinks.gz" \
 	    "$download$dump_date/$redirect.gz" \
 	    "$download$dump_date/$pageprops.gz"; then
-		(>&2 printf "Couldn't download dumps of '%s'.\n" "$wiki")
+		(>&2 printf "Couldn't download dumps of '%s' for date '%s'.\n" "$wiki" "$dump_date")
 		return 1
 	fi
 
