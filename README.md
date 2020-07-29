@@ -40,8 +40,9 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
   optional arguments:
     -h, --help            show this help message and exit
     -p PROJECT, --project PROJECT
-                          Wiki project, currently supported [wiki, books,
-                          source, versity, news]. (default: wiki)
+                          Wiki project, currently supported are [wiki,
+                          wikibooks, wikisource, wikiversity, wikinews,
+                          wiktionary, wikiquote]. (default: wiki)
     -i ITERATIONS, --iterations ITERATIONS
                           PageRank number of iterations. (default: 40)
     -d DAMPING, --damping DAMPING

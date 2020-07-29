@@ -15,5 +15,6 @@ script:
 - ./danker.sh th --project wikinews
 - ./danker.sh hi --project wikiversity
 - ./danker.sh uz --project wikiquote
+- ./danker.sh ast --project wiktionary
 after_success:
 - coveralls
