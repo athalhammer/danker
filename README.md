@@ -49,6 +49,12 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
                           PageRank damping factor. (default: 0.85)
     -s START, --start START
                           PageRank starting value. (default: 0.1)
+    -t DUMP_DATE, --dump-date DUMP_DATE
+                          Dump date in the format YYYYMMDD (defaults to latest).
+                          (default: None)
+    -f FOLDER, --folder FOLDER
+                          Folder with existing dumps, needs to match project and
+                          dump-date parameters. (default: None)
     -b, --bigmem          PageRank big memory flag. (default: False)
     -l, --links           Only extract links (skip PageRank). (default: False)
 ```
