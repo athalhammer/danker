@@ -26,7 +26,7 @@ if [ ! "$1" ]; then
 else
     invalid=$(grep "$1" <("$dir"/get_languages.sh "$2"))
     if [ -z "$invalid" ]; then
-        (>&2 printf "[Error]\t'%s' is an invalid language parameter for 'wiki%s'.
+        (>&2 printf "[Error]\t'%s' is an invalid language parameter for '%s'.
 	\tPlease check: http://wikistats.wmflabs.org/display.php\n" "$1" "$2")
         exit 1
     fi
