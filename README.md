@@ -27,7 +27,7 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
 ## Usage
 ```
   usage: ./danker.sh [-h] [-p PROJECT] [-i ITERATIONS] [-d DAMPING] [-s START]
-                     [-b] [-l]
+                     [-t DUMP_DATE] [-f FOLDER] [-b] [-l]
                      wikilang
 
   Compute PageRank on Wikipedia.
@@ -85,8 +85,8 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
 * Compute PageRank on the English version of Wikibooks:
 
    ```bash
-   $ ./danker.sh en --project books
-   $ ./danker.sh en --bigmem --project books
+   $ ./danker.sh en --project wikibooks
+   $ ./danker.sh en --bigmem --project wikibooks
    ```
 
 * [Compute PageRank on any graph](./README_PR.md)
