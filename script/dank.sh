@@ -62,16 +62,17 @@ fi
 if [ "$1" == "ALL" ]; then
     filename=$(date +"%Y-%m-%d").all"$project".links
     if languages=$(./script/get_languages.sh "$project"); then
-        for i in $languages; do
-            ./script/create_links.sh "$i" "$project" "$dump_time" "$folder" >> "$filename.files.txt"
-        done
 
+	# collect
+	for i in $languages; do
+	    ./script/create_links.sh "$i" "$project" "$dump_time" "$folder" >> "$filename.files.txt"
+	done
+
+	# merge
 	while IFS= read -r i
 	do
             cat "$i" >> "$filename"
 	done < <(cat "$filename.files.txt")
-
-	sort -k 1,1n -T . -S 50% -o "$filename" "$filename"
 
         # collect stats
 	while IFS= read -r i
@@ -85,6 +86,9 @@ if [ "$1" == "ALL" ]; then
 	do
             rm "$i"
 	done < <(cat "$filename.files.txt")
+
+	# sort
+	sort -k 1,1n -T . -S 50% -o "$filename" "$filename"
     else
 	(>&2 printf "[Error]\tCouldn't retrieve languages...\n")
         exit 1
