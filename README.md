@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/athalhammer/danker.svg?branch=master)](https://travis-ci.com/athalhammer/danker)
+[![Build Status](https://travis-ci.org/athalhammer/danker.svg?branch=master)](https://travis-ci.org/athalhammer/danker)
 [![Coverage Status](https://coveralls.io/repos/github/athalhammer/danker/badge.svg?branch=master)](https://coveralls.io/github/athalhammer/danker?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/danker/badge/?version=latest)](https://danker.readthedocs.io/en/latest/?badge=latest)
 [![PyPI](https://img.shields.io/pypi/v/danker)](https://pypi.org/project/danker)
