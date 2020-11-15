@@ -97,8 +97,10 @@ pageprops="$wiki-""$dump_date""-page_props.sql"
 
 # If a folder is provided, take the files from the folder
 if [ ! "$4" ]; then
+    use_tmp=true
     file_dir=$(download) || exit 1
 else
+    use_tmp=false
     file_dir="$4"
 fi
 
@@ -141,7 +143,7 @@ fi
 > "$wiki"pageprops.lines
 
 # Delete files if in tmp dir
-if [ "$(dirname "$file_dir")" == "/tmp" ]; then
+if [ "$use_tmp" = true ]; then
 	rm -rf "$file_dir"
 fi
 
