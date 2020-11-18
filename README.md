@@ -195,7 +195,7 @@ For a comprehensive overview on the history of PageRank I recommend the followin
    
 7. __Sorted edge lists are not a common graph representation format (compared to adjacency list or adjacency matrix). Why is it useful in this particular case?__
 
-   _This is a good question and there are multiple aspects to it. We know that the graph would not easily fit in some 8GB of memory (as we have ~3bn edges). The good news is: We don't have to fit it. Random access to get all out/in links of a specific node is not needed for computing PageRank as we access every node anyway (some of these ideas are presented in Taher H. Haveliwala. 1999. Efficient Computation of PageRank. http://ilpubs.stanford.edu:8090/386/)._
+   _This is a good question and there are multiple aspects to it. We know that the graph would not easily fit in some 8GB of memory (as we have >3bn edges). The good news is: We don't have to fit it. Random access to get all out/in links of a specific node is not needed for computing PageRank as we access every node anyway (some of these ideas are presented in Taher H. Haveliwala. 1999. Efficient Computation of PageRank. http://ilpubs.stanford.edu:8090/386/)._
    
    _With sorted edge lists we gain two main advantages:_
    1. _We can walk through the graph node by node just by reading the lines of a file consecutively._
