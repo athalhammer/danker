@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.abspath('../danker'))
 # -- Project information -----------------------------------------------------
 
 project = 'danker'
-copyright = '2019, Andreas Thalhammer'
+copyright = '2020, Andreas Thalhammer'
 author = 'Andreas Thalhammer'
 
 # The full version, including alpha/beta/rc tags

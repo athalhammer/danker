@@ -15,7 +15,6 @@ setup(
     long_description_content_type="text/markdown",
     packages=['danker'],
     classifiers=[
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
@@ -23,6 +22,6 @@ setup(
         'Operating System :: OS Independent',
         'Topic :: Scientific/Engineering :: Information Analysis',
     ],
-    python_requires='>=3.5',
+    python_requires='>=3.6',
     install_requires=[]
 )
