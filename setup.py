@@ -5,7 +5,7 @@ with open("README_PR.md", "r") as f:
 
 setup(
     name='danker',
-    version='0.6.0',
+    version='0.7',
     url='https://github.com/athalhammer/danker',
     author='Andreas Thalhammer',
     author_email='andreas@thalhammer.bayern',
