@@ -104,12 +104,12 @@ if [ $links ]; then
 fi
 
 if [ $bigmem ]; then
-    python3 -m danker  "$filename" "$damping" "$iterations" "$start_value" \
+    python3 -m danker  "$filename" "$damping" "$iterations" "$start_value" -i \
         | sed "s/\(.*\)/Q\1/" \
     > "$filename".rank
 else
     sort -k 2,2n -T . -S 50% -o "$filename"".right" "$filename"
-    python3 -m danker  "$filename" "$filename"".right" "$damping" "$iterations" "$start_value" \
+    python3 -m danker  "$filename" -r "$filename"".right" "$damping" "$iterations" "$start_value" -i \
         | sed "s/\(.*\)/Q\1/" \
     > "$filename".rank
     rm "$filename"".right"
