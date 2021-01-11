@@ -45,16 +45,16 @@ class DankerTest(unittest.TestCase):
         """
         link_file_right = "./test/graphs/test.links.right"
         with self.assertRaises(danker.InputNotSortedException):
-            danker.init(link_file_right, 0.1, False)
+            danker.init(link_file_right, 0.1, False, False)
 
     def test_right_sort(self):
         """
         Test if assert for right sort works (test with left sorted file)
         """
         link_file = "./test/graphs/test.links"
-        danker_graph = danker.init(link_file, 0.1, True)
+        danker_graph = danker.init(link_file, 0.1, True, False)
         with self.assertRaises(danker.InputNotSortedException):
-            danker.danker_smallmem(danker_graph, link_file, 50, 0.85, 0.1)
+            danker.danker_smallmem(danker_graph, link_file, 50, 0.85, 0.1, False)
 
     def test_general(self):
         """
@@ -65,10 +65,10 @@ class DankerTest(unittest.TestCase):
         nx_graph = nx.read_edgelist(link_file, create_using=nx.DiGraph, nodetype=str,
                                     delimiter='\t')
         nx_pr = nx.pagerank(nx_graph, tol=1e-8)
-        danker_graph = danker.init(link_file, 0.1, False)
+        danker_graph = danker.init(link_file, 0.1, False, False)
         danker_pr_big = danker.danker_bigmem(danker_graph, 50, 0.85)
         self._compare(nx_pr, danker_pr_big)
-        danker_pr_small = danker.danker_smallmem(danker_graph, link_file_right, 50, 0.85, 0.1)
+        danker_pr_small = danker.danker_smallmem(danker_graph, link_file_right, 50, 0.85, 0.1, False)
         self._compare(nx_pr, danker_pr_small)
 
     def test_empty(self):
@@ -79,9 +79,9 @@ class DankerTest(unittest.TestCase):
         link_file_right = "./test/graphs/nill.links.right"
         pathlib.Path(link_file).touch(exist_ok=True)
         pathlib.Path(link_file_right).touch(exist_ok=True)
-        danker_graph = danker.init(link_file, 0.1, False)
+        danker_graph = danker.init(link_file, 0.1, False, True)
         danker_pr_big = danker.danker_bigmem(danker_graph, 50, 0.85)
-        danker_pr_small = danker.danker_smallmem(danker_graph, link_file_right, 50, 0.85, 0.1)
+        danker_pr_small = danker.danker_smallmem(danker_graph, link_file_right, 50, 0.85, 0.1, True)
         self.assertEqual(len(danker_pr_big) + len(danker_pr_small), 0)
 
         # cleanup
@@ -97,10 +97,10 @@ class DankerTest(unittest.TestCase):
         nx_graph = nx.read_edgelist(link_file, create_using=nx.DiGraph, nodetype=int,
                                     delimiter='\t')
         nx_pr = nx.pagerank(nx_graph, tol=1e-8)
-        danker_graph = danker.init(link_file, 0.1, False)
+        danker_graph = danker.init(link_file, 0.1, False, True)
         danker_pr_big = danker.danker_bigmem(danker_graph, 50, 0.85)
         self._compare(nx_pr, danker_pr_big)
-        danker_pr_small = danker.danker_smallmem(danker_graph, link_file_right, 50, 0.85, 0.1)
+        danker_pr_small = danker.danker_smallmem(danker_graph, link_file_right, 50, 0.85, 0.1, True)
         self._compare(nx_pr, danker_pr_small)
 
 if __name__ == '__main__':
