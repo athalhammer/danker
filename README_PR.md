@@ -4,21 +4,26 @@
    ```
    $ pip install danker
    $ python -m danker -h
-     usage: python -m danker [-h]
-                             left_sorted [right_sorted] damping iterations
-                             start_value
+      usage: python -m danker [-h] [-r RIGHT_SORTED] [-p OUTPUT_PRECISION] [-i]
+                              left_sorted damping iterations start_value
 
-     danker - Compute PageRank on large graphs with off-the-shelf hardware.
+      danker - Compute PageRank on large graphs with off-the-shelf hardware.
 
-     positional arguments:
-       left_sorted   A two-column, tab-separated file sorted by the left column.
-       right_sorted  The same file as left_sorted but sorted by the right column.
-       damping       PageRank damping factor(between 0 and 1).
-       iterations    Number of PageRank iterations (>0).
-       start_value   PageRank starting value(>0).
+      positional arguments:
+        left_sorted           A two-column, tab-separated file sorted by the left
+                              column.
+        damping               PageRank damping factor(between 0 and 1).
+        iterations            Number of PageRank iterations (>0).
+        start_value           PageRank starting value(>0).
 
-     optional arguments:
-       -h, --help    show this help message and exit
+      optional arguments:
+         -h, --help            show this help message and exit
+        -r RIGHT_SORTED, --right_sorted RIGHT_SORTED
+                              The same file as left_sorted but sorted by the right
+                              column.
+        -p OUTPUT_PRECISION, --output_precision OUTPUT_PRECISION
+                              Number of decimal places afterthe comma.
+        -i, --int_only        All nodes are integers(flag)
 
    $ wget https://raw.githubusercontent.com/athalhammer/danker/master/test/graphs/test.links
    $ python -m danker test.links 0.85 30 1
