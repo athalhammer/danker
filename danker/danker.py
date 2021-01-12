@@ -276,11 +276,11 @@ def _main():
                         '(between 0 and 1).')
     parser.add_argument('iterations', type=int, help='Number of PageRank ' +
                         'iterations (>0).')
-    parser.add_argument('start_value', type=float, help='PageRank starting value'
+    parser.add_argument('start_value', type=float, help='PageRank starting value '
                         '(>0).')
-    parser.add_argument('-p', '--output_precision', type=int, help='Number of decimal places after'
+    parser.add_argument('-p', '--output_precision', type=int, help='Number of places after '
                         'the decimal point.', default=17)
-    parser.add_argument('-i', '--int_only', action='store_true', help='All nodes are integers'
+    parser.add_argument('-i', '--int_only', action='store_true', help='All nodes are integers '
                         '(flag)')
     args = parser.parse_args()
     if args.iterations <= 0 or args.damping > 1 or args.damping < 0 or args.start_value <= 0:
