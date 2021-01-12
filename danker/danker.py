@@ -279,7 +279,7 @@ def _main():
     parser.add_argument('start_value', type=float, help='PageRank starting value'
                         '(>0).')
     parser.add_argument('-p', '--output_precision', type=int, help='Number of decimal places after'
-                        'the comma.', default=17)
+                        'the decimal point.', default=17)
     parser.add_argument('-i', '--int_only', action='store_true', help='All nodes are integers'
                         '(flag)')
     args = parser.parse_args()
@@ -292,7 +292,7 @@ def _main():
     start = time.time()
     dictionary = init(args.left_sorted, args.start_value, args.right_sorted, args.int_only)
     result_position = (args.iterations % 2) + 1
-    output_form = "{0}\t{1:." + str(args.output_precision) + "g}"
+    output_form = "{0}\t{1:." + str(args.output_precision) + "f}"
 
     if args.right_sorted:
         danker_smallmem(dictionary, args.right_sorted, args.iterations,
