@@ -9,7 +9,7 @@ install:
 script:
 - nosetests --with-coverage --cover-package=danker
 - shellcheck *.sh */*.sh
-- python3 -m danker test/graphs/bar-20190301.links 0.85 10 1 -p 5 -i
+- python3 -m danker test/graphs/bar-20190301.links 0.85 10 1 -p 5 -i > /dev/null
 - ./danker.sh ch
 - ./danker.sh sk --project wikisource
 - ./danker.sh cv --project wikibooks
