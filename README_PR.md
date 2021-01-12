@@ -14,16 +14,16 @@
                               column.
         damping               PageRank damping factor(between 0 and 1).
         iterations            Number of PageRank iterations (>0).
-        start_value           PageRank starting value(>0).
+        start_value           PageRank starting value (>0).
 
       optional arguments:
-         -h, --help            show this help message and exit
+        -h, --help            show this help message and exit
         -r RIGHT_SORTED, --right_sorted RIGHT_SORTED
                               The same file as left_sorted but sorted by the right
                               column.
         -p OUTPUT_PRECISION, --output_precision OUTPUT_PRECISION
-                              Number of decimal places afterthe comma.
-        -i, --int_only        All nodes are integers(flag)
+                              Number of places after the decimal point.
+        -i, --int_only        All nodes are integers (flag)
 
    $ wget https://raw.githubusercontent.com/athalhammer/danker/master/test/graphs/test.links
    $ python -m danker test.links 0.85 30 1
