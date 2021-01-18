@@ -115,31 +115,31 @@ In the directory `test` is a small graph with which you can try out the PageRank
 $ ./danker/danker.py ./test/graphs/test.links 0.85 40 1
 1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19.20.21.22.23.24.25.26.27.28.29.30.31.32.33.34.35.36.37.38.39.40.
 Computation of PageRank on './test/graphs/test.links' with danker took 0.00 seconds.
-C	3.1828140590777672
-B	3.5642607869667629
+C	3.18281405907776715
+B	3.56426078696676285
 A	0.30410528185693986
-D	0.3626006631927996
-F	0.3626006631927996
+D	0.36260066319279960
+F	0.36260066319279960
 E	0.75035528185693967
 G	0.15000000000000002
 H	0.15000000000000002
 I	0.15000000000000002
 K	0.15000000000000002
 L	0.15000000000000002
-$ ./danker/danker.py ./test/graphs/test.links ./test/graphs/test.links.right 0.85 40 1
+$ ./danker/danker.py ./test/graphs/test.links -r ./test/graphs/test.links.right 0.85 40 1
 1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19.20.21.22.23.24.25.26.27.28.29.30.31.32.33.34.35.36.37.38.39.40.
 Computation of PageRank on './test/graphs/test.links' with danker took 0.01 seconds.
-A	0.30410528185693986
-B	3.5642607869667629
-C	3.1828140590777672
-D	0.3626006631927996
+B	3.56426078696676285
+C	3.18281405907776715
+D	0.36260066319279960
 E	0.75035528185693967
-F	0.3626006631927996
+F	0.36260066319279960
 G	0.15000000000000002
-L	0.15000000000000002
-K	0.15000000000000002
-I	0.15000000000000002
 H	0.15000000000000002
+I	0.15000000000000002
+K	0.15000000000000002
+L	0.15000000000000002
+A	0.30410528185693986
 ```
 
 If you normalize the output values (divide each by 11) the values compare well to https://commons.wikimedia.org/wiki/File:PageRank-Beispiel.png or, if you compute percentages (division by the sum), they are similar to https://commons.wikimedia.org/wiki/File:PageRanks-Example.svg (same graph).
