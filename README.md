@@ -154,7 +154,7 @@ For a comprehensive overview on the history of PageRank I recommend the followin
 
 1. __The source code of danker is licensed under GPL v3. What about the output?__
 
-   _When you use danker to compute PageRank on Wikipedia, the output of danker will have no license. It can be used without attribution. However, if you use the PageRank scores provided on this Web site for download, you need to provide attribution (https://creativecommons.org/licenses/by-sa/3.0/). In any case, if you find this work useful it would be nice if you would provide reference to this page or, if you use the scores in an academic work, cite the following paper (or both):_
+   _The input to danker are files from the Wikimedia projects published on https://dumps.wikimedia.org, i.e. Wikipedia.  The content of Wikipedia is licensed as [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). When you use danker to compute PageRank on Wikipedia you need to respect this license. In addition, if you find this work useful it would be nice if you would provide reference to this repository or, if you use the scores in an academic work, cite the following paper (or both):_
 
    ```
    @InCollection{Thalhammer2016,
