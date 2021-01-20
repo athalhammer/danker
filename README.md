@@ -95,6 +95,8 @@ __danker__ is a compilation of Bash and Python3 scripts that enables the computa
 ## Download
 The output of ``./danker.sh ALL`` on bi-weekly Wikipedia dumps is available at https://danker.s3.amazonaws.com/index.html ([CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)).
 
+Check out https://github.com/athalhammer/danker-hdt-docker for an example on how to publish the scores to an endpoint with docker-compose and do federated queries.
+
 ## Previous work
 Before __danker__, I performed a number of experiments with [DBpedia "page links" datasets](https://wiki.dbpedia.org/services-resources/documentation/datasets#pagelinks) most of which are documented at https://web.archive.org/web/20180222182923/https://people.aifb.kit.edu/ath/.
 
