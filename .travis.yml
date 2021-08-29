@@ -5,7 +5,7 @@ python:
 - '3.8'
 - '3.9'
 install:
-- pip install networkx numpy coveralls csvkit
+- pip install networkx scipy numpy coveralls csvkit
 script:
 - nosetests --with-coverage --cover-package=danker
 - shellcheck *.sh */*.sh
