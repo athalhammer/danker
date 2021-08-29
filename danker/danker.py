@@ -275,7 +275,7 @@ def _main():
     parser.add_argument('damping', type=float, help='PageRank damping factor' +
                         '(between 0 and 1).')
     parser.add_argument('iterations', type=int, help='Number of PageRank ' +
-                        'iterations (>0).')
+                        'iterations (>=0).')
     parser.add_argument('start_value', type=float, help='PageRank starting value '
                         '(>0).')
     parser.add_argument('-p', '--output_precision', type=int, help='Number of places after '
@@ -283,7 +283,7 @@ def _main():
     parser.add_argument('-i', '--int_only', action='store_true', help='All nodes are integers '
                         '(flag)')
     args = parser.parse_args()
-    if args.iterations <= 0 or args.damping > 1 or args.damping < 0 or args.start_value <= 0:
+    if args.iterations < 0 or args.damping > 1 or args.damping < 0 or args.start_value <= 0:
         print("ERROR: Provided PageRank parameters\n\t[iterations ({0}), damping ({1}), "
               "start value({2})]\n\tout of allowed range.\n\n".
               format(args.iterations, args.damping, args.start_value), file=sys.stderr)
