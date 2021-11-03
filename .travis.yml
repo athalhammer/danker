@@ -7,15 +7,16 @@ python:
 install:
 - pip install networkx scipy numpy coveralls csvkit
 script:
-- nosetests --with-coverage --cover-package=danker
-- shellcheck *.sh */*.sh
-- python3 -m danker test/graphs/bar-20190301.links 0.85 10 1 -p 5 -i > /dev/null
-- ./danker.sh ch
-- ./danker.sh sk --project wikisource
-- ./danker.sh cv --project wikibooks
-- ./danker.sh th --project wikinews
-- ./danker.sh hi --project wikiversity
-- ./danker.sh uz --project wikiquote
-- ./danker.sh ast --project wiktionary
+- ./script/get_languages.sh wiki
+  #- nosetests --with-coverage --cover-package=danker
+  #- shellcheck *.sh */*.sh
+  #- python3 -m danker test/graphs/bar-20190301.links 0.85 10 1 -p 5 -i > /dev/null
+  #- ./danker.sh ch
+  #- ./danker.sh sk --project wikisource
+  #- ./danker.sh cv --project wikibooks
+  #- ./danker.sh th --project wikinews
+  #- ./danker.sh hi --project wikiversity
+  #- ./danker.sh uz --project wikiquote
+  #- ./danker.sh ast --project wiktionary
 after_success:
 - coveralls
