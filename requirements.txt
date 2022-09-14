@@ -1,3 +1,5 @@
 csvkit>=1.0.4
 numpy>=1.16.3
 networkx>=2.3
+coveralls>=3.3.1
+scipy>=1.9.1
