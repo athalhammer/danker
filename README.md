@@ -8,7 +8,7 @@
 danker
 ======
 
-__danker__ is a compilation of Bash and Python3 scripts that enables the computation of PageRank on Wikipedia on normal off-the-shelf hardware (e.g., a quad-core CPU, 8 GB of main memory, and 250 GB hard disk storage). The "--bigmem/-b" option enables to speed up computation given that enough main memory is available (this depends on the Wikipedia language edition, project and your hardware configuration).
+__danker__ is a compilation of Bash and Python3 scripts that enables the computation of PageRank on Wikipedia on normal off-the-shelf hardware (e.g., a quad-core CPU, 8 GB of main memory, and 300 GB hard disk storage). The "--bigmem/-b" option enables to speed up computation given that enough main memory is available (this depends on the Wikipedia language edition, project and your hardware configuration).
 
 * __INPUT__ Wikipedia language edition, e.g. "en" OR "ALL" (for computing PR on the union of all language editions using the bag-of-links model); optional parameter "--bigmem/-b".
 * __PROCESSING__ danker downloads the required Wikipedia dump files (https://dumps.wikimedia.org/LANGwiki/latest/), resolves links, redirects, Wikidata Q-IDs, produces a link-file and computes PageRank.
