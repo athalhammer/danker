@@ -3,6 +3,7 @@
 [![Documentation Status](https://readthedocs.org/projects/danker/badge/?version=latest)](https://danker.readthedocs.io/en/latest/?badge=latest)
 [![PyPI](https://img.shields.io/pypi/v/danker)](https://pypi.org/project/danker)
 [![GitHub license](https://img.shields.io/github/license/athalhammer/danker.svg)](https://github.com/athalhammer/danker/blob/master/LICENSE)
+[![Zenodo link](https://zenodo.org/badge/DOI/10.5281/zenodo.7163273.svg)](https://doi.org/10.5281/zenodo.7163273)
 
 danker
 ======
