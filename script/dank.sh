@@ -21,9 +21,6 @@ set -e
 if [ -z ${MEM_PERC+x} ]; then
         export MEM_PERC="50%"
 fi
-if [ -z ${PARALLEL+x} ]; then
-        export PARALLEL="1"
-fi
 
 # defaults
 project="wiki"
@@ -97,7 +94,7 @@ if [ "$1" == "ALL" ]; then
 	done < <(cat "$filename.files.txt")
 
 	# sort
-	sort -k 1,1n -T . -S "$MEM_PERC" --parallel "$PARALLEL" -o "$filename" "$filename"
+	sort -k 1,1n -T . -S "$MEM_PERC" -o "$filename" "$filename"
     else
 	(>&2 printf "[Error]\tCouldn't retrieve languages...\n")
         exit 1
@@ -117,12 +114,12 @@ if [ $bigmem ]; then
         | sed "s/\(.*\)/Q\1/" \
     > "$filename".rank
 else
-    sort -k 2,2n -T . -S "$MEM_PERC" --parallel "$PARALLEL" -o "$filename"".right" "$filename"
+    sort -k 2,2n -T . -S "$MEM_PERC" -o "$filename"".right" "$filename"
     python3 -m danker  "$filename" -r "$filename"".right" "$damping" "$iterations" "$start_value" -i \
         | sed "s/\(.*\)/Q\1/" \
     > "$filename".rank
     rm "$filename"".right"
 fi
-sort -k 2,2nr -T . -S "$MEM_PERC" --parallel "$PARALLEL" -o "$filename"".rank" "$filename"".rank"
+sort -k 2,2nr -T . -S "$MEM_PERC" -o "$filename"".rank" "$filename"".rank"
 bzip2 "$filename"
 wc -l "$filename"".rank"
