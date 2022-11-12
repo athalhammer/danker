@@ -31,6 +31,9 @@ To run the unit tests:
 
 ## Usage
 ```
+# optional, otherwise 50% is chosen for all sorts (see sort -S)
+export MEM_PERC="95%"
+
   usage: ./danker.sh [-h] [-p PROJECT] [-i ITERATIONS] [-d DAMPING] [-s START]
                      [-t DUMP_DATE] [-f FOLDER] [-b] [-l]
                      wikilang
