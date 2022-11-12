@@ -16,10 +16,14 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
+# Check for environment variables for sort
 if [ -z ${MEM_PERC+x} ]; then
 	export MEM_PERC="50%"
 fi
-
+if [ -z ${PARALLEL+x} ]; then
+	export PARALLEL="1"
+fi
 
 dir=$(dirname "$0")
 
@@ -159,12 +163,14 @@ export LC_ALL=C
 
 # Prepare page table - needed to normalize pagelinks and redirects
 sort -k 2,2 \
+     --parallel "$PARALLEL" \
      -S "$MEM_PERC" -T . \
      -o "$wiki""page.lines" \
      "$wiki""page.lines"
 
 # Prepare pagelinks
 sort -k 2,2 \
+     --parallel "$PARALLEL" \
      -S "$MEM_PERC" -T . \
      -o "$wiki""pagelinks.lines" \
      "$wiki""pagelinks.lines"
@@ -178,6 +184,7 @@ join -j 2 \
 
 # Prepare redirects
 sort -k 2,2 \
+     --parallel "$PARALLEL" \
      -S "$MEM_PERC" -T . \
      -o "$wiki""redirect.lines" \
      "$wiki""redirect.lines"
@@ -193,11 +200,13 @@ join -j 2 \
 # Take care of redirects. Note: 'double redirects' are fixed by bots
 # (https://en.wikipedia.org/wiki/Wikipedia:Double_redirects).
 sort -k 2,2 \
+     --parallel "$PARALLEL" \
      -S "$MEM_PERC" -T . \
      -o "$wiki""pagelinks_norm.lines" \
      "$wiki""pagelinks_norm.lines"
 
 sort -k 2,2 \
+     --parallel "$PARALLEL" \
      -S "$MEM_PERC" -T . \
      -o "$wiki""redirect_norm.lines" \
      "$wiki""redirect_norm.lines"
@@ -216,10 +225,12 @@ cat "$wiki""pagelinks_redirected.lines" >> "$wiki""pagelinks_norm.lines"
 
 # Resolve internal IDs to Wikidata Q-Is
 sort -k 2,2 \
+     --parallel "$PARALLEL" \
      -S "$MEM_PERC" -T . \
      -o "$wiki""pagelinks_norm.lines" \
      "$wiki""pagelinks_norm.lines"
 sort -k 2,2 \
+     --parallel "$PARALLEL" \
      -S "$MEM_PERC" -T . \
      -o "$wiki""pageprops.lines" \
      "$wiki""pageprops.lines"
@@ -230,6 +241,7 @@ join -j 2 \
 > "$wiki""pagelinks.lines"
 
 sort -k 2,2 \
+     --parallel "$PARALLEL" \
      -S "$MEM_PERC" -T . \
      -o "$wiki""pagelinks.lines" \
      "$wiki""pagelinks.lines"
@@ -242,6 +254,7 @@ join -j 2 \
 
 # Sort final output, cleanup, and print filename
 sort -k 1,1n -k 2,2n -u \
+     --parallel "$PARALLEL" \
      -S "$MEM_PERC" -T . \
      -o "$wiki"-"$dump_date"".links" \
      "$wiki-$dump_date"".links"
