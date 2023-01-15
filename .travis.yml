@@ -6,7 +6,8 @@ python:
 install:
 - pip install -r requirements.txt
 script:
-- nosetests --with-coverage --cover-package=danker
+- coverage run --source danker -m pytest test/
+- coveralls
 - shellcheck *.sh */*.sh
 - python3 -m danker test/graphs/bar-20190301.links 0.85 10 1 -p 5 -i > /dev/null
 - ./danker.sh ch
