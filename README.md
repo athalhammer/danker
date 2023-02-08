@@ -35,6 +35,8 @@ To run the unit tests:
 ```
 # optional, otherwise 50% is chosen for all sorts (see sort -S)
 export MEM_PERC="95%"
+# optional, set tmpdir - otherwise /tmp will be used
+export TMPDIR="./mytmp";mkdir "$TMPDIR"
 
   usage: ./danker.sh [-h] [-p PROJECT] [-i ITERATIONS] [-d DAMPING] [-s START]
                      [-t DUMP_DATE] [-f FOLDER] [-b] [-l]
