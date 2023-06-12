@@ -284,9 +284,9 @@ def _main():
                         '(flag)')
     args = parser.parse_args()
     if args.iterations < 0 or args.damping > 1 or args.damping < 0 or args.start_value <= 0:
-        print("ERROR: Provided PageRank parameters\n\t[iterations ({0}), damping ({1}), "
-              "start value({2})]\n\tout of allowed range.\n\n".
-              format(args.iterations, args.damping, args.start_value), file=sys.stderr)
+        print(f"ERROR: Provided PageRank parameters\n\t"
+              f"[iterations ({args.iterations}), damping ({args.damping}), "
+              f"start value({args.start_value})]\n\tout of allowed range.\n\n", file=sys.stderr)
         parser.print_help(sys.stderr)
         sys.exit(1)
     start = time.time()
@@ -300,11 +300,11 @@ def _main():
     else:
         danker_bigmem(dictionary, args.iterations, args.damping)
 
-    print("Computation of PageRank on '{0}' with {1} took {2:.2f} seconds.".format(
-        args.left_sorted, 'danker', time.time() - start), file=sys.stderr)
+    print(f"Computation of PageRank on '{args.left_sorted}' with danker took "
+          f"{time.time() - start:.2f} seconds.", file=sys.stderr)
 
-    for i in dictionary:
-        print(output_form.format(i, dictionary[i][result_position]))
+    for qid, value in dictionary.items():
+        print(output_form.format(qid, value[result_position]))
 
 
 if __name__ == '__main__':
