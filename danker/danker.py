@@ -81,7 +81,9 @@ The following code shows a minimal example for computing PageRank with the
 import sys
 import time
 import argparse
-#import memory_profiler
+
+# import memory_profiler
+
 
 class InputNotSortedException(Exception):
     """
@@ -91,11 +93,13 @@ class InputNotSortedException(Exception):
     :param line1: The line that should be first (but is not).
     :param line2: The line that should be second (but is not).
     """
+
     _MESSAGE = 'Input file "{0}" is not correctly sorted. "{1}" after "{2}"'
 
     def __init__(self, file_name, line1, line2):
         message = self._MESSAGE.format(file_name, line1, line2)
         Exception.__init__(self, message)
+
 
 def _conv_int(string, int_only):
     """
@@ -105,6 +109,7 @@ def _conv_int(string, int_only):
         return int(string)
     return string
 
+
 def _get_std_list(smallmem, start_value):
     """
     Helper function to return standard list for smallmem vs bigmem.
@@ -112,6 +117,7 @@ def _get_std_list(smallmem, start_value):
     if smallmem:
         return [0, start_value, start_value, False]
     return [0, start_value, start_value, []]
+
 
 def init(left_sorted, start_value, smallmem, int_only):
     """
@@ -147,7 +153,9 @@ def init(left_sorted, start_value, smallmem, int_only):
 
             # take care of inlinks
             if not smallmem:
-                data = dictionary.setdefault(receiver, _get_std_list(smallmem, start_value))
+                data = dictionary.setdefault(
+                    receiver, _get_std_list(smallmem, start_value)
+                )
                 data[3].append(current)
 
             # take care of counts
@@ -160,7 +168,9 @@ def init(left_sorted, start_value, smallmem, int_only):
                     if current < previous:
                         raise InputNotSortedException(left_sorted, current, previous)
                     # store previous Q-ID and reset counter
-                    prev = dictionary.get(previous, _get_std_list(smallmem, start_value))
+                    prev = dictionary.get(
+                        previous, _get_std_list(smallmem, start_value)
+                    )
                     dictionary[previous] = [current_count] + prev[1:]
                     current_count = 1
             previous = current
@@ -171,8 +181,11 @@ def init(left_sorted, start_value, smallmem, int_only):
             dictionary[previous] = [current_count] + prev[1:]
     return dictionary
 
-#@profile
-def danker_smallmem(dictionary, right_sorted, iterations, damping, start_value, int_only):
+
+# @profile
+def danker_smallmem(
+    dictionary, right_sorted, iterations, damping, start_value, int_only
+):
     """
     Compute PageRank with right sorted file.
 
@@ -229,7 +242,8 @@ def danker_smallmem(dictionary, right_sorted, iterations, damping, start_value, 
     print("", file=sys.stderr)
     return dictionary
 
-#@profile
+
+# @profile
 def danker_bigmem(dictionary, iterations, damping):
     """
     Compute PageRank with big memory option.
@@ -244,7 +258,6 @@ def danker_bigmem(dictionary, iterations, damping):
              (that is the value of the key).
     """
     for iteration in range(0, iterations):
-
         # positions for i and i+1 result values (alternating with iterations).
         i_location = (iteration % 2) + 1
         i_plus_1_location = ((iteration + 1) % 2) + 1
@@ -260,52 +273,91 @@ def danker_bigmem(dictionary, iterations, damping):
     print("", file=sys.stderr)
     return dictionary
 
-#@profile
+
+# @profile
 def _main():
     """
     Execute main program.
     """
-    parser = argparse.ArgumentParser(prog='python -m danker', description='danker' +
-                                     ' - Compute PageRank on large graphs with ' +
-                                     'off-the-shelf hardware.')
-    parser.add_argument('left_sorted', type=str, help='A two-column, ' +
-                        'tab-separated file sorted by the left column.')
-    parser.add_argument('-r', '--right_sorted', type=str, help='The same ' +
-                        'file as left_sorted but sorted by the right column.')
-    parser.add_argument('damping', type=float, help='PageRank damping factor' +
-                        '(between 0 and 1).')
-    parser.add_argument('iterations', type=int, help='Number of PageRank ' +
-                        'iterations (>=0).')
-    parser.add_argument('start_value', type=float, help='PageRank starting value '
-                        '(>0).')
-    parser.add_argument('-p', '--output_precision', type=int, help='Number of places after '
-                        'the decimal point.', default=17)
-    parser.add_argument('-i', '--int_only', action='store_true', help='All nodes are integers '
-                        '(flag)')
+    parser = argparse.ArgumentParser(
+        prog="python -m danker",
+        description="danker"
+        + " - Compute PageRank on large graphs with "
+        + "off-the-shelf hardware.",
+    )
+    parser.add_argument(
+        "left_sorted",
+        type=str,
+        help="A two-column, " + "tab-separated file sorted by the left column.",
+    )
+    parser.add_argument(
+        "-r",
+        "--right_sorted",
+        type=str,
+        help="The same " + "file as left_sorted but sorted by the right column.",
+    )
+    parser.add_argument(
+        "damping", type=float, help="PageRank damping factor" + "(between 0 and 1)."
+    )
+    parser.add_argument(
+        "iterations", type=int, help="Number of PageRank " + "iterations (>=0)."
+    )
+    parser.add_argument(
+        "start_value", type=float, help="PageRank starting value " "(>0)."
+    )
+    parser.add_argument(
+        "-p",
+        "--output_precision",
+        type=int,
+        help="Number of places after " "the decimal point.",
+        default=17,
+    )
+    parser.add_argument(
+        "-i", "--int_only", action="store_true", help="All nodes are integers " "(flag)"
+    )
     args = parser.parse_args()
-    if args.iterations < 0 or args.damping > 1 or args.damping < 0 or args.start_value <= 0:
-        print(f"ERROR: Provided PageRank parameters\n\t"
-              f"[iterations ({args.iterations}), damping ({args.damping}), "
-              f"start value({args.start_value})]\n\tout of allowed range.\n\n", file=sys.stderr)
+    if (
+        args.iterations < 0
+        or args.damping > 1
+        or args.damping < 0
+        or args.start_value <= 0
+    ):
+        print(
+            f"ERROR: Provided PageRank parameters\n\t"
+            f"[iterations ({args.iterations}), damping ({args.damping}), "
+            f"start value({args.start_value})]\n\tout of allowed range.\n\n",
+            file=sys.stderr,
+        )
         parser.print_help(sys.stderr)
         sys.exit(1)
     start = time.time()
-    dictionary = init(args.left_sorted, args.start_value, args.right_sorted, args.int_only)
+    dictionary = init(
+        args.left_sorted, args.start_value, args.right_sorted, args.int_only
+    )
     result_position = (args.iterations % 2) + 1
     output_form = "{0}\t{1:." + str(args.output_precision) + "f}"
 
     if args.right_sorted:
-        danker_smallmem(dictionary, args.right_sorted, args.iterations,
-                        args.damping, args.start_value, args.int_only)
+        danker_smallmem(
+            dictionary,
+            args.right_sorted,
+            args.iterations,
+            args.damping,
+            args.start_value,
+            args.int_only,
+        )
     else:
         danker_bigmem(dictionary, args.iterations, args.damping)
 
-    print(f"Computation of PageRank on '{args.left_sorted}' with danker took "
-          f"{time.time() - start:.2f} seconds.", file=sys.stderr)
+    print(
+        f"Computation of PageRank on '{args.left_sorted}' with danker took "
+        f"{time.time() - start:.2f} seconds.",
+        file=sys.stderr,
+    )
 
     for qid, value in dictionary.items():
         print(output_form.format(qid, value[result_position]))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     _main()
