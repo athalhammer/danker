@@ -75,10 +75,7 @@ if [ "$1" == "ALL" ]; then
 	done
 
 	# merge
-	while IFS= read -r i
-	do
-            cat "$i" >> "$filename"
-	done < <(cat "$filename.files.txt")
+	sort -m -k 1,1n -T . -S "$MEM_PERC" -o "$filename" $(< "$filename.files.txt")
 
         # collect stats
 	while IFS= read -r i
@@ -93,8 +90,6 @@ if [ "$1" == "ALL" ]; then
             rm "$i"
 	done < <(cat "$filename.files.txt")
 
-	# sort
-	sort -k 1,1n -T . -S "$MEM_PERC" -o "$filename" "$filename"
     else
 	(>&2 printf "[Error]\tCouldn't retrieve languages...\n")
         exit 1
