@@ -80,7 +80,7 @@ fi
 
 project="$2"
 # default to wiki project
-if [ ! "$2" ]; then
+if [ ! "$2" ] || [ "$2" = "test" ]; then
     project="wiki"
 fi
 wiki="$1$project"
