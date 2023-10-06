@@ -94,7 +94,10 @@ class InputNotSortedException(Exception):
     :param line2: The line that should be second (but is not).
     """
 
-    _MESSAGE = 'Input file "{0}" is not correctly sorted. "{1}" after "{2}"'
+    _MESSAGE = (
+        'Input file "{0}" is not correctly sorted. "{1}" after "{2}". If you think the sorting is'
+        ' correct please check if you forgot the -i for "integers only" flag.'
+    )
 
     def __init__(self, file_name, line1, line2):
         message = self._MESSAGE.format(file_name, line1, line2)
@@ -302,18 +305,16 @@ def _main():
     parser.add_argument(
         "iterations", type=int, help="Number of PageRank " + "iterations (>=0)."
     )
-    parser.add_argument(
-        "start_value", type=float, help="PageRank starting value " "(>0)."
-    )
+    parser.add_argument("start_value", type=float, help="PageRank starting value (>0).")
     parser.add_argument(
         "-p",
         "--output_precision",
         type=int,
-        help="Number of places after " "the decimal point.",
+        help="Number of places after the decimal point.",
         default=17,
     )
     parser.add_argument(
-        "-i", "--int_only", action="store_true", help="All nodes are integers " "(flag)"
+        "-i", "--int_only", action="store_true", help="All nodes are integers (flag)"
     )
     args = parser.parse_args()
     if (
@@ -323,7 +324,7 @@ def _main():
         or args.start_value <= 0
     ):
         print(
-            f"ERROR: Provided PageRank parameters\n\t"
+            "ERROR: Provided PageRank parameters\n\t"
             f"[iterations ({args.iterations}), damping ({args.damping}), "
             f"start value({args.start_value})]\n\tout of allowed range.\n\n",
             file=sys.stderr,
