@@ -75,7 +75,7 @@ if [ "$1" == "ALL" ]; then
 	done
 
 	# merge
-	sort -m -k 1,1n -T . -S "$MEM_PERC" -o "$filename" "$(cat "$filename.files.txt")"
+	sort -m -k 1,1n -T . -S "$MEM_PERC" -o "$filename" $(cat "$filename.files.txt")
 
         # collect stats
 	while IFS= read -r i
