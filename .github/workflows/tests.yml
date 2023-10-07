@@ -25,6 +25,7 @@ jobs:
       uses: coverallsapp/github-action@v2
     - name: Shellcheck
       run: |
+        shellcheck -V
         shellcheck *.sh */*.sh
     - name: Run on test graphs
       run: |
