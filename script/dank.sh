@@ -75,7 +75,7 @@ if [ "$1" == "ALL" ]; then
 	done
 
 	# merge
-	sort -m -k 1,1n -T . -S "$MEM_PERC" -o "$filename" $(< "$filename.files.txt")
+	sort -m -k 1,1n -T . -S "$MEM_PERC" -o "$filename" "$(cat "$filename.files.txt")"
 
         # collect stats
 	while IFS= read -r i
@@ -99,12 +99,12 @@ else
 fi
 
 # "extract links only" option
-if [ $links ]; then
+if [ "$links" ]; then
     echo "$filename"
     exit 0
 fi
 
-if [ $bigmem ]; then
+if [ "$bigmem" ]; then
     python3 -m danker  "$filename" "$damping" "$iterations" "$start_value" -i \
         | sed "s/\(.*\)/Q\1/" \
     > "$filename".rank
