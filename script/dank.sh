@@ -75,21 +75,14 @@ if [ "$1" == "ALL" ]; then
 	done
 
 	# merge
-	# shellcheck disable=SC2046
-	sort -m -k 1,1n -T . -S "$MEM_PERC" -o "$filename" $(cat "$filename.files.txt")
+	xargs sort -m -k 1,1n -T . -S "$MEM_PERC" -o "$filename" < "$filename.files.txt" 
 
         # collect stats
-	while IFS= read -r i
-	do
-            wc -l "$i" >> "$filename.stats.txt"
-	done < <(cat "$filename.files.txt")
+	xargs wc -l < "$filename.files.txt" | grep -v "total" | sed "s/^[[:space:]]\+//" > "$filename.stats.txt"
         wc -l "$filename" >> "$filename.stats.txt"
 
         # clean up
-	while IFS= read -r i
-	do
-            rm "$i"
-	done < <(cat "$filename.files.txt")
+	xargs rm < "$filename.files.txt"
 
     else
 	(>&2 printf "[Error]\tCouldn't retrieve languages...\n")
