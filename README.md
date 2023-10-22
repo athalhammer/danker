@@ -54,7 +54,7 @@ export TMPDIR="./mytmp";mkdir "$TMPDIR"
     -p PROJECT, --project PROJECT
                           Wiki project, currently supported are [wiki,
                           wikibooks, wikisource, wikiversity, wikinews,
-                          wiktionary, wikiquote]. (default: wiki)
+                          wiktionary, wikiquote, wikivoyage]. (default: wiki)
     -i ITERATIONS, --iterations ITERATIONS
                           PageRank number of iterations. (default: 40)
     -d DAMPING, --damping DAMPING
