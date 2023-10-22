@@ -22,7 +22,7 @@
 
 declare -A WIKIS
 WIKIS=( ["wiki"]="wp" ["wikibooks"]="wb" ["wikisource"]="ws" ["wikiversity"]="wv"
-        ["wikinews"]="wn" ["wiktionary"]="wt" ["wikiquote"]="wq" ["test"]="test")
+        ["wikinews"]="wn" ["wiktionary"]="wt" ["wikiquote"]="wq" ["wikivoyage"]="wy" ["test"]="test")
 
 # default is normal Wikipedia (wp)
 project="wp"
