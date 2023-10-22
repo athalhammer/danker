@@ -34,7 +34,7 @@ def main():
                         ' languages available in a project.')
     parser.add_argument('-p', '--project', type=str, default='wiki',
                         help='Wiki project, currently supported are [wiki, wikibooks, ' +
-                        'wikisource, wikiversity, wikinews, wiktionary, wikiquote].')
+                        'wikisource, wikiversity, wikinews, wiktionary, wikiquote, wikivoyage].')
     parser.add_argument('-i', '--iterations', type=int, default=40,
                         help='PageRank number of iterations.')
     parser.add_argument('-d', '--damping', type=float, default=0.85,
