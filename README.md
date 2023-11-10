@@ -105,7 +105,11 @@ export TMPDIR="./mytmp";mkdir "$TMPDIR"
 
 
 ## Download
-The output of ``./danker.sh ALL`` on bi-weekly Wikipedia dumps is available at https://danker.s3.amazonaws.com/index.html ([CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)).
+
+![Computer where danker runs](danker.JPG "Raspberry Pi 4B, 8GB")
+
+
+The output of ``./danker.sh ALL`` on bi-weekly Wikipedia dumps is (infrequently) computed on a Raspberry Pi 4B, 8GB (previously on the cloud) and is available at https://danker.s3.amazonaws.com/index.html ([CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)).
 
 Check out https://github.com/athalhammer/danker-hdt-docker for an example on how to publish the scores to an endpoint with docker-compose and do federated queries.
 
