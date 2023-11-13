@@ -56,7 +56,7 @@ export TMPDIR="./mytmp";mkdir "$TMPDIR"
                           wikibooks, wikisource, wikiversity, wikinews,
                           wiktionary, wikiquote, wikivoyage]. (default: wiki)
     -i ITERATIONS, --iterations ITERATIONS
-                          PageRank number of iterations. (default: 40)
+                          PageRank number of iterations. (default: 20)
     -d DAMPING, --damping DAMPING
                           PageRank damping factor. (default: 0.85)
     -s START, --start START
