@@ -94,12 +94,13 @@ else
     true > "$filename.stats.txt"
 fi
 
+wc -l "$filename" >> "$filename.stats.txt"
+
 # "extract links only" option
 if [ "$links" ]; then
     echo "$filename"
     exit 0
 fi
-wc -l "$filename" >> "$filename.stats.txt"
 
 if [ "$bigmem" ]; then
     python3 -m danker  "$filename" "$damping" "$iterations" "$start_value" -i \
