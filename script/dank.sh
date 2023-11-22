@@ -67,6 +67,8 @@ fi
 
 if [ "$1" == "ALL" ]; then
     filename=$(date +"%Y-%m-%d").all"$project".links
+    > "$filename.files.txt"
+    > "$filename.stats.txt"
     if languages=$(./script/get_languages.sh "$project"); then
 
 	# collect
@@ -79,7 +81,6 @@ if [ "$1" == "ALL" ]; then
 
         # collect stats
 	xargs wc -l < "$filename.files.txt" | grep -v "total" | sed "s/^[[:space:]]\+//" > "$filename.stats.txt"
-        wc -l "$filename" >> "$filename.stats.txt"
 
         # clean up
 	xargs rm < "$filename.files.txt"
@@ -90,6 +91,7 @@ if [ "$1" == "ALL" ]; then
     fi
 else
     filename=$(./script/create_links.sh "$1" "$project" "$dump_time" "$folder")
+    > "$filename.stats.txt"
 fi
 
 # "extract links only" option
@@ -97,18 +99,19 @@ if [ "$links" ]; then
     echo "$filename"
     exit 0
 fi
+wc -l "$filename" >> "$filename.stats.txt"
 
 if [ "$bigmem" ]; then
     python3 -m danker  "$filename" "$damping" "$iterations" "$start_value" -i \
-        | sed "s/\(.*\)/Q\1/" \
+       2>> "$filename.stats.txt" | sed "s/\(.*\)/Q\1/" \
     > "$filename".rank
 else
     sort -k 2,2n -T . -S "$MEM_PERC" -o "$filename"".right" "$filename"
     python3 -m danker  "$filename" -r "$filename"".right" "$damping" "$iterations" "$start_value" -i \
-        | sed "s/\(.*\)/Q\1/" \
+        2>> "$filename.stats.txt" | sed "s/\(.*\)/Q\1/" \
     > "$filename".rank
     rm "$filename"".right"
 fi
 sort -k 2,2nr -T . -S "$MEM_PERC" -o "$filename"".rank" "$filename"".rank"
+wc -l "$filename"".rank" >> "$filename.stats.txt"
 bzip2 "$filename"
-wc -l "$filename"".rank"

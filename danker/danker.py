@@ -317,6 +317,7 @@ def _main():
         "-i", "--int_only", action="store_true", help="All nodes are integers (flag)"
     )
     args = parser.parse_args()
+    param_out = f"[iterations ({args.iterations}), damping ({args.damping}), start value({args.start_value})]"
     if (
         args.iterations < 0
         or args.damping > 1
@@ -325,12 +326,16 @@ def _main():
     ):
         print(
             "ERROR: Provided PageRank parameters\n\t"
-            f"[iterations ({args.iterations}), damping ({args.damping}), "
-            f"start value({args.start_value})]\n\tout of allowed range.\n\n",
+            f"{param_out}\n\tout of allowed range.\n\n",
             file=sys.stderr,
         )
         parser.print_help(sys.stderr)
         sys.exit(1)
+    print(
+        f"danker: starting computation of PageRank on '{args.left_sorted}' with parameters\n\t"
+        f"{param_out}",
+        file=sys.stderr,
+    )
     start = time.time()
     dictionary = init(
         args.left_sorted, args.start_value, args.right_sorted, args.int_only
@@ -351,8 +356,7 @@ def _main():
         danker_bigmem(dictionary, args.iterations, args.damping)
 
     print(
-        f"Computation of PageRank on '{args.left_sorted}' with danker took "
-        f"{time.time() - start:.2f} seconds.",
+        "danker: PageRank computation took " f"{time.time() - start:.2f} seconds.",
         file=sys.stderr,
     )
 
