@@ -67,8 +67,8 @@ fi
 
 if [ "$1" == "ALL" ]; then
     filename=$(date +"%Y-%m-%d").all"$project".links
-    > "$filename.files.txt"
-    > "$filename.stats.txt"
+    true > "$filename.files.txt"
+    true > "$filename.stats.txt"
     if languages=$(./script/get_languages.sh "$project"); then
 
 	# collect
@@ -91,7 +91,7 @@ if [ "$1" == "ALL" ]; then
     fi
 else
     filename=$(./script/create_links.sh "$1" "$project" "$dump_time" "$folder")
-    > "$filename.stats.txt"
+    true > "$filename.stats.txt"
 fi
 
 # "extract links only" option
