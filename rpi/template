@@ -1,0 +1,8 @@
+  "distribution":[
+    {
+      "@type":"DataDownload",
+      "version": "VERSION",
+      "encodingFormat":"text/tab-separated-values",
+      "contentUrl": "https://danker.s3.amazonaws.com/VERSION.allwiki.links.rank.bz2",
+      "about": "https://danker.s3.amazonaws.com/VERSION.allwiki.links.stats.txt"
+    },
