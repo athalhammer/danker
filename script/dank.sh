@@ -115,4 +115,4 @@ else
 fi
 sort -k 2,2nr -T . -S "$MEM_PERC" -o "$filename"".rank" "$filename"".rank"
 wc -l "$filename"".rank" >> "$filename.stats.txt"
-bzip2 "$filename"
+echo "$filename"
