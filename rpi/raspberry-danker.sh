@@ -22,9 +22,10 @@ export INDEX_FILE="index.html"
 export PROJECT_LINKS=".allwiki.links"
 
 filename=$(./danker.sh ALL)
-VER=$(echo "$filename" | sed "s/$PROJECT_LINKS//")
+bzip2 "$filename.rank"
+VER=${filename//$PROJECT_LINKS/}
 aws s3 cp s3://"$S3_BUCKET/$INDEX_FILE" .
-cat ./rpi/template | sed "s/VERSION/$VER/" > tmp
+sed "s/VERSION/$VER/" <./rpi/template > tmp
 perl -i -p0e 's/  "distribution":\[/`cat tmp`/se' "$INDEX_FILE"
 aws s3 cp "$INDEX_FILE" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 aws s3 cp "$filename.rank.bz2" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
