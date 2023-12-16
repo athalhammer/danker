@@ -15,17 +15,20 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
+# Expects to be executed from ./danker "root" dir
 # Expects AWS Cli and according settings 
 export MEM_PERC="90%"
-export S3_BUCKET="danker"
-export INDEX_FILE="index.html"
-export PROJECT_LINKS=".allwiki.links"
+
+S3_BUCKET="danker"
+INDEX_FILE="index.html"
+PROJECT_LINKS=".allwiki.links"
 
 filename=$(./danker.sh ALL)
 bzip2 "$filename.rank"
 VER=${filename//$PROJECT_LINKS/}
 aws s3 cp s3://"$S3_BUCKET/$INDEX_FILE" .
-sed "s/VERSION/$VER/" <./rpi/template > tmp
+sed "s/VERSION/$VER/" < ./rpi/template > tmp
 perl -i -p0e 's/  "distribution":\[/`cat tmp`/se' "$INDEX_FILE"
 aws s3 cp "$INDEX_FILE" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 aws s3 cp "$filename.rank.bz2" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
