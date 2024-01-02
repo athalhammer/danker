@@ -30,6 +30,8 @@ VER=${filename//$PROJECT_LINKS/}
 aws s3 cp s3://"$S3_BUCKET/$INDEX_FILE" .
 sed "s/VERSION/$VER/" < ./rpi/template > tmp
 perl -i -p0e 's/  "distribution":\[/`cat tmp`/se' "$INDEX_FILE"
+date=$(date -I)
+sed "s/\"dateModified\": \"\(.*\)\",/\"dateModified\": \"$date\",/" -i index.html
 aws s3 cp "$INDEX_FILE" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 aws s3 cp "$filename.rank.bz2" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 aws s3 cp "$filename.stats.txt" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
