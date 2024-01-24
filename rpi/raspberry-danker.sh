@@ -35,3 +35,4 @@ sed "s/\"dateModified\": \"\(.*\)\",/\"dateModified\": \"$date\",/" -i index.htm
 aws s3 cp "$INDEX_FILE" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 aws s3 cp "$filename.rank.bz2" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 aws s3 cp "$filename.stats.txt" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+rm "$filename"
