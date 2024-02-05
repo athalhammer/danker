@@ -24,7 +24,7 @@ S3_BUCKET="danker"
 INDEX_FILE="index.html"
 PROJECT_LINKS=".allwiki.links"
 
-filename=$(./danker.sh ALL)
+filename=$(./danker.sh -k ALL)
 bzip2 "$filename.rank"
 VER=${filename//$PROJECT_LINKS/}
 aws s3 cp s3://"$S3_BUCKET/$INDEX_FILE" .
