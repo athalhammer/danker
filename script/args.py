@@ -46,6 +46,8 @@ def main():
                         'needs to match project and dump-date parameters.')
     parser.add_argument('-b', '--bigmem', action='store_true',
                         help='PageRank big memory flag.')
+    parser.add_argument('-k', '--keep-site-links', action='store_true',
+                        help='Keep extracted site links file.')
     parser.add_argument('-l', '--links', action='store_true',
                         help='Only extract links (skip PageRank).')
     args = parser.parse_args()
@@ -67,6 +69,8 @@ def main():
         print('', '-b', end='')
     if args.links:
         print('', '-l', end='')
+    if args.keep_site_links:
+        print('', '-k', end='')
     print('', args.wikilang)
 
 if __name__ == '__main__':

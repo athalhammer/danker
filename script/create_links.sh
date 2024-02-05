@@ -22,6 +22,24 @@ if [ -z ${MEM_PERC+x} ]; then
 	export MEM_PERC="50%"
 fi
 
+while getopts ":d:f:k:" a; do
+    case "${a}" in
+        d)
+            dump_date=${OPTARG}
+            ;;
+        f)
+            folder=${OPTARG}
+            ;;
+	k)
+	    keep_site_links=${OPTARG}
+	    ;;
+        *)
+	    # should not occur
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
 dir=$(dirname "$0")
 
 latest_dump() {
@@ -89,10 +107,8 @@ wiki="$1$project"
 download="http://download.wikimedia.org/$wiki/"
 
 # Take latest if no date is specified
-if [ ! "$3" ]; then
+if [ ! "$dump_date" ]; then
     dump_date=$(latest_dump) || exit 1
-else
-    dump_date="$3"
 fi
 
 # File names are now fully specified
@@ -102,14 +118,13 @@ redirect="$wiki-""$dump_date""-redirect.sql"
 pageprops="$wiki-""$dump_date""-page_props.sql"
 
 # If a folder is provided, take the files from the folder
-if [ ! "$4" ]; then
+if [ ! "$folder" ]; then
     use_tmp=true
     file_dir=$(download) || exit 1
 else
     use_tmp=false
-    file_dir="$4"
+    file_dir="$folder"
 fi
-
 # Pre-process
 "$dir"/maria2csv.py "$file_dir/$page" \
     | csvformat -q "'" -b -p "\\" \
@@ -247,13 +262,18 @@ sort -k 1,1n -k 2,2n -u \
      -o "$wiki"-"$dump_date"".links" \
      "$wiki-$dump_date"".links"
 
+if [ "$keep_site_links" ]; then
+   mv "$wiki""pageprops.lines" "$wiki-$dump_date".site.links
+else
+   rm "$wiki""pageprops.lines"
+fi
+
 # Delete temporary files
 rm "$wiki""page.lines" \
    "$wiki""pagelinks.lines" \
    "$wiki""pagelinks_norm.lines" \
    "$wiki""redirect.lines" \
    "$wiki""redirect_norm.lines" \
-   "$wiki""pagelinks_redirected.lines" \
-   "$wiki""pageprops.lines"
+   "$wiki""pagelinks_redirected.lines"
 
 echo "$wiki-$dump_date"".links"

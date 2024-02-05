@@ -26,7 +26,7 @@ fi
 project="wiki"
 dump_time=""
 folder=""
-while getopts ":p:i:d:s:t:f:bl" a; do
+while getopts ":p:i:d:s:t:f:bkl" a; do
     case "${a}" in
         p)
             project=${OPTARG}
@@ -49,7 +49,10 @@ while getopts ":p:i:d:s:t:f:bl" a; do
         b)
             bigmem=1
             ;;
-	l)
+	k)
+	    keep_site_links=1
+	    ;;
+        l)
 	    links=1
 	    ;;
         *)
@@ -73,7 +76,7 @@ if [ "$1" == "ALL" ]; then
 
 	# collect
 	for i in $languages; do
-	    ./script/create_links.sh "$i" "$project" "$dump_time" "$folder" >> "$filename.files.txt"
+	    ./script/create_links.sh -d "$dump_time" -f "$folder" -k "$keep_site_links" "$1" "$project" >> "$filename.files.txt"
 	done
 
 	# merge
@@ -90,7 +93,7 @@ if [ "$1" == "ALL" ]; then
         exit 1
     fi
 else
-    filename=$(./script/create_links.sh "$1" "$project" "$dump_time" "$folder")
+    filename=$(./script/create_links.sh -d "$dump_time" -f "$folder" -k "$keep_site_links" "$1" "$project")
     true > "$filename.stats.txt"
 fi
 
