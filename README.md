@@ -41,7 +41,7 @@ export MEM_PERC="95%"
 export TMPDIR="./mytmp";mkdir "$TMPDIR"
 
   usage: ./danker.sh [-h] [-p PROJECT] [-i ITERATIONS] [-d DAMPING] [-s START]
-                     [-t DUMP_DATE] [-f FOLDER] [-b] [-l]
+                     [-t DUMP_DATE] [-f FOLDER] [-b] [-k] [-l]
                      wikilang
 
   Compute PageRank on Wikipedia.
