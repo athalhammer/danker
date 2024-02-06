@@ -77,7 +77,7 @@ if [ "$1" == "ALL" ]; then
 
 	# collect
 	for i in $languages; do
-	    ./script/create_links.sh -d "$dump_time" -f "$folder" "$keep_site_links" "$i" "$project" >> "$filename.files.txt"
+	    ./script/create_links.sh -d "$dump_time" -f "$folder" $keep_site_links "$i" "$project" >> "$filename.files.txt"
 	done
 
 	# merge
@@ -94,7 +94,7 @@ if [ "$1" == "ALL" ]; then
         exit 1
     fi
 else
-    filename=$(./script/create_links.sh -d "$dump_time" -f "$folder" "$keep_site_links" "$1" "$project")
+    filename=$(./script/create_links.sh -d "$dump_time" -f "$folder" $keep_site_links "$1" "$project")
     true > "$filename.stats.txt"
 fi
 
