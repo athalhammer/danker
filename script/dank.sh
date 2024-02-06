@@ -24,6 +24,7 @@ fi
 
 # defaults
 project="wiki"
+keep_site_links=""
 dump_time=""
 folder=""
 while getopts ":p:i:d:s:t:f:bkl" a; do
@@ -50,7 +51,7 @@ while getopts ":p:i:d:s:t:f:bkl" a; do
             bigmem=1
             ;;
 	k)
-	    keep_site_links=1
+	    keep_site_links="-k"
 	    ;;
         l)
 	    links=1
@@ -76,7 +77,7 @@ if [ "$1" == "ALL" ]; then
 
 	# collect
 	for i in $languages; do
-	    ./script/create_links.sh -d "$dump_time" -f "$folder" -k "$keep_site_links" "$i" "$project" >> "$filename.files.txt"
+	    ./script/create_links.sh -d "$dump_time" -f "$folder" "$keep_site_links" "$i" "$project" >> "$filename.files.txt"
 	done
 
 	# merge
@@ -93,7 +94,7 @@ if [ "$1" == "ALL" ]; then
         exit 1
     fi
 else
-    filename=$(./script/create_links.sh -d "$dump_time" -f "$folder" -k "$keep_site_links" "$1" "$project")
+    filename=$(./script/create_links.sh -d "$dump_time" -f "$folder" "$keep_site_links" "$1" "$project")
     true > "$filename.stats.txt"
 fi
 

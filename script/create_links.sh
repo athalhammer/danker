@@ -22,7 +22,7 @@ if [ -z ${MEM_PERC+x} ]; then
 	export MEM_PERC="50%"
 fi
 
-while getopts ":d:f:k:" a; do
+while getopts ":d:f:k" a; do
     case "${a}" in
         d)
             dump_date=${OPTARG}
@@ -31,7 +31,7 @@ while getopts ":d:f:k:" a; do
             folder=${OPTARG}
             ;;
 	k)
-	    keep_site_links=${OPTARG}
+	    keep_site_links=1
 	    ;;
         *)
 	    # should not occur
