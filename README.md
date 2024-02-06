@@ -70,6 +70,9 @@ export TMPDIR="./mytmp";mkdir "$TMPDIR"
                           Folder with existing dumps, needs to match project and
                           dump-date parameters. (default: None)
     -b, --bigmem          PageRank big memory flag. (default: False)
+    -k, --keep-site-links
+                          Keep extracted site links file. (default: False)
+
     -l, --links           Only extract links (skip PageRank). (default: False)
 ```
 
