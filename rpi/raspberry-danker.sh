@@ -36,3 +36,10 @@ aws s3 cp "$INDEX_FILE" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaw
 aws s3 cp "$filename.rank.bz2" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 aws s3 cp "$filename.stats.txt" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 rm "$filename"
+
+# Prepare sitelinks
+filename="${filename%.*}".sitelinks.count
+sort -k1,1 ./*.site.links | cut -f 1 | uniq -c | awk '{print $2 "\t" $1}' > "$filename"
+bzip2 "$filename"
+aws s3 cp "$filename".bz2 s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+rm ./*.site.links
