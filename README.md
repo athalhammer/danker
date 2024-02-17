@@ -40,6 +40,7 @@ In addition, to run the unit tests:
 $ pip install -r test_requirements.txt
 
 # for completeness
+$ cat requirements.txt
 numpy>=1.18.5
 networkx>=2.3
 coveralls>=3.3.1
