@@ -125,8 +125,9 @@ else
     use_tmp=false
     file_dir="$folder"
 fi
+
 # Pre-process
-"$dir"/maria2csv.py "$file_dir/$page" \
+maria2csv "$file_dir/$page" \
     | csvformat -q "'" -b -p "\\" \
     | csvcut -c page_id,page_namespace,page_title \
     | csvgrep -c page_namespace -r "^0$|^14$" \
@@ -135,7 +136,7 @@ fi
     | sed "s/\([0-9]\+\)\t\([0-9]\+\)\t\(.*\)/\1\t\2\3/" \
 > "$wiki"page.lines
 
-"$dir"/maria2csv.py "$file_dir/$pagelinks" \
+maria2csv "$file_dir/$pagelinks" \
     | csvformat -q "'" -b -p "\\" \
     | csvgrep -c pl_from_namespace -r "^0$|^14$" \
     | csvgrep -c pl_namespace -r "^0$|^14$" \
@@ -145,7 +146,7 @@ fi
     | sed "s/\([0-9]\+\)\t\([0-9]\+\)\t\(.*\)/\1\t\2\3/" \
 > "$wiki"pagelinks.lines
 
-"$dir"/maria2csv.py "$file_dir/$redirect" \
+maria2csv "$file_dir/$redirect" \
     | csvformat -q "'" -b -p "\\" \
     | csvcut -c rd_from,rd_namespace,rd_title \
     | csvgrep -c rd_namespace -r "^0$|^14$" \
@@ -154,7 +155,7 @@ fi
     | sed "s/\([0-9]\+\)\t\([0-9]\+\)\t\(.*\)/\1\t\2\3/" \
 > "$wiki"redirect.lines
 
-"$dir"/maria2csv.py "$file_dir/$pageprops" \
+maria2csv "$file_dir/$pageprops" \
     | csvformat -q "'" -b -p "\\" \
     | csvcut -c pp_page,pp_propname,pp_value \
     | csvgrep -c pp_propname -r "^wikibase_item$" \
