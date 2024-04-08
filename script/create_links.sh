@@ -30,7 +30,7 @@ while getopts ":d:f:k" a; do
         f)
             folder=${OPTARG}
             ;;
-	k)
+        k)
 	    keep_site_links=1
 	    ;;
         *)
@@ -110,6 +110,14 @@ download="http://download.wikimedia.org/$wiki/"
 if [ ! "$dump_date" ]; then
     dump_date=$(latest_dump) || exit 1
 fi
+
+# Skip if file exists
+if [ -f "$wiki-$dump_date"".links" ]; then
+    echo "$wiki-$dump_date.links exists... skipping" 1>&2
+    echo "$wiki-$dump_date"".links"
+    exit 0
+fi
+
 
 # File names are now fully specified
 page="$wiki-""$dump_date""-page.sql"
