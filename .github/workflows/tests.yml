@@ -34,7 +34,7 @@ jobs:
     - name: Run on small live graphs
       run: |
         ./danker.sh ch
-        ./danker.sh ch -p wiki -f ./test/dump -t 20240120
+        ./danker.sh ch -p wiki -f ./test/dump -t 20240601
         ./danker.sh ALL -p test -i 3
         ./danker.sh sk --project wikisource
         ./danker.sh cv --project wikibooks
