@@ -22,7 +22,7 @@ copyright = '2017, Andreas Thalhammer'
 author = 'Andreas Thalhammer'
 
 # The full version, including alpha/beta/rc tags
-release = '0.7.4'
+release = '0.8.0'
 
 # -- General configuration ---------------------------------------------------
 
