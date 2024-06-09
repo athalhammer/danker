@@ -47,6 +47,7 @@ latest_dump() {
 	# Latest dump date
 	if wget -q "$rss""page.sql.gz-rss.xml" \
 	    "$rss""pagelinks.sql.gz-rss.xml" \
+	    "$rss""linktarget.sql.gz-rss.xml" \
 	    "$rss""redirect.sql.gz-rss.xml" \
 	    "$rss""page_props.sql.gz-rss.xml"; then
 		dump_date=$(cat "$wiki"*.xml | sed -n "s#.*$download\([0-9]\+\).*#\1#p" | sort -u)
@@ -59,6 +60,7 @@ latest_dump() {
 
 	rm "$wiki-latest-page.sql.gz-rss.xml" \
 	    "$wiki-latest-pagelinks.sql.gz-rss.xml" \
+	    "$wiki-latest-linktarget.sql.gz-rss.xml" \
 	    "$wiki-latest-redirect.sql.gz-rss.xml" \
 	    "$wiki-latest-page_props.sql.gz-rss.xml"
 	echo "$dump_date"
@@ -71,6 +73,7 @@ download() {
 	# Download and unzip
 	if ! wget -q --waitretry=1m --retry-connrefused "$download$dump_date/$page.gz" \
 	    "$download$dump_date/$pagelinks.gz" \
+	    "$download$dump_date/$linktarget.gz" \
 	    "$download$dump_date/$redirect.gz" \
 	    "$download$dump_date/$pageprops.gz"; then
 		(>&2 printf "Couldn't download dumps of '%s' for date '%s'.\n" "$wiki" "$dump_date")
@@ -78,7 +81,7 @@ download() {
 		return 1
 	fi
 
-	gunzip "$page.gz" "$pagelinks.gz" "$redirect.gz" "$pageprops.gz"
+	gunzip "$page.gz" "$pagelinks.gz" "$redirect.gz" "$pageprops.gz" "$linktarget.gz"
 	echo "$tmpdir"
 }
 
@@ -122,6 +125,7 @@ fi
 # File names are now fully specified
 page="$wiki-""$dump_date""-page.sql"
 pagelinks="$wiki-""$dump_date""-pagelinks.sql"
+linktarget="$wiki-""$dump_date""-linktarget.sql"
 redirect="$wiki-""$dump_date""-redirect.sql"
 pageprops="$wiki-""$dump_date""-page_props.sql"
 
@@ -146,13 +150,20 @@ maria2csv "$file_dir/$page" \
 
 maria2csv "$file_dir/$pagelinks" \
     | csvformat -q "'" -b -p "\\" \
+    | csvcut -c pl_from,pl_from_namespace,pl_target_id \
     | csvgrep -c pl_from_namespace -r "^0$|^14$" \
-    | csvgrep -c pl_namespace -r "^0$|^14$" \
     | csvcut -C pl_from_namespace \
     | csvformat -D $'\t' \
     | tail -n+2 \
-    | sed "s/\([0-9]\+\)\t\([0-9]\+\)\t\(.*\)/\1\t\2\3/" \
 > "$wiki"pagelinks.lines
+
+maria2csv "$file_dir/$linktarget" \
+    | csvformat -q "'" -b -p "\\" \
+    | csvgrep -c lt_namespace -r "^0$|^14$" \
+    | csvformat -D $'\t' \
+    | tail -n+2 \
+    | sed "s/\([0-9]\+\)\t\([0-9]\+\)\t\(.*\)/\1\t\2\3/" \
+> "$wiki"linktarget.lines
 
 maria2csv "$file_dir/$redirect" \
     | csvformat -q "'" -b -p "\\" \
@@ -194,9 +205,23 @@ sort -k 2,2 \
      -o "$wiki""pagelinks.lines" \
      "$wiki""pagelinks.lines"
 
+# Prepare linktarget
+sort -k 1,1 \
+    -S "$MEM_PERC" -T . \
+    -o "$wiki"linktarget.lines \
+    "$wiki"linktarget.lines
+
+# Create pagelinks with linktarget
+join -1 2 -2 1 \
+     "$wiki""pagelinks.lines" \
+     "$wiki"linktarget.lines \
+     -o 1.1,2.2,2.1 -t $'\t' \
+    | sort -k 2,2 \
+> "$wiki""pagelinks_old.lines"
+
 # Normalize pagelinks
 join -j 2 \
-     "$wiki""pagelinks.lines" \
+     "$wiki""pagelinks_old.lines" \
      "$wiki""page.lines" \
      -o 1.1,2.1 -t $'\t' \
 > "$wiki""pagelinks_norm.lines"
@@ -280,6 +305,8 @@ fi
 # Delete temporary files
 rm "$wiki""page.lines" \
    "$wiki""pagelinks.lines" \
+   "$wiki""pagelinks_old.lines" \
+   "$wiki""linktarget.lines" \
    "$wiki""pagelinks_norm.lines" \
    "$wiki""redirect.lines" \
    "$wiki""redirect_norm.lines" \
