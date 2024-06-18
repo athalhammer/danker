@@ -1,3 +1,4 @@
+importlib
 numpy>=1.18.5
 networkx>=2.3
 coveralls>=3.3.1
