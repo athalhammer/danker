@@ -82,6 +82,7 @@ import sys
 import time
 import datetime
 import argparse
+from importlib.metadata import version
 
 # import memory_profiler
 
@@ -333,7 +334,7 @@ def _main():
         parser.print_help(sys.stderr)
         sys.exit(1)
     print(
-        f"danker: starting computation of PageRank on '{args.left_sorted}' with parameters\n\t"
+        f"danker ({version('danker')}): starting computation of PageRank on '{args.left_sorted}' with parameters\n\t"
         f"{param_out} ({datetime.datetime.now()})",
         file=sys.stderr,
     )
@@ -357,7 +358,7 @@ def _main():
         danker_bigmem(dictionary, args.iterations, args.damping)
 
     print(
-        "danker: PageRank computation took "
+        f"danker ({version('danker')}): PageRank computation took "
         f"{time.time() - start:.2f} seconds ({datetime.datetime.now()}).",
         file=sys.stderr,
     )
