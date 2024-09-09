@@ -71,7 +71,7 @@ fi
 if [ "$1" == "ALL" ]; then
     filename=$(date +"%Y-%m-%d").all"$project".links
     true > "$filename.files.txt"
-    true > "$filename.stats.txt"
+    printf "Started downloading and processing of dump(s) ($(date --iso-8601=s)).\n" > "$filename.stats.txt"
     if languages=$(./script/get_languages.sh "$project"); then
 
 	# collect
@@ -83,7 +83,7 @@ if [ "$1" == "ALL" ]; then
 	xargs sort -m -k 1,1n -T . -S "$MEM_PERC" -o "$filename" < "$filename.files.txt" 
 
         # collect stats
-	xargs wc -l < "$filename.files.txt" | grep -v "total" | sed "s/^[[:space:]]\+//" > "$filename.stats.txt"
+	xargs wc -l < "$filename.files.txt" | grep -v "total" | sed "s/^[[:space:]]\+//" >> "$filename.stats.txt"
 
         # clean up
 	xargs rm < "$filename.files.txt"
@@ -94,10 +94,12 @@ if [ "$1" == "ALL" ]; then
     fi
 else
     filename=$(./script/create_links.sh -d "$dump_time" -f "$folder" $keep_site_links "$1" "$project")
-    true > "$filename.stats.txt"
+    printf "Starting downloading and processing of dump(s) ($(date --iso-8601=s)).\n" > "$filename.stats.txt"
 fi
 
 wc -l "$filename" >> "$filename.stats.txt"
+
+printf "Completed downloading and processing of dump(s) ($(date --iso-8601=s)).\n\n" >> "$filename.stats.txt"
 
 # "extract links only" option
 if [ "$links" ]; then

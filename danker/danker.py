@@ -335,7 +335,7 @@ def _main():
         sys.exit(1)
     print(
         f"danker ({version('danker')}): starting computation of PageRank on '{args.left_sorted}' with parameters\n\t"
-        f"{param_out} ({datetime.datetime.now()})",
+        f"{param_out} ({datetime.datetime.now().astimezone().replace(microsecond=0).isoformat()})",
         file=sys.stderr,
     )
     start = time.time()
@@ -359,7 +359,7 @@ def _main():
 
     print(
         f"danker ({version('danker')}): PageRank computation took "
-        f"{time.time() - start:.2f} seconds ({datetime.datetime.now()}).",
+        f"{time.time() - start:.2f} seconds ({datetime.datetime.now().astimezone().replace(microsecond=0).isoformat()}).",
         file=sys.stderr,
     )
 
