@@ -80,7 +80,7 @@ if [ "$1" == "ALL" ]; then
 	done
 
 	# merge
-	xargs sort -m -k 1,1n -T . -S "$MEM_PERC" -o "$filename" < "$filename.files.txt" 
+	xargs sort -m -k 1,1n -S "$MEM_PERC" -o "$filename" < "$filename.files.txt" 
 
         # collect stats
 	xargs wc -l < "$filename.files.txt" | grep -v "total" | sed "s/^[[:space:]]\+//" >> "$filename.stats.txt"
@@ -112,12 +112,12 @@ if [ "$bigmem" ]; then
        2>> "$filename.stats.txt" | sed "s/\(.*\)/Q\1/" \
     > "$filename".rank
 else
-    sort -k 2,2n -T . -S "$MEM_PERC" -o "$filename"".right" "$filename"
+    sort -k 2,2n -S "$MEM_PERC" -o "$filename"".right" "$filename"
     python3 -m danker  "$filename" -r "$filename"".right" "$damping" "$iterations" "$start_value" -i \
         2>> "$filename.stats.txt" | sed "s/\(.*\)/Q\1/" \
     > "$filename".rank
     rm "$filename"".right"
 fi
-sort -k 2,2nr -T . -S "$MEM_PERC" -o "$filename"".rank" "$filename"".rank"
+sort -k 2,2nr -S "$MEM_PERC" -o "$filename"".rank" "$filename"".rank"
 wc -l "$filename"".rank" >> "$filename.stats.txt"
 echo "$filename"
