@@ -18,12 +18,14 @@
 
 # Expects to be executed from ./danker "root" dir
 # Expects AWS Cli and according settings 
+export TMPDIR="./rpi_tmp"
 export MEM_PERC="90%"
 
 S3_BUCKET="danker"
 INDEX_FILE="index.html"
 PROJECT_LINKS=".allwiki.links"
 
+# Compute PageRank and upload
 filename=$(./danker.sh -k ALL)
 bzip2 "$filename.rank"
 VER=${filename//$PROJECT_LINKS/}
@@ -37,9 +39,12 @@ aws s3 cp "$filename.rank.bz2" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.a
 aws s3 cp "$filename.stats.txt" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 rm "$filename"
 
-# Prepare sitelinks
+# Prepare sitelinks and upload
 filename="${filename%.*}".sitelinks.count
 sort -k1,1 ./*.site.links | cut -f 1 | uniq -c | awk '{print $2 "\t" $1}' > "$filename"
 bzip2 "$filename"
 aws s3 cp "$filename".bz2 s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+
+# Cleanup
 rm ./*.site.links
+rm "$TMPDIR" -rf
