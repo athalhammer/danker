@@ -21,6 +21,8 @@
 export TMPDIR="./rpi_tmp"
 export MEM_PERC="90%"
 
+mkdir "$TMPDIR"
+
 S3_BUCKET="danker"
 INDEX_FILE="index.html"
 PROJECT_LINKS=".allwiki.links"
