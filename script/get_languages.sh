@@ -39,7 +39,7 @@ if [ "$project" = "test" ]; then
 	result=$(printf "anp\nch\nmad\nty\n")
 else
 	result=$(curl --retry-connrefused --retry 5 --retry-delay 60 -s "https://wikistats.wmcloud.org/display.php?t=$project" \
-		| sed -n 's;\(.*text\)\{2\}.*>\(.*\)</a>.*;\2;p'  `# Parse wiki names` \
+		| sed -n 's;\(.*text\)\{2\}.*><a href="https://\(.*\).wikipedia.org/wiki/">.*</a>.*;\2;p'  `# Parse wiki names` \
 		| sed "s/-/_/g"                                   `# Replace "-" with "_"` \
 		| sed "s/be_tarask/be_x_old/" 	                  `# Manual fix for be_x_old` \
 		| sort)
