@@ -54,6 +54,7 @@ if [ "$KEEP" = false ]; then
 else
     bzip2 "$filename"
 fi
+rm "$TMPDIR" -rf
 
 # Prepare sitelinks and upload
 # 2024-10-24: NOT NEEDED - use <http://wikiba.se/ontology#sitelinks> on Wikidata live endpoint instead.
