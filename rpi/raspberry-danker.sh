@@ -21,13 +21,21 @@
 export TMPDIR="./rpi_tmp"
 export MEM_PERC="90%"
 
-mkdir "$TMPDIR"
-
 S3_BUCKET="danker"
 INDEX_FILE="index.html"
 PROJECT_LINKS=".allwiki.links"
 
+# Parse flags
+KEEP=false
+while getopts "k" opt; do
+  case $opt in
+    k) KEEP=true ;;
+    *) echo "Usage: $0 [-k]" && exit 1 ;;
+  esac
+done
+
 # Compute PageRank and upload
+mkdir "$TMPDIR"
 filename=$(./danker.sh ALL)
 bzip2 "$filename.rank"
 VER=${filename//$PROJECT_LINKS/}
@@ -39,7 +47,13 @@ sed "s/\"dateModified\": \"\(.*\)\",/\"dateModified\": \"$date\",/" -i index.htm
 aws s3 cp "$INDEX_FILE" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 aws s3 cp "$filename.rank.bz2" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 aws s3 cp "$filename.stats.txt" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
-rm "$filename"
+
+# If -k flag is not set, remove the links file, otherwise compress it
+if [ "$KEEP" = false ]; then
+    rm "$filename"
+else
+    bzip2 "$filename"
+fi
 
 # Prepare sitelinks and upload
 # 2024-10-24: NOT NEEDED - use <http://wikiba.se/ontology#sitelinks> on Wikidata live endpoint instead.
@@ -48,7 +62,3 @@ rm "$filename"
 #sort -k1,1 ./*.site.links | cut -f 1 | uniq -c | awk '{print $2 "\t" $1}' > "$filename"
 #bzip2 "$filename"
 #aws s3 cp "$filename".bz2 s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
-
-# Cleanup
-#rm ./*.site.links
-rm "$TMPDIR" -rf
