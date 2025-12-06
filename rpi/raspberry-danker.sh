@@ -35,8 +35,9 @@ while getopts "k" opt; do
 done
 
 # prepare python
-python3 -m venv $ENV
-source $ENV/bin/activate
+python3 -m venv "$ENV"
+# shellcheck source=/dev/null
+source "./$ENV/bin/activate"
 pip install .
 pip install -r requirements.txt
 
