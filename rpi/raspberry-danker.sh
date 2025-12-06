@@ -23,7 +23,7 @@ export MEM_PERC="90%"
 
 S3_BUCKET="danker"
 INDEX_FILE="index.html"
-PROJECT_LINKS=".allwiki.links"
+ENV="rpi_env"
 
 # Parse flags
 KEEP=false
@@ -34,27 +34,27 @@ while getopts "k" opt; do
   esac
 done
 
+# prepare python
+python3 -m venv $ENV
+source $ENV/bin/activate
+pip install .
+pip install -r requirements.txt
+
+
 # Compute PageRank and upload
 mkdir "$TMPDIR"
-filename=$(./danker.sh ALL)
+filename=$(./danker.sh ALL -k)
 bzip2 "$filename.rank"
-VER=${filename//$PROJECT_LINKS/}
+#VER=${filename//$PROJECT_LINKS/}
+ver=${filename//.links/}
 aws s3 cp s3://"$S3_BUCKET/$INDEX_FILE" .
-sed "s/VERSION/$VER/" < ./rpi/template > tmp
+(sed "s/FILENAME/$filename/" | sed "s/VERSION/$ver/") < ./rpi/template > tmp
 perl -i -p0e 's/  "distribution":\[/`cat tmp`/se' "$INDEX_FILE"
 date=$(date -I)
 sed "s/\"dateModified\": \"\(.*\)\",/\"dateModified\": \"$date\",/" -i index.html
-aws s3 cp "$INDEX_FILE" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
-aws s3 cp "$filename.rank.bz2" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
-aws s3 cp "$filename.stats.txt" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
-
-# If -k flag is not set, remove the links file, otherwise compress it
-if [ "$KEEP" = false ]; then
-    rm "$filename"
-else
-    bzip2 "$filename"
-fi
-rm "$TMPDIR" -rf
+#aws s3 cp "$INDEX_FILE" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+#aws s3 cp "$filename.rank.bz2" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+#aws s3 cp "$filename.stats.txt" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 
 # Prepare sitelinks and upload
 # 2024-10-24: NOT NEEDED - use <http://wikiba.se/ontology#sitelinks> on Wikidata live endpoint instead.
@@ -63,3 +63,11 @@ rm "$TMPDIR" -rf
 #sort -k1,1 ./*.site.links | cut -f 1 | uniq -c | awk '{print $2 "\t" $1}' > "$filename"
 #bzip2 "$filename"
 #aws s3 cp "$filename".bz2 s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+# If -k flag is not set, remove the links file, otherwise compress it
+
+if [ "$KEEP" = false ]; then
+    rm "$filename"
+else
+    bzip2 "$filename"
+fi
+rm -rf "$TMPDIR" $ENV tmp "$INDEX_FILE"
