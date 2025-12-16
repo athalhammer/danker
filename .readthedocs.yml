@@ -4,6 +4,9 @@ python:
   install:
     - requirements: docs/requirements.txt
 
+sphinx:
+  configuration: docs/conf.py
+
 build:
   os: ubuntu-22.04
   tools:
