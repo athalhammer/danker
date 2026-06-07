@@ -1,8 +1,6 @@
-  "distribution":[
     {
       "@type":"DataDownload",
       "version": "VERSION",
-      "encodingFormat":"text/tab-separated-values",
-      "contentUrl": "https://danker.s3.amazonaws.com/FILENAME.rank.bz2",
-      "about": "https://danker.s3.amazonaws.com/FILENAME.stats.txt"
+      "encodingFormat":"ENCODING",
+      "contentUrl": "https://danker.s3.amazonaws.com/CONTENTURL"ABOUT
     },

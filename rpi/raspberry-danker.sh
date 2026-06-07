@@ -24,6 +24,7 @@ export MEM_PERC="90%"
 S3_BUCKET="danker"
 INDEX_FILE="index.html"
 ENV="rpi_env"
+BASE_DIR=$(pwd)
 
 # Parse flags
 KEEP=false
@@ -41,20 +42,26 @@ source "./$ENV/bin/activate"
 pip install .
 pip install -r requirements.txt
 
+# download index file
+aws s3 cp s3://"$S3_BUCKET/$INDEX_FILE" .
 
 # Compute PageRank and upload
 mkdir "$TMPDIR"
 filename=$(./danker.sh ALL -k)
 bzip2 "$filename.rank"
-ver=${filename//.links/}
-aws s3 cp s3://"$S3_BUCKET/$INDEX_FILE" .
-(sed "s/FILENAME/$filename/" | sed "s/VERSION/$ver/") < ./rpi/template > tmp
-perl -i -p0e 's/  "distribution":\[/`cat tmp`/se' "$INDEX_FILE"
-date=$(date -I)
-sed "s/\"dateModified\": \"\(.*\)\",/\"dateModified\": \"$date\",/" -i index.html
-aws s3 cp "$INDEX_FILE" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+
 aws s3 cp "$filename.rank.bz2" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 aws s3 cp "$filename.stats.txt" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+
+# Modify pagerank section of index file
+ver=${filename//.links/}
+sed "s/VERSION/$ver/g; s/ENCODING/text\/tab-separated-values/g; s|CONTENTURL|$filename.rank.bz2|g; s/ABOUT/,\n      \"about\": \"https:\/\/danker.s3.amazonaws.com\/$filename.stats.txt\"/g" ./rpi/template > tmp_pagerank
+sed -i "/by-sa\/3\.0\//,/\"distribution\":\[/ { /\"distribution\":\[/ r tmp_pagerank
+}" "$INDEX_FILE"
+rm tmp_pagerank
+date=$(date -I)
+sed '/Wikidata PageRank/,/"dateModified"/{s/"dateModified": "[^"]*"/"dateModified": "'$date'"/;t;b;}' -i index.html
+aws s3 cp "$INDEX_FILE" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 
 # Prepare sitelinks and upload
 # 2024-10-24: NOT NEEDED - use <http://wikiba.se/ontology#sitelinks> on Wikidata live endpoint instead.
@@ -70,4 +77,30 @@ if [ "$KEEP" = false ]; then
 else
     bzip2 "$filename"
 fi
-rm -rf "$TMPDIR" $ENV tmp "$INDEX_FILE"
+rm -rf "$TMPDIR" $ENV tmp
+
+# compute qrank and upload
+rm "$HOME/wikidata-qrank/dumps/sitelinks"
+mkdir "$HOME/$filename-sitelinks"
+mv *.site.links "$HOME/$filename-sitelinks"
+ln -s "$HOME/$filename-sitelinks" "$HOME/wikidata-qrank/dumps/sitelinks"
+cd "$HOME/wikidata-qrank/"
+bash "./download.sh"
+export TMPDIR=.;./qrank-builder --dumps dumps
+
+QRANK_FILE=$(ls -ht $HOME/wikidata-qrank/cache/ | head -n 1)
+aws s3 cp $HOME/wikidata-qrank/cache/$QRANK_FILE s3://$S3_BUCKET/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+
+# Modify qrank section of index file
+cd "$BASE_DIR"
+ver2=${QRANK_FILE//.gz/}
+sed "s/VERSION/$ver2/g; s/ENCODING/text\/csv/g; s|CONTENTURL|$QRANK_FILE|g; s/ABOUT//g" ./rpi/template > tmp_qrank
+sed -i "/zero\/1\.0\//,/\"distribution\":\[/ { /\"distribution\":\[/ r tmp_qrank
+}" "$INDEX_FILE"
+rm tmp_qrank
+date=$(date -I)
+sed '/Wikidata QRank \[athaMod\]/,/"dateModified"/{s/"dateModified": "[^"]*"/"dateModified": "'$date'"/;t;b;}' -i index.html
+
+# finally upload back the index file
+aws s3 cp "$INDEX_FILE" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+rm "$INDEX_FILE"
