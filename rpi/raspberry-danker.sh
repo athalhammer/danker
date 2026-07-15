@@ -88,6 +88,7 @@ cd "$HOME/wikidata-qrank/" || exit 1
 bash "./download.sh"
 export TMPDIR=.;./qrank-builder --dumps dumps
 
+# shellcheck disable=SC2012
 QRANK_FILE=$(ls -ht "$HOME"/wikidata-qrank/cache/ | head -n 1)
 aws s3 cp "$HOME/wikidata-qrank/cache/$QRANK_FILE" "s3://$S3_BUCKET/" --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 
