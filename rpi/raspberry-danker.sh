@@ -60,7 +60,7 @@ sed -i "/by-sa\/3\.0\//,/\"distribution\":\[/ { /\"distribution\":\[/ r tmp_page
 }" "$INDEX_FILE"
 rm tmp_pagerank
 date=$(date -I)
-sed '/Wikidata PageRank/,/"dateModified"/{s/"dateModified": "[^"]*"/"dateModified": "'$date'"/;t;b;}' -i index.html
+sed '/Wikidata PageRank/,/"dateModified"/{s/"dateModified": "[^"]*"/"dateModified": "'"$date"'"/;t;b;}' -i index.html
 aws s3 cp "$INDEX_FILE" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 
 # Prepare sitelinks and upload
@@ -77,29 +77,29 @@ if [ "$KEEP" = false ]; then
 else
     bzip2 "$filename"
 fi
-rm -rf "$TMPDIR" $ENV tmp
+rm -rf "$TMPDIR" "$ENV" tmp
 
 # compute qrank and upload
 rm "$HOME/wikidata-qrank/dumps/sitelinks"
 mkdir "$HOME/$filename-sitelinks"
-mv *.site.links "$HOME/$filename-sitelinks"
+mv ./*.site.links "$HOME/$filename-sitelinks"
 ln -s "$HOME/$filename-sitelinks" "$HOME/wikidata-qrank/dumps/sitelinks"
-cd "$HOME/wikidata-qrank/"
+cd "$HOME/wikidata-qrank/" || exit 1
 bash "./download.sh"
 export TMPDIR=.;./qrank-builder --dumps dumps
 
-QRANK_FILE=$(ls -ht $HOME/wikidata-qrank/cache/ | head -n 1)
-aws s3 cp $HOME/wikidata-qrank/cache/$QRANK_FILE s3://$S3_BUCKET/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+QRANK_FILE=$(ls -ht "$HOME"/wikidata-qrank/cache/ | head -n 1)
+aws s3 cp "$HOME/wikidata-qrank/cache/$QRANK_FILE" "s3://$S3_BUCKET/" --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 
 # Modify qrank section of index file
-cd "$BASE_DIR"
+cd "$BASE_DIR" || exit 1
 ver2=${QRANK_FILE//.gz/}
 sed "s/VERSION/$ver2/g; s/ENCODING/text\/csv/g; s|CONTENTURL|$QRANK_FILE|g; s/ABOUT//g" ./rpi/template > tmp_qrank
 sed -i "/zero\/1\.0\//,/\"distribution\":\[/ { /\"distribution\":\[/ r tmp_qrank
 }" "$INDEX_FILE"
 rm tmp_qrank
 date=$(date -I)
-sed '/Wikidata QRank \[athaMod\]/,/"dateModified"/{s/"dateModified": "[^"]*"/"dateModified": "'$date'"/;t;b;}' -i index.html
+sed '/Wikidata QRank \[athaMod\]/,/'"dateModified"'/{s/"dateModified": "[^"]*"/"dateModified": "'"$date"'"/;t;b;}' -i index.html
 
 # finally upload back the index file
 aws s3 cp "$INDEX_FILE" s3://"$S3_BUCKET"/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
