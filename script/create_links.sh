@@ -44,17 +44,18 @@ dir=$(dirname "$0")
 
 latest_dump() {
 	rss="https://dumps.wikimedia.org/$wiki/latest/$wiki-latest-"
+	files=("page.sql.gz-rss.xml" "pagelinks.sql.gz-rss.xml" "linktarget.sql.gz-rss.xml" "redirect.sql.gz-rss.xml" "page_props.sql.gz-rss.xml")
+	for f in "${files[@]}"; do
+	    if ! wget -q --waitretry=1m --retry-connrefused "$rss$f"; then
+		(>&2 printf "Couldn't download '%s' RSS feed for '%s'.\n" "$f" "$wiki")
+		return 1
+	    fi
+	done
 	# Latest dump date
-	if wget -q "$rss""page.sql.gz-rss.xml" \
-	    "$rss""pagelinks.sql.gz-rss.xml" \
-	    "$rss""linktarget.sql.gz-rss.xml" \
-	    "$rss""redirect.sql.gz-rss.xml" \
-	    "$rss""page_props.sql.gz-rss.xml"; then
-		dump_date=$(cat "$wiki"*.xml | sed -n "s#.*$download\([0-9]\+\).*#\1#p" | sort -u)
-	fi
+	dump_date=$(cat "$wiki"*.xml | sed -n "s#.*$download\([0-9]\+\).*#\1#p" | sort -u)
 
 	if [ "$(echo "$dump_date" | wc -l)" != '1' ] || [ "$dump_date" == '' ]; then
-	    (>&2 printf "[Error]\tMultiple or no date for '%s' dump.\n" "$wiki.")
+	    (>&2 printf "[Error]\tMultiple or no date for '%s' dump.\n" "$wiki")
 	    return 1
 	fi
 
@@ -70,16 +71,15 @@ download() {
 	tmpdir=$(mktemp -d -t "danker.XXXX")
 	cd "$tmpdir" || return 1
 
-	# Download and unzip
-	if ! wget -q --waitretry=1m --retry-connrefused "$download$dump_date/$page.gz" \
-	    "$download$dump_date/$pagelinks.gz" \
-	    "$download$dump_date/$linktarget.gz" \
-	    "$download$dump_date/$redirect.gz" \
-	    "$download$dump_date/$pageprops.gz"; then
-		(>&2 printf "Couldn't download dumps of '%s' for date '%s'.\n" "$wiki" "$dump_date")
+	# Download and unzip sequentially
+	files=("$page" "$pagelinks" "$linktarget" "$redirect" "$pageprops")
+	for file in "${files[@]}"; do
+	    if ! wget -q --waitretry=1m --retry-connrefused "$download$dump_date/$file.gz"; then
+		(>&2 printf "Couldn't download '%s' for '%s' on date '%s'.\n" "$f" "$wiki" "$dump_date")
 		rm -rf "$tmpdir"
 		return 1
-	fi
+	    fi
+	done
 
 	gunzip "$page.gz" "$pagelinks.gz" "$redirect.gz" "$pageprops.gz" "$linktarget.gz"
 	echo "$tmpdir"
