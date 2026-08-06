@@ -175,7 +175,6 @@ maria2csv "$file_dir/$redirect" \
 > "$wiki"redirect.lines
 
 maria2csv "$file_dir/$pageprops" \
-    | grep -v templatedata \
     | csvformat -q "'" -b -p "\\" \
     | csvcut -c pp_page,pp_propname,pp_value \
     | csvgrep -c pp_propname -r "^wikibase_item$" \
