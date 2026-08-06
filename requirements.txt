@@ -1,2 +1,2 @@
 csvkit>=1.0.4
-maria2csv>=0.0.1
+maria2csv>=0.0.2
