@@ -45,9 +45,10 @@ dir=$(dirname "$0")
 latest_dump() {
 	rss="https://dumps.wikimedia.org/$wiki/latest/$wiki-latest-"
 	files=("page.sql.gz-rss.xml" "pagelinks.sql.gz-rss.xml" "linktarget.sql.gz-rss.xml" "redirect.sql.gz-rss.xml" "page_props.sql.gz-rss.xml")
-	for f in "${files[@]}"; do
-	    if ! wget -q --waitretry=1m --retry-connrefused "$rss$f"; then
-		(>&2 printf "Couldn't download '%s' RSS feed for '%s'.\n" "$f" "$wiki")
+	for file in "${files[@]}"; do
+        url="$rss$file"
+	    if ! wget -q --waitretry=1m --retry-connrefused "$url"; then
+		(>&2 printf "Couldn't download '%s' RSS feed for '%s'.\n" "$url" "$wiki")
 		return 1
 	    fi
 	done
@@ -74,8 +75,9 @@ download() {
 	# Download and unzip sequentially
 	files=("$page" "$pagelinks" "$linktarget" "$redirect" "$pageprops")
 	for file in "${files[@]}"; do
-	    if ! wget -q --waitretry=1m --retry-connrefused "$download$dump_date/$file.gz"; then
-		(>&2 printf "Couldn't download '%s' for '%s' on date '%s'.\n" "$f" "$wiki" "$dump_date")
+        url="$download$dump_date/$file.gz"
+	    if ! wget -q --waitretry=1m --retry-connrefused "$url"; then
+		(>&2 printf "Couldn't download '%s' for '%s' on date '%s'.\n" "$url" "$wiki" "$dump_date")
 		rm -rf "$tmpdir"
 		return 1
 	    fi
